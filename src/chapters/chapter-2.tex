@@ -199,3 +199,88 @@ Beberapa tantangan dalam melakukan pengujian keamanan terhadap aplikasi web adal
     dapat memaksa penggunaan aturan keamanan yang dapat menyebabkan bahaya terhadap keamanan
     dan integritas data pengguna.
 \end{enumerate}
+
+\section{\textit{Domain-Specific Language}}
+
+\textit{Domain-Specific Language} (DSL) adalah bahasa pemrograman berkemampuan terbatas yang
+berfokus pada suatu domain tertentu.
+
+Dari definisi diatas, ada empat poin penting:
+
+\begin{enumerate}
+    \item DSL dapat digunakan untuk memerintahkan komputer. Seperti bahasa pemrograman lainnya,
+    DSL haruslah bisa untuk dipahami manusia, tetapi masih mungkin diolah oleh komputer.
+
+    \item DSL adalah bahasa pemrograman komputer. Hal ini berarti DSL harus terasa seperti
+    bahasa yang dimana kemampuannya tidak hanya muncul dari masing-masing ekspresinya,
+    tetapi juga saat ekspresi-ekspresi tersebut digabungkan.
+
+    \item Bahasa pemrograman umum (\textit{General Purpose Programming Language}) memiliki banyak fitur.
+    Hal ini membuatnya sangat berguna, namun menjadi susah untuk dipelajari dan digunakan.
+    DSL dengan kemampuannya yang terbatas hanya memiliki fitur-fitur minimum yang dibutuhkan untuk domainnya.
+
+    \item Sebuah bahasa dengan kemampuan terbatas hanya akan berguna jika ia memiliki
+    fokus yang jelas terhadap sebuah domain kecil.
+\end{enumerate}
+
+DSL terbagi menjadi dua kategori, yaitu:
+
+\begin{enumerate}
+    \item \textit{External DSL}
+
+    DSL eksternal adalah bahasa yang terpisah dari bahasa utama aplikasi.
+    Biasanya, DSL eksternal memiliki syntaxnya sendiri, namun kadang dapat menggunakan
+    bahasa lain seperti XML. Sebuah kode pada DSL eksternal biasanya akan diproses oleh
+    aplikasi utama. Beberapa contoh DSL eksternal adalah Regex, SQL, awk, sed.
+
+    \item \textit{Internal DSL}
+    
+    DSL internal adalah sebuah cara tertentu untuk menggunakan sebuah bahasa.
+    Sebuah DSL internal ditulis dalam bahasa yang sama dengan bahasa utama aplikasi,
+    namun hanya menggunakan sebagian fitur bahasa untuk mengurusi bagian kecil 
+    dari keseluruhan sistem. Salah satu bahasa yang memiliki banyak DSL internal adalah Ruby,
+    karena struktur Ruby yang ekspresif memudahkan dibuatnya DSL.
+    Web framework Rails yang ditulis dengan Ruby adalah salah satu contoh DSL.
+\end{enumerate}
+
+DSL adalah sebuah alat yang memiliki fokus yang jelas dan hanya mengurusi suatu
+aspek kecil tertentu. Sebuah aplikasi bisa saja menggunakan banyak DSL untuk mengurusi
+berbagai aspek sistemnya. Beberapa kelebihan menggunakan DSL adalah:
+
+\begin{enumerate}
+    \item Meningkatkan produktivitas
+
+    Salah satu daya tarik utama dari DSL adalah ia menyediakan cara untuk menyampaikan
+    sebuah maksud sebuah sistem dengan lebih jelas.
+    Hal ini menyebabkan programmer lebih mudah memahami maksud dan
+    tujuan sebuah kode dan sistem.
+
+    \item Merepresentasikan pengetahuan domain dengan lebih baik
+
+    DSL dapat didesain sedemikian mungkin untuk merepresentasikan dan mengabstraksikan
+    suatu domain tertentu, sehingga
+    bisa digunakan bukan hanya oleh \textit{programmer} saja, tetapi juga oleh ahli domain tersebut.
+\end{enumerate}
+
+Sementara kekurangan menggunakan DSL adalah:
+
+\begin{enumerate}
+    \item \textit{Language cacophony}
+    
+    Beberapa komplain yang sering didengar saat menggunakan DSL adalah \textit{language cacophony},
+    dimana bahasa biasanya sulit untuk dipelajari, sehingga menggunakan banyak bahasa akan lebih
+    sulit dari pada menggunakan satu bahasa. Kebutuhuan untuk mempelajari banyak bahasa menyebabkan
+    sulit untuk mengerjakan proyek dan menambah orang baru kedalam proyek.
+
+    Namun dari komplain ini, banyak orang yang berpikiran bahwa mempelajari sebuah DSL akan sesulit
+    mempelajari bahasa pemrograman general biasa. Tetapi, DSL sebenarnya lebih mudah dipelajari
+    karena keterbatasannya.
+
+    \item Biaya pembuatan
+    
+    Seperti semua bagian dari program, DSL juga merupakan program yang harus dibuat dan dipelihara.
+    Tentu saja hal ini dapat menambah biaya yang harus dikeluarkan. Biaya pembuatan DSL juga dapat
+    lebih tinggi karena tim yang ada tidak terbiasa membuat DSL sehingga harus belajar lagi, yang
+    juga dapat menambah biaya.
+
+\end{enumerate}
