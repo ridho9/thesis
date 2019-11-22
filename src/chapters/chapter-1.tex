@@ -23,7 +23,13 @@ kelemahan keamanan yang sudah umum diketahui seperti \textit{injection}, cara in
 kelemahan keamanan yang terjadi karena \textit{business logic error} yang biasanya membutuhkan
 langkah-langkah yang sangat spesifik dan berbeda tiap aplikasinya.
 
-Pengujian keamanan akan menjadi lebih efektif jika diintegrasikan kedalam siklus pengembangan aplikasi.
+Pengujian keamanan akan menjadi lebih efektif jika diintegrasikan ke dalam siklus pengembangan aplikasi,
+seperti pengujian fungsionalitas.
+Pada fungsionalitas, pengujian diintegrasikan ke dalam pengembangan dengan menggunakan kakas TDD dan BDD.
+Kakas yang ada ini jika diikuti dengan baik bisa memberi jaminan bahwa fungsionalitas telah berjalan dengan baik.
+Namun kakas ini belum bisa digunakan bersamaan untuk pengujian keamanan karena sifat dari pengujian keamanan itu sendiri.
+Pengujian keamanan mengharuskan kita mencoba semua kemungkinan input yang pada normalnya tidak boleh
+diterima oleh aplikasi.
 
 \section{Rumusan Masalah}
 
@@ -33,22 +39,23 @@ Dari latar belakang tersebut, penulis kemudian merumuskan masalah yaitu:
     \item Kenapa \textit{business logic error} terjadi?
     \item Kenapa pengujian sulit dilakukan dengan baik walaupun telah menggunakan kerangka pengujian?
     \item Apa yang menyebabkan pengujian keamanan berbeda dengan pengujian fungsionalitas?
-    \item Bagaimana cara membuat keamanan mudah diuji pada tahap pengembangan?
+    \item Bagaimana cara mengintegrasikan pengujian keamanan pada tahap pengembangan aplikasi?
+    \item Bagaimana cara agar kakas pengujian yang ada pada saat ini dapat mengetahui input-input lain yang ada?
 \end{enumerate}
 
 \section{Tujuan}
 
-Tuliskan tujuan utama dan/atau tujuan detil yang akan dicapai dalam pelaksanaan tugas akhir. Fokuskan pada hasil akhir yang ingin diperoleh setelah tugas akhir diselesaikan, terkait dengan penyelesaian persoalan pada rumusan masalah. Penting untuk diperhatikan bahwa tujuan yang dideskripsikan pada subbab ini akan dipertanggungjawabkan di akhir pelaksanaan tugas akhir apakah tercapai atau tidak.
-
 Subbab sebelum ini telah menjelaskan latar belakang dan rumusan masalah tugas akhir ini.
-Karena itu, tujuan dari tugas akhir ini adalah membangun ????? 
+Karena itu, tujuan dari tugas akhir ini adalah membangun kakas pengujian aplikasi berbasis web
+dengan kerangka BDD atau TDD, dimana kakas dapat menentukan masukan-masukan lain 
 
 \section{Batasan Masalah}
 
-Untuk mencapai tujuan yang telah dijelaskan pada subbab sebelumnya, ????? difokuskan pada hal berikut:
+Untuk mencapai tujuan yang telah dijelaskan pada subbab sebelumnya, kakas pengujian difokuskan pada hal berikut:
 
 \begin{enumerate}
-    \item 
+    \item Untuk aplikasi berbasis web pada bagian \textit{backend}
+    \item Untuk menguji ancaman keamanan yang disebabkan oleh \textit{business logic error}
 \end{enumerate}
 
 \section{Metodologi}
@@ -56,5 +63,12 @@ Untuk mencapai tujuan yang telah dijelaskan pada subbab sebelumnya, ????? difoku
 Metodologi yang digunakan pada pengerjaan tugas akhir ini antara lain:
 
 \begin{enumerate}
-    \item 
+    \item Eksplorasi kebutuhan
+
+    Pada langkah ini dilakukan eksplorasi kekurangan \textit{framework} BDD yang ada pada saat ini
+    (seperti Gherkin), dan fitur apa saja yang dibutuhkan.
+
+    \item Desain 
+    \item Implementasi 
+    \item Evaluasi
 \end{enumerate}
