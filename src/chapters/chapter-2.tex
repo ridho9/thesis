@@ -2,7 +2,7 @@
 
 Pada bab ini berisi hasil tinjauan pustaka yang menjadi dasar analisa dan perancangan pada BAB III.
 Bab ini secara garis besar berisi keamanan perangkat lunak dan pengujiannya,
-tantangan pada pengujian perangkat lunak berbasis web, \textit{Domain-Specific Language}, serta BDD dan TDD.
+tantangan pada pengujian perangkat lunak berbasis web, \emph{Domain-Specific Language}, serta BDD dan TDD.
 
 % \begin{enumerate}
 %     \item menunjukkan kepada pembaca adanya gap seperti pada rumusan masalah yang memang belum terselesaikan,
@@ -24,34 +24,34 @@ Penggunaan komputer yang semakin hari semakin luas membuat perangkat lunak yang 
 yang berarti juga bertambahnya masalah keamanan yang ada pada perangkat lunak tersebut.
 Hal ini menyebabkan keamanan perangkat lunak menjadi hal yang semakin penting.
 
-Keamanan perangkat lunak (\textit{software security}) adalah kriteria dimana perangkat lunak tetap bekerja dengan benar
-walaupun diserang dengan niat jahat. \textit{Security} berbeda dengan \textit{safety} dimana security fokus terhadap kebenaran
-perangkat lunak saat sedang dalam serangan yang dilakukan dengan sengaja, sedangkan \textit{safety} fokus terhadap
+Keamanan perangkat lunak (\emph{software security}) adalah kriteria dimana perangkat lunak tetap bekerja dengan benar
+walaupun diserang dengan niat jahat. \emph{Security} berbeda dengan \emph{safety} dimana security fokus terhadap kebenaran
+perangkat lunak saat sedang dalam serangan yang dilakukan dengan sengaja, sedangkan \emph{safety} fokus terhadap
 kebenaran perangkat lunak saat terjadi kegagalan baik pada tingkat perangkat lunak maupun perangkat keras.
 
 Masalah keamanan perangkat lunak terjadi karena adanya celah atau kecacatan pada perangkat lunak yang dapat
 dimanfaatkan oleh penyerang. Celah ini dapat berbentuk kekurangan bawaan pada bahasa pemrograman yang digunakan,
-seperti penggunaan \texttt{gets()} pada bahasa C/C++ yang memiliki resiko \textit{buffer overflow},
+seperti penggunaan \texttt{gets()} pada bahasa C/C++ yang memiliki resiko \emph{buffer overflow},
 hingga celah yang terjadi
 karena kesalahan pada desain perangkat lunak tersebut. Skala pembuatan perangkat lunak yang semakin besar
 dengan proses pengembangan yang melibatkan banyak orang menyebabkan tidak ada satu orang yang paham
 cara kerja perangkat lunak secara keseluruhan.
 
 Ada beberapa cara yang dapat dilakukan untuk menanggulangi masalah keamanan perangkat lunak,
-namun pada saat ini perlindungan keamanan perangkat lunak dilakukan secara \textit{de facto},
+namun pada saat ini perlindungan keamanan perangkat lunak dilakukan secara \emph{de facto},
 yaitu dengan perlindungan yang diimplementasi setelah aplikasi selesai dikembangkan.
 Perlindungan ini biasanya melindungi aplikasi dengan cara memperhatikan data yang masuk
 ke dalam aplikasi tidak menimbulkan bahaya atau dapat menyebabkan masalah, pada dasarnya,
 perlindungan jenis ini berdasar terhadap pencarian dan mengatasi celah pada aplikasi setelah ditemukan.
 Namun, perlindungan perangkat lunak seharusnya mengidentifikasi dan mengatasi masalah dari
 dalam perangkat lunak tersebut, sebagai contoh, walaupun ada baiknya mencoba menghadapi serangan
-\textit{buffer overflow} dengan membaca \textit{traffic} yang masuk ke dalam aplikasi,
+\emph{buffer overflow} dengan membaca \emph{traffic} yang masuk ke dalam aplikasi,
 cara yang lebih bagus tentu saja memperbaiki perangkat lunak dari kodenya sehingga
-tidak ada kemungkinan \textit{buffer overflow}.
+tidak ada kemungkinan \emph{buffer overflow}.
 
 \section{Pengujian Keamanan Perangkat Lunak}
 
-Celah-celah keamanan yang ada pada perangkat lunak selalu menjadi risiko keamanan (\textit{security risk}).
+Celah-celah keamanan yang ada pada perangkat lunak selalu menjadi risiko keamanan (\emph{security risk}).
 Mengelola risiko keamanan ini menjadi seminimal mungkin adalah salah satu tugas praktisi keamanan perangkat lunak.
 Dalam mengelola risiko ini dilakukan beberapa hal, diantaranya:
 
@@ -64,10 +64,10 @@ Dalam mengelola risiko ini dilakukan beberapa hal, diantaranya:
     \item Melakukan pembersihan setelah terjadinya pelanggaran keamanan
 \end{itemize}
 
-Sistem keamanan bukanlah keamanan sistem. Walaupun fitur keamanan seperti \textit{cryptography},
-\textit{access control}, dan lain lain memiliki peran penting dalam keamanan perangkat lunak,
+Sistem keamanan bukanlah keamanan sistem. Walaupun fitur keamanan seperti \emph{cryptography},
+\emph{access control}, dan lain lain memiliki peran penting dalam keamanan perangkat lunak,
 keamanan itu sendiri adalah sifat dari sistem secara keseluruhan, bukan hanya dari mekanisme
-dan fitur keamanannya. Sebuah \textit{buffer overflow} adalah masalah keamanan, baik itu terletak di dalam
+dan fitur keamanannya. Sebuah \emph{buffer overflow} adalah masalah keamanan, baik itu terletak di dalam
 fitur keamanan ataupun di dalam sebuah tampilan non-kritikal.
 Karena itu dalam menguji keamanan perangkat lunak memiliki dua macam pendekatan:
 
@@ -76,7 +76,7 @@ Karena itu dalam menguji keamanan perangkat lunak memiliki dua macam pendekatan:
     \item Melakukan pengujian keamanan berbasis risiko berdasarkan pemahaman dan menyimulasikan pendekatan si penyerang sistem
 \end{enumerate}
 
-Banyak \textit{programmer} yang dengan salah mengira bahwa keamanan cukup hanya dengan mengimplementasikan dan
+Banyak \emph{programmer} yang dengan salah mengira bahwa keamanan cukup hanya dengan mengimplementasikan dan
 menggunakan fitur-fitur keamanan. Banyak penguji perangkat lunak yang ditugaskan untuk melakukan
 pengujian keamanan melakukan kesalahan ini.
 
@@ -93,11 +93,11 @@ kedua, pengujian keamanan kadang tidak memberikan hasil yang berhubungan langsun
 celah keamanan yang ada, sehingga butuh keahlian untuk menginterpretasi dan memahami hasil pengujian.
 
 Kedua, dalam memilih metode pengujian, ada dua metode yang dapat dilakukan.
-Pertama dengan cara \textit{White-box} yang dilakukan dengan menganalisis dan memahami
+Pertama dengan cara \emph{White-box} yang dilakukan dengan menganalisis dan memahami
 kode serta desain dari program.
 Cara ini cukup efektif dalam menemukan kesalahan pemrograman,
-dalam beberapa kasus, pengujian ini dapat dilakukan oleh \textit{static analyzer}.
-Cara kedua adalah pengujian \textit{Black-box} yang dilakukan dengan cara menguji program
+dalam beberapa kasus, pengujian ini dapat dilakukan oleh \emph{static analyzer}.
+Cara kedua adalah pengujian \emph{Black-box} yang dilakukan dengan cara menguji program
 yang sedang berjalan dengan berbagai macam masukan tanpa harus mengetahui masukan program.
 Dalam pengujian keamanan, masukan buruk dapat dimasukkan dalam usaha untuk merusak program.
 Kedua cara pengujian dapat mengungkapkan adanya risiko keamanan dan kemungkinan eksploitasi.
@@ -113,11 +113,11 @@ Dalam melakukan pengujian keamanan, ada beberapa tantangan yang mungkin dihadapi
     hasil B sesuai dengan spesifikasi.
     Namun yang kadang terlupakan bahwa aplikasi dapat memiliki efek samping yang dapat dimanfaatkan
     penyerang sebagai celah keamanan. Salah satu contohnya adalah perangkat utilitas 
-    RDISK pada Windows NT 4.0,  yang berfungsi untuk membuat \textit{Emergency Repair Disk}.
+    RDISK pada Windows NT 4.0,  yang berfungsi untuk membuat \emph{Emergency Repair Disk}.
     Program ini pada umumnya berjalan baik sesuai spesifikasi, namun saat program berjalan,
     ia membuat sebuah file sementara yang dapat dibaca oleh siapa saja.
-    Hal ini berarti pengguna tamu (\textit{guest}) dapat membaca isi file tersebut yang
-    termasuk \textit{registry Windows} yang berisi pengaturan tentang sistem yang dapat dimanfaatkan penyerang.
+    Hal ini berarti pengguna tamu (\emph{guest}) dapat membaca isi file tersebut yang
+    termasuk \emph{registry Windows} yang berisi pengaturan tentang sistem yang dapat dimanfaatkan penyerang.
 
     \item Keadaan Pengujian Keamanan Saat Ini
 
@@ -128,7 +128,7 @@ Dalam melakukan pengujian keamanan, ada beberapa tantangan yang mungkin dihadapi
     \item Ketidakamanan dan kegagalan aplikasi penunjang
 
     Perangkat lunak modern berjalan pada sistem yang saling bergantung satu sama lain,
-    dimana satu aplikasi menggunakan puluhan \textit{library} dan berkomunikasi dengan
+    dimana satu aplikasi menggunakan puluhan \emph{library} dan berkomunikasi dengan
     beberapa komponen lainnya.
     Hal ini dapat menimbulkan dua masalah.
     Pertama, aplikasi dapat memiliki celah dari salah satu komponen yang ia gunakan.
@@ -139,9 +139,9 @@ Dalam melakukan pengujian keamanan, ada beberapa tantangan yang mungkin dihadapi
 
     Masukan dari pengguna adalah salah satu sumber celah yang paling umum dan paling mudah dieksploitasi.
     Beberapa contoh yang umum digunakan adalah masukan yang panjang, karakter spesial, dan nilai-nilai khusus.
-    Salah satu contoh celah yang terjadi dari masukan pengguna ini adalah \textit{buffer overflow},
+    Salah satu contoh celah yang terjadi dari masukan pengguna ini adalah \emph{buffer overflow},
     yang memungkinkan penyerang menyisipkan kode pada masukan yang sangat panjang,
-    hingga tidak bisa ditampung \textit{buffer} dan dijalankan oleh komputer. 
+    hingga tidak bisa ditampung \emph{buffer} dan dijalankan oleh komputer. 
 
     \item Ketidakamanan desain
 
@@ -160,7 +160,7 @@ Dalam melakukan pengujian keamanan, ada beberapa tantangan yang mungkin dihadapi
 
 \end{enumerate}
 
-\section{Tantangan Dalam Pengujian Aplikasi \textit{Web}}
+\section{Tantangan Dalam Pengujian Aplikasi \emph{Web}}
 
 Perangkat lunak berbasis web adalah salah satu jenis perangkat lunak paling umum pada saat ini.
 Perangkat lunak ini menjadi tulang belakang dari komunikasi di dunia dan banyak hal-hal
@@ -174,16 +174,16 @@ Beberapa masalah umum yang ada pada perangkat lunak berbasis web adalah:
     \item Autentikasi: memastikan pengguna yang meminta data adalah benar pengguna tersebut
     \item Autorisasi: memastikan pengguna boleh melakukan hal yang dilakukannya.
 
-    \item \textit{Cross-site scripting}:
+    \item \emph{Cross-site scripting}:
     celah dimana penyerang dapat memasukkan kode jahat ke halaman web yang dijalankan di browser pengguna lain.
 
-    \item \textit{SQL injection}:
-    celah dimana disisipkannya kode jahat di dalam perintah SQL yang kemudian dijalankan oleh \textit{database}.
+    \item \emph{SQL injection}:
+    celah dimana disisipkannya kode jahat di dalam perintah SQL yang kemudian dijalankan oleh \emph{database}.
 
-    \item \textit{Cross-site request forgery}:
-    celah dimana sebuah \textit{website} dapat dieksploitasi untuk mengirimkan perintah palsu dari sebuah user.
+    \item \emph{Cross-site request forgery}:
+    celah dimana sebuah \emph{website} dapat dieksploitasi untuk mengirimkan perintah palsu dari sebuah user.
 
-    \item \textit{Malicious file execution}:
+    \item \emph{Malicious file execution}:
     aplikasi web menjalankan kode jahat yang berada di sebuah file bebas
 \end{enumerate}
 
@@ -191,8 +191,8 @@ Beberapa tantangan dalam melakukan pengujian keamanan terhadap aplikasi web adal
 \begin{enumerate}
     \item Butuhnya pengembangan kakas yang dapat mengotomatisasi pengujian aplikasi web.
     
-    \item Pengembangan aplikasi web yang dinamis dan \textit{Rich Content} seperti \textit{Single-Page Application}
-    mempersulit \textit{crawling} halaman web sehingga bisa saja ada state halaman yang
+    \item Pengembangan aplikasi web yang dinamis dan \emph{Rich Content} seperti \emph{Single-Page Application}
+    mempersulit \emph{crawling} halaman web sehingga bisa saja ada state halaman yang
     tidak bisa dicapai oleh kakas pengujian.
 
     \item Bahasa pemrograman yang digunakan pada implementasi tidak memiliki fitur yang
@@ -200,9 +200,9 @@ Beberapa tantangan dalam melakukan pengujian keamanan terhadap aplikasi web adal
     dan integritas data pengguna.
 \end{enumerate}
 
-\section{\textit{Domain-Specific Language}}
+\section{\emph{Domain-Specific Language}}
 
-\textit{Domain-Specific Language} (DSL) adalah bahasa pemrograman berkemampuan terbatas yang
+\emph{Domain-Specific Language} (DSL) adalah bahasa pemrograman berkemampuan terbatas yang
 berfokus pada suatu domain tertentu.
 
 Dari definisi diatas, ada empat poin penting:
@@ -215,7 +215,7 @@ Dari definisi diatas, ada empat poin penting:
     bahasa yang dimana kemampuannya tidak hanya muncul dari masing-masing ekspresinya,
     tetapi juga saat ekspresi-ekspresi tersebut digabungkan.
 
-    \item Bahasa pemrograman umum (\textit{General Purpose Programming Language}) memiliki banyak fitur.
+    \item Bahasa pemrograman umum (\emph{General Purpose Programming Language}) memiliki banyak fitur.
     Hal ini membuatnya sangat berguna, namun menjadi susah untuk dipelajari dan digunakan.
     DSL dengan kemampuannya yang terbatas hanya memiliki fitur-fitur minimum yang dibutuhkan untuk domainnya.
 
@@ -226,14 +226,14 @@ Dari definisi diatas, ada empat poin penting:
 DSL terbagi menjadi dua kategori, yaitu:
 
 \begin{enumerate}
-    \item \textit{External DSL}
+    \item \emph{External DSL}
 
     DSL eksternal adalah bahasa yang terpisah dari bahasa utama aplikasi.
     Biasanya, DSL eksternal memiliki syntaxnya sendiri, namun kadang dapat menggunakan
     bahasa lain seperti XML. Sebuah kode pada DSL eksternal biasanya akan diproses oleh
     aplikasi utama. Beberapa contoh DSL eksternal adalah Regex, SQL, awk, sed.
 
-    \item \textit{Internal DSL}
+    \item \emph{Internal DSL}
     
     DSL internal adalah sebuah cara tertentu untuk menggunakan sebuah bahasa.
     Sebuah DSL internal ditulis dalam bahasa yang sama dengan bahasa utama aplikasi,
@@ -259,15 +259,15 @@ berbagai aspek sistemnya. Beberapa kelebihan menggunakan DSL adalah:
 
     DSL dapat didesain sedemikian mungkin untuk merepresentasikan dan mengabstraksikan
     suatu domain tertentu, sehingga
-    bisa digunakan bukan hanya oleh \textit{programmer} saja, tetapi juga oleh ahli domain tersebut.
+    bisa digunakan bukan hanya oleh \emph{programmer} saja, tetapi juga oleh ahli domain tersebut.
 \end{enumerate}
 
 Sementara kekurangan menggunakan DSL adalah:
 
 \begin{enumerate}
-    \item \textit{Language cacophony}
+    \item \emph{Language cacophony}
     
-    Beberapa komplain yang sering didengar saat menggunakan DSL adalah \textit{language cacophony},
+    Beberapa komplain yang sering didengar saat menggunakan DSL adalah \emph{language cacophony},
     dimana bahasa biasanya sulit untuk dipelajari, sehingga menggunakan banyak bahasa akan lebih
     sulit dari pada menggunakan satu bahasa. Kebutuhuan untuk mempelajari banyak bahasa menyebabkan
     sulit untuk mengerjakan proyek dan menambah orang baru kedalam proyek.
@@ -284,3 +284,5 @@ Sementara kekurangan menggunakan DSL adalah:
     juga dapat menambah biaya.
 
 \end{enumerate}
+
+% TODO: BDD Testing and Gherkin

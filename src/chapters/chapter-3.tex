@@ -1,11 +1,40 @@
 \chapter{Analisis dan Perancangan}
 
-Pada bab ini diuraikan analisis yang telah dilakukan untuk mendapatkan rancangan solusi.
-Pada bagian analisis diuraikan analisis permasalahan, batasan masalah, dan analisis kebutuhan.
-Kemudian bab ini dilanjutkan dengan rancangan solusi yang berupa ???.
+\section{Perbedaan Pengujian Fungsionalitas dan \emph{Business Logic Error}}
 
-\section{Analisis Masalah}
+Pengujian untuk fungsionalitas dan untuk keamanan memiliki perbedaan. 
+Pada pengujian fungsionalitas, yang dibutuhkan hanyalah untuk menguji apakah
+fungsionalitas telah terimplementasikan dengan benar.
+Namun pada pengembangan aplikasi terkadang secara tidak sengaja ada fungsionalitas
+tambahan yang bisa menjadi celah keamanan yang sering terlupakan untuk diuji.
+Salah satu macam dari celah ini adalah \emph{business logic error}.
 
-\section{Solusi Umum}
+Pengujian untuk \emph{business logic error} dilakukan dengan memperhatikan tiap-tiap fungsionalitas
+yang diimplementasikan dalam program dan menguji kemungkinan variasi keadaan pada
+fungsionalitas tersebut. Salah satu contohnya adalah pada aplikasi \emph{e-commerce} yang memiliki
+fitur keranjang. Pada fungsionalitas "bisa menambahkan barang ke dalam keranjang", dapat memiliki
+prasyarat bahwa user hanya bisa memasukkan barang ke dalam keranjang jika sudah login, dan skenario
+ini lah yang biasa diuji pada pengujian fungsionalitasnya. Namun untuk \emph{business logic error} 
+terjadi saat asumsi-asumsi normal itu tidak berlaku seperti, bagaimana jika user belum login,
+bagaimana jika user memasukkan -1 barang, dan lain-lain.
 
-\section{Rancangan Solusi}
+Salah satu cara pengujian fungsional dapat diintegrasikan ke dalam siklus pengembangan aplikasi
+adalah dengan menggunakan kerangka pengujian BDD atau TDD. Kerangka ini mengharuskan \emph{programmer}
+untuk menulis spesifikasi dan kasus uji sebelum mulai menulis kode.
+Salah satu dari kerangka ini adalah Cucumber BDD, beserta bahasa yang ia gunakan untuk mendeskripsikan
+kasus uji, yaitu Gherkin.
+
+Gherkin adalah bahasa yang digunakan untuk mendeskripsikan spesifikasi fungsionalitas
+aplikasi. Spesifikasi ini ditulis per-skenario, dimana tiap-tiap skenario dibagi menjadi
+langkah-langkah simpel yang menjelaskan skenario tersebut. Dari Gherkin ini kemudian
+digunakan oleh Cucumber untuk menjalankan pengujian.
+
+Gherkin jika digunakan dengan baik dapat membantu implementasi dan
+pengujian fungsionalitas aplikasi. Tetapi, Gherkin masih belum bisa digunakan untuk melakukan
+pengujian \emph{business logic error} dengan mudah. Namun ada dua hal yang dapat ditambahkan
+ke dalam Gherkin untuk mempermudah pengujian \emph{business logic error}, yaitu kemampuan untuk
+mengecek kegagalan, dan kemampuan untuk mendefinisikan banyak state dengan mudah.
+
+\section{Failure}
+
+\section{State}

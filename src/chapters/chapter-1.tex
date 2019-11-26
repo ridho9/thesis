@@ -2,25 +2,26 @@
 
 \section{Latar Belakang}
 
-Aplikasi web umum pada saat ini, seperti \textit{e-commerce}, umumnya berfokus pada mekanisme keamanan
-seperti \textit{secure transfer protocol}, \textit{paramerter sanitization}, dan menggunakan bermacam skema
+Aplikasi web umum pada saat ini, seperti \emph{e-commerce}, umumnya berfokus pada mekanisme keamanan
+seperti \emph{secure transfer protocol}, \emph{paramerter sanitization}, dan menggunakan bermacam skema
 kriptografi. Para pengembang aplikasi tersebut lalu beranggapan dengan memberikan fitur keamanan seperti yang
 disebutkan sudah cukup, padahal masih banyak kelemahan keamanan aplikasi terjadi pada
 tingkat logika bisnis.
 
-\textit{Business Logic Error} (CWE-840) adalah salah satu kelemahan keamanan program yang disebabkan oleh kesalahan pada
+\emph{Business Logic Error} (CWE-840) adalah salah satu kelemahan 
+keamanan program yang disebabkan oleh kesalahan pada
 tingkat implementasi logika bisnis.
-Pengujian kelemahan ini tidak dapat diautomasi oleh kakas otomatis seperti \textit{scanner}
+Pengujian kelemahan ini tidak dapat diautomasi oleh kakas otomatis seperti \emph{scanner}
 karena bergantung kepada domain dan bisnis aplikasi.
 Kelemahan ini juga biasanya terlupakan atau tidak dilakukan karena pada siklus pengembangan aplikasi biasa,
 yang diuji hanyalah kebutuhan fungsionalitas aplikasi apakah telah
 terimplementasi dengan baik, sementara kelemahan-kelemahan yang mungkin ada tidak teruji.
 
 Pada saat ini, pengujian keamanan biasanya dilakukan setelah pengembangan aplikasi selesai, dan pengujian
-dilakukan dengan cara \textit{blackbox} yaitu aplikasi yang telah selesai diberikan bermacam-macam masukan.
-Tetapi pengujian dengan cara \textit{blackbox} masih memiliki kelemahan dimana walaupun mungkin bisa menemukan
-kelemahan keamanan yang sudah umum diketahui seperti \textit{injection}, cara ini masih jarang menemukan
-kelemahan keamanan yang terjadi karena \textit{business logic error} yang biasanya membutuhkan
+dilakukan dengan cara \emph{blackbox} yaitu aplikasi yang telah selesai diberikan bermacam-macam masukan.
+Tetapi pengujian dengan cara \emph{blackbox} masih memiliki kelemahan dimana walaupun mungkin bisa menemukan
+kelemahan keamanan yang sudah umum diketahui seperti \emph{injection}, cara ini masih jarang menemukan
+kelemahan keamanan yang terjadi karena \emph{business logic error} yang biasanya membutuhkan
 langkah-langkah yang sangat spesifik dan berbeda tiap aplikasinya.
 %Ridho: Please define what is the business logic error... and how it is related to security which one is your main concern
 
@@ -37,18 +38,18 @@ diterima oleh aplikasi.
 Dari latar belakang tersebut, penulis kemudian merumuskan masalah yaitu:
 
 \begin{enumerate}
-    \item Kenapa \textit{business logic error} terjadi?
-    \item Kenapa pengujian sulit dilakukan dengan baik walaupun telah menggunakan kerangka pengujian?
     \item Apa yang menyebabkan pengujian keamanan berbeda dengan pengujian fungsionalitas?
-    \item Bagaimana cara mengintegrasikan pengujian keamanan pada tahap pengembangan aplikasi?
-    \item Bagaimana cara agar kakas pengujian yang ada pada saat ini dapat mengetahui input-input lain yang ada?
-    \item Bagaimana cara membuat keamanan mudah diuji pada tahap pengembangan?%dukungan kakas seperti apa yang ....
+    \item Kenapa pengujian sulit dilakukan dengan baik walaupun telah menggunakan kerangka pengujian?
+    \item Apa saja hal yang dibutuhkan pada kerangka pengujian agar dapat mendukung pengujian keamanan?
+    % \item Bagaimana cara mengintegrasikan pengujian keamanan pada tahap pengembangan aplikasi?
+    % \item Bagaimana cara agar kakas pengujian yang ada pada saat ini dapat mengetahui input-input lain yang ada?
+    % \item Bagaimana cara membuat keamanan mudah diuji pada tahap pengembangan?%dukungan kakas seperti apa yang ....
 \end{enumerate}
 
 \section{Tujuan}
 
 Subbab sebelum ini telah menjelaskan latar belakang dan rumusan masalah tugas akhir ini.
-Karena itu, tujuan dari tugas akhir ini adalah membangun kakas pengujian aplikasi berbasis web
+Karena itu, tujuan dari tugas akhir ini adalah membangun kakas pengujian aplikasi
 dengan kerangka BDD atau TDD, dimana kakas dapat menentukan masukan-masukan lain 
 
 \section{Batasan Masalah}
@@ -56,8 +57,9 @@ dengan kerangka BDD atau TDD, dimana kakas dapat menentukan masukan-masukan lain
 Untuk mencapai tujuan yang telah dijelaskan pada subbab sebelumnya, kakas pengujian difokuskan pada hal berikut:
 
 \begin{enumerate}
-    \item Untuk aplikasi berbasis web pada bagian \textit{backend}
-    \item Untuk menguji ancaman keamanan yang disebabkan oleh \textit{business logic error}
+    \item Untuk aplikasi berbasis web pada bagian \emph{backend}
+    \item Untuk menguji ancaman keamanan yang disebabkan oleh \emph{business logic error}
+    \item Kerangka pengujian yang digunakan sebagai acuan adalah kerangka pengujian BDD Gherkin
 \end{enumerate}
 
 \section{Metodologi}
@@ -67,7 +69,7 @@ Metodologi yang digunakan pada pengerjaan tugas akhir ini antara lain:
 \begin{enumerate}
     \item Eksplorasi kebutuhan
 
-    Pada langkah ini dilakukan eksplorasi kekurangan \textit{framework} BDD yang ada pada saat ini
+    Pada langkah ini dilakukan eksplorasi kekurangan \emph{framework} BDD yang ada pada saat ini
     (seperti Gherkin), dan fitur apa saja yang dibutuhkan.
 
     \item Desain 
