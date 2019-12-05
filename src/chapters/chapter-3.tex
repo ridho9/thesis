@@ -33,8 +33,28 @@ Gherkin jika digunakan dengan baik dapat membantu implementasi dan
 pengujian fungsionalitas aplikasi. Tetapi, Gherkin masih belum bisa digunakan untuk melakukan
 pengujian \emph{business logic error} dengan mudah. Namun ada dua hal yang dapat ditambahkan
 ke dalam Gherkin untuk mempermudah pengujian \emph{business logic error}, yaitu kemampuan untuk
-mengecek kegagalan, dan kemampuan untuk mendefinisikan banyak state dengan mudah.
+mengecek kegagalan, dan kemampuan untuk mendefinisikan banyak state/value dengan mudah.
 
 \section{Failure}
 
-\section{State}
+Kekurangan pertama Gherkin yang akan dibahas adalah ketidakmampuan untuk
+menyatakan suatu skenario harus gagal.
+Hal ini terjadi karena desain Gherkin yang bertujuan untuk menguji fungsionalitas saja,
+sehingga setiap step Gherkin dianggap benar jika tidak ada \emph{error}/\emph{exception}
+dari fungsi implementasi stepnya.
+Namun untuk pengujian \emph{business logic error}, dibutuhkan kemampuan untuk menyatakan
+bahwa suatu skenario atau stepnya harus gagal, dan pengujian dianggap tidak lolos
+jika skenario tersebut tidak gagal (dalam bentuk \emph{error/exception}).
+
+Dengan kemampuan untuk mendefinisikan bahwa suatu skenario harus gagal,
+\emph{programmer} dimudahkan untuk membuat lebih banyak test case
+yang menguji \emph{business logic error}.
+
+\section{State Domain}
+
+Pada saat ini, Gherkin memiliki fitur \emph{scenario outline}
+untuk mendefinisikan sebuah \emph{template} skenario,
+didalamnya dapat digunakan \emph{placeholder} variabel yang dapat didefinisikan
+dalam sebuah tabel.
+Menggunakan \emph{scenario outline} memungkinkan \emph{programmer} untuk
+mendefinisikan banyak skenario yang mirip dengan nilai berbeda dengan mudah.
