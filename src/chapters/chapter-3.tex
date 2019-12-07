@@ -1,60 +1,91 @@
 \chapter{Analisis dan Perancangan}
 
-\section{Perbedaan Pengujian Fungsionalitas dan \emph{Business Logic Error}}
+\section{Analisis \emph{Business Logic Error}}
 
-Pengujian untuk fungsionalitas dan untuk keamanan memiliki perbedaan. 
-Pada pengujian fungsionalitas, yang dibutuhkan hanyalah untuk menguji apakah
-fungsionalitas telah terimplementasikan dengan benar.
-Namun pada pengembangan aplikasi terkadang secara tidak sengaja ada fungsionalitas
-tambahan yang bisa menjadi celah keamanan yang sering terlupakan untuk diuji.
-Salah satu macam dari celah ini adalah \emph{business logic error}.
+\subsection{Analisis}
 
-Pengujian untuk \emph{business logic error} dilakukan dengan memperhatikan tiap-tiap fungsionalitas
-yang diimplementasikan dalam program dan menguji kemungkinan variasi keadaan pada
-fungsionalitas tersebut. Salah satu contohnya adalah pada aplikasi \emph{e-commerce} yang memiliki
-fitur keranjang. Pada fungsionalitas "bisa menambahkan barang ke dalam keranjang", dapat memiliki
-prasyarat bahwa user hanya bisa memasukkan barang ke dalam keranjang jika sudah login, dan skenario
-ini lah yang biasa diuji pada pengujian fungsionalitasnya. Namun untuk \emph{business logic error} 
-terjadi saat asumsi-asumsi normal itu tidak berlaku seperti, bagaimana jika user belum login,
-bagaimana jika user memasukkan -1 barang, dan lain-lain.
+% \section{Perbedaan Pengujian Fungsionalitas dan \emph{Business Logic Error}}
 
-Salah satu cara pengujian fungsional dapat diintegrasikan ke dalam siklus pengembangan aplikasi
-adalah dengan menggunakan kerangka pengujian BDD atau TDD. Kerangka ini mengharuskan \emph{programmer}
-untuk menulis spesifikasi dan kasus uji sebelum mulai menulis kode.
-Salah satu dari kerangka ini adalah Cucumber BDD, beserta bahasa yang ia gunakan untuk mendeskripsikan
-kasus uji, yaitu Gherkin.
+% Pengujian untuk fungsionalitas dan untuk keamanan memiliki perbedaan. 
+% Pada pengujian fungsionalitas, yang dibutuhkan hanyalah untuk menguji apakah
+% fungsionalitas telah terimplementasikan dengan benar.
+% Namun pada pengembangan aplikasi terkadang secara tidak sengaja ada fungsionalitas
+% tambahan yang bisa menjadi celah keamanan yang sering terlupakan untuk diuji.
+% Salah satu macam dari celah ini adalah \emph{business logic error}.
 
-Gherkin adalah bahasa yang digunakan untuk mendeskripsikan spesifikasi fungsionalitas
-aplikasi. Spesifikasi ini ditulis per-skenario, dimana tiap-tiap skenario dibagi menjadi
-langkah-langkah simpel yang menjelaskan skenario tersebut. Dari Gherkin ini kemudian
-digunakan oleh Cucumber untuk menjalankan pengujian.
+% Pengujian untuk \emph{business logic error} dilakukan dengan memperhatikan tiap-tiap fungsionalitas
+% yang diimplementasikan dalam program dan menguji kemungkinan variasi keadaan pada
+% fungsionalitas tersebut. Salah satu contohnya adalah pada aplikasi \emph{e-commerce} yang memiliki
+% fitur keranjang. Pada fungsionalitas "bisa menambahkan barang ke dalam keranjang", dapat memiliki
+% prasyarat bahwa user hanya bisa memasukkan barang ke dalam keranjang jika sudah login, dan skenario
+% ini lah yang biasa diuji pada pengujian fungsionalitasnya. Namun untuk \emph{business logic error} 
+% terjadi saat asumsi-asumsi normal itu tidak berlaku seperti, bagaimana jika user belum login,
+% bagaimana jika user memasukkan -1 barang, dan lain-lain.
 
-Gherkin jika digunakan dengan baik dapat membantu implementasi dan
-pengujian fungsionalitas aplikasi. Tetapi, Gherkin masih belum bisa digunakan untuk melakukan
-pengujian \emph{business logic error} dengan mudah. Namun ada dua hal yang dapat ditambahkan
-ke dalam Gherkin untuk mempermudah pengujian \emph{business logic error}, yaitu kemampuan untuk
-mengecek kegagalan, dan kemampuan untuk mendefinisikan banyak state/value dengan mudah.
+% Salah satu cara pengujian fungsional dapat diintegrasikan ke dalam siklus pengembangan aplikasi
+% adalah dengan menggunakan kerangka pengujian BDD atau TDD. Kerangka ini mengharuskan \emph{programmer}
+% untuk menulis spesifikasi dan kasus uji sebelum mulai menulis kode.
+% Salah satu dari kerangka ini adalah Cucumber BDD, beserta bahasa yang ia gunakan untuk mendeskripsikan
+% kasus uji, yaitu Gherkin.
 
-\section{Failure}
+% Gherkin adalah bahasa yang digunakan untuk mendeskripsikan spesifikasi fungsionalitas
+% aplikasi. Spesifikasi ini ditulis per-skenario, dimana tiap-tiap skenario dibagi menjadi
+% langkah-langkah simpel yang menjelaskan skenario tersebut. Dari Gherkin ini kemudian
+% digunakan oleh Cucumber untuk menjalankan pengujian.
 
-Kekurangan pertama Gherkin yang akan dibahas adalah ketidakmampuan untuk
-menyatakan suatu skenario harus gagal.
-Hal ini terjadi karena desain Gherkin yang bertujuan untuk menguji fungsionalitas saja,
-sehingga setiap step Gherkin dianggap benar jika tidak ada \emph{error}/\emph{exception}
-dari fungsi implementasi stepnya.
-Namun untuk pengujian \emph{business logic error}, dibutuhkan kemampuan untuk menyatakan
-bahwa suatu skenario atau stepnya harus gagal, dan pengujian dianggap tidak lolos
-jika skenario tersebut tidak gagal (dalam bentuk \emph{error/exception}).
+% Gherkin jika digunakan dengan baik dapat membantu implementasi dan
+% pengujian fungsionalitas aplikasi. Tetapi, Gherkin masih belum bisa digunakan untuk melakukan
+% pengujian \emph{business logic error} dengan mudah.
+% Dalam siklus pengembangan perangkat lunak, \emph{programmer} biasanya memiliki
+% banyak deadline yang harus dikejar, sehingga pengembangan hanya seperti ``kejar tayang'',
+% yang menyebabkan \emph{programmer} hanya memperhatikan sisi fungsionalitas dari perangkat lunak.
+% Adanya kesulitan dalam melakukan pengujian keamanan dapat membuat
+% \emph{programmer} semakin enggan melakukannya, walaupun mungkin pada saat
+% melakukan rancangan solusi dan implementasi \emph{programmer} juga memikirkan kemungkinan
+% kesalahan atau celah keamanan yang mungin terjadi.
+% Jika kesulitan-kesulitan tersebut dapat dihilangkan maka \emph{programmer} akan
+% dapat langsung menuliskan kasus-kasus pengujian keamanan.
+% Namun ada dua hal yang dapat ditambahkan
+% ke dalam Gherkin untuk mempermudah pengujian \emph{business logic error}, yaitu kemampuan untuk
+% mengecek kegagalan, dan kemampuan untuk mendefinisikan banyak state/value dengan mudah.
 
-Dengan kemampuan untuk mendefinisikan bahwa suatu skenario harus gagal,
-\emph{programmer} dimudahkan untuk membuat lebih banyak test case
-yang menguji \emph{business logic error}.
+% \section{Failure}
 
-\section{State Domain}
+% Kekurangan pertama Gherkin yang akan dibahas adalah ketidakmampuan untuk
+% menyatakan suatu skenario harus gagal.
+% Hal ini terjadi karena desain Gherkin yang bertujuan untuk menguji fungsionalitas saja,
+% sehingga setiap step Gherkin dianggap benar jika tidak ada \emph{error}/\emph{exception}
+% dari fungsi implementasi stepnya.
+% Namun untuk pengujian \emph{business logic error}, dibutuhkan kemampuan untuk menyatakan
+% bahwa suatu skenario atau stepnya harus gagal, dan pengujian dianggap tidak lolos
+% jika skenario tersebut tidak gagal (dalam bentuk \emph{error/exception}).
 
-Pada saat ini, Gherkin memiliki fitur \emph{scenario outline}
-untuk mendefinisikan sebuah \emph{template} skenario,
-didalamnya dapat digunakan \emph{placeholder} variabel yang dapat didefinisikan
-dalam sebuah tabel.
-Menggunakan \emph{scenario outline} memungkinkan \emph{programmer} untuk
-mendefinisikan banyak skenario yang mirip dengan nilai berbeda dengan mudah.
+% Dengan kemampuan untuk mendefinisikan bahwa suatu skenario harus gagal,
+% \emph{programmer} dimudahkan untuk membuat lebih banyak test case
+% yang menguji keamanan \emph{business logic error}.
+% Pada saat ini pengujian kasus yang harus gagal bisa dilakukan
+% pada Gherkin, namun dengan mendefinisikan suatu \emph{step} sebagai negatif.
+% Hal ini dapat menyebabkan banyak duplikasi kode-kode yang pada dasarnya
+% melakukan hal yang sama.
+
+% \section{Variable Domain}
+
+% Pada saat ini, Gherkin memiliki fitur \emph{scenario outline}
+% untuk mendefinisikan sebuah \emph{template} skenario,
+% didalamnya dapat digunakan \emph{placeholder} variabel yang dapat didefinisikan
+% dalam sebuah tabel.
+% Penggunakan \emph{scenario outline} memungkinkan \emph{programmer} untuk
+% mendefinisikan banyak skenario yang mirip dengan variasi nilai dengan mudah.
+
+% Fitur ini dapat dikembangkan dengan menambahkan fungsionalitas dimana 
+% variabel-variabel yang digunakan dapat diberikan tipe data,
+% sehingga memiliki domain yang jelas. Tipe data dapat berupa \emph{enum string},
+% \emph{integer}, \emph{positive integer}, dan lain lain.
+% Fitur ini digabungkan dengan kemampuan untuk menyatakan
+% skenario yang harus gagal dapat mempermudah \emph{programmer}
+% dalam mendeskripsikan kasus-kasus pengujian keamanan bersamaan dengan
+% menulis kasus pengujian fungsionalitas.
+
+% =======================================================================================================
+% =======================================================================================================
+% =======================================================================================================

@@ -34,6 +34,7 @@
 \usepackage{hyperref}       % Package untuk link di daftar isi.
 \usepackage{titlesec}       % Package Format judul
 \usepackage{parskip}
+\usepackage{listings}
 
 % Line satu setengah spasi
 \renewcommand{\baselinestretch}{1.5}
@@ -55,3 +56,16 @@
 % Counter untuk figure dan table.
 \counterwithin{figure}{section}
 \counterwithin{table}{section}
+
+\lstdefinelanguage{Gherkin}{
+  keywords={When, Then, Given, And},
+  ndkeywords={Feature, Scenario, Examples},
+  sensitive=false,
+  comment=[l]{\#},
+  morestring=[b]',
+  morestring=[b]"
+}
+
+\lstset{
+  showstringspaces=false
+}

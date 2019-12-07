@@ -2,7 +2,7 @@
 
 Pada bab ini berisi hasil tinjauan pustaka yang menjadi dasar analisa dan perancangan pada BAB III.
 Bab ini secara garis besar berisi keamanan perangkat lunak dan pengujiannya,
-tantangan pada pengujian perangkat lunak berbasis web, \emph{Domain-Specific Language}, serta BDD dan TDD.
+tantangan pada pengujian perangkat lunak berbasis web, \emph{Domain-Specific Language}, serta BDD dan Gherkin.
 
 % \begin{enumerate}
 %     \item menunjukkan kepada pembaca adanya gap seperti pada rumusan masalah yang memang belum terselesaikan,
@@ -24,8 +24,10 @@ Penggunaan komputer yang semakin hari semakin luas membuat perangkat lunak yang 
 yang berarti juga bertambahnya masalah keamanan yang ada pada perangkat lunak tersebut.
 Hal ini menyebabkan keamanan perangkat lunak menjadi hal yang semakin penting.
 
-Keamanan perangkat lunak (\emph{software security}) adalah kriteria dimana perangkat lunak tetap bekerja dengan benar
-walaupun diserang dengan niat jahat. \emph{Security} berbeda dengan \emph{safety} dimana security fokus terhadap kebenaran
+Keamanan perangkat lunak (\emph{software security}) adalah kriteria dimana perangkat lunak tetap bekerja
+dengan benar walaupun diserang dengan niat jahat.
+\emph{Security} berbeda dengan \emph{safety}
+dimana security fokus terhadap kebenaran
 perangkat lunak saat sedang dalam serangan yang dilakukan dengan sengaja, sedangkan \emph{safety} fokus terhadap
 kebenaran perangkat lunak saat terjadi kegagalan baik pada tingkat perangkat lunak maupun perangkat keras.
 
@@ -47,13 +49,15 @@ Namun, perlindungan perangkat lunak seharusnya mengidentifikasi dan mengatasi ma
 dalam perangkat lunak tersebut, sebagai contoh, walaupun ada baiknya mencoba menghadapi serangan
 \emph{buffer overflow} dengan membaca \emph{traffic} yang masuk ke dalam aplikasi,
 cara yang lebih bagus tentu saja memperbaiki perangkat lunak dari kodenya sehingga
-tidak ada kemungkinan \emph{buffer overflow}.
+tidak ada kemungkinan \emph{buffer overflow} (\cite{grawsec}).
+
+
 
 \section{Pengujian Keamanan Perangkat Lunak}
 
 Celah-celah keamanan yang ada pada perangkat lunak selalu menjadi risiko keamanan (\emph{security risk}).
 Mengelola risiko keamanan ini menjadi seminimal mungkin adalah salah satu tugas praktisi keamanan perangkat lunak.
-Dalam mengelola risiko ini dilakukan beberapa hal, diantaranya:
+Dalam mengelola risiko ini dilakukan beberapa hal (\cite{grawsectest}), diantaranya:
 
 \begin{itemize}
     \item Membuat kasus penyalahgunaan
@@ -69,7 +73,7 @@ Sistem keamanan bukanlah keamanan sistem. Walaupun fitur keamanan seperti \emph{
 keamanan itu sendiri adalah sifat dari sistem secara keseluruhan, bukan hanya dari mekanisme
 dan fitur keamanannya. Sebuah \emph{buffer overflow} adalah masalah keamanan, baik itu terletak di dalam
 fitur keamanan ataupun di dalam sebuah tampilan non-kritikal.
-Karena itu dalam menguji keamanan perangkat lunak memiliki dua macam pendekatan:
+Karena itu dalam menguji keamanan perangkat lunak memiliki dua macam pendekatan (\cite{grawsec}):
 
 \begin{enumerate}
     \item Menguji mekanisme keamanan untuk memastikan bahwa fungsionalitasnya telah diterapkan dengan baik
@@ -90,7 +94,8 @@ Namun pada kasus kedua, staff QA biasa akan kesulitan melaksanakan pengujian ber
 karena membutuhkan bidang keahlian tertentu.
 Pertama, penguji harus dapat berpikir seperti penyerang sistem,
 kedua, pengujian keamanan kadang tidak memberikan hasil yang berhubungan langsung dengan
-celah keamanan yang ada, sehingga butuh keahlian untuk menginterpretasi dan memahami hasil pengujian.
+celah keamanan yang ada, sehingga butuh keahlian untuk
+menginterpretasi dan memahami hasil pengujian (\cite{grawsectest}).
 
 Kedua, dalam memilih metode pengujian, ada dua metode yang dapat dilakukan.
 Pertama dengan cara \emph{White-box} yang dilakukan dengan menganalisis dan memahami
@@ -104,7 +109,7 @@ Kedua cara pengujian dapat mengungkapkan adanya risiko keamanan dan kemungkinan 
 Masalah yang biasa terjadi dengan pengujian keamanan adalah terkadang organisasi atau perusahaan
 tidak memiliki waktu dan sumberdaya untuk melakukan pengujian yang cukup.
 
-Dalam melakukan pengujian keamanan, ada beberapa tantangan yang mungkin dihadapi:
+Dalam melakukan pengujian keamanan, ada beberapa tantangan yang mungkin dihadapi (\cite{thompsonsectest}):
 \begin{enumerate}
     \item Adanya efek samping
     
@@ -158,7 +163,7 @@ Dalam melakukan pengujian keamanan, ada beberapa tantangan yang mungkin dihadapi
     mempertimbangkan berbagai macam aspek keamanan,
     celah tetap dapat terjadi karena implementasi perangkat lunak yang tidak sempurna.
 
-\end{enumerate}
+\end{enumerate} 
 
 \section{Tantangan Dalam Pengujian Aplikasi \emph{Web}}
 
@@ -167,7 +172,8 @@ Perangkat lunak ini menjadi tulang belakang dari komunikasi di dunia dan banyak 
 yang membutuhkan keamanan tinggi menggunakan perangkat lunak berbasis web seperti perbankan.
 Hal seperti menyebabkan perangkat lunak berbasis web menjadi salah satu target yang empuk untuk
 dimanfaatkan celah dan kekurangannya. Sifat dari aplikasi web yang dinamis, kompleks, dan
-selalu berubah-ubah membuat semakin mudahnya muncul celah baru pada aplikasi web jika tidak diperhatikan.
+selalu berubah-ubah membuat semakin mudahnya muncul celah baru
+pada aplikasi web jika tidak diperhatikan (\cite{websecchal}).
 
 Beberapa masalah umum yang ada pada perangkat lunak berbasis web adalah:
 \begin{enumerate}
@@ -200,10 +206,34 @@ Beberapa tantangan dalam melakukan pengujian keamanan terhadap aplikasi web adal
     dan integritas data pengguna.
 \end{enumerate}
 
+\section{\emph{Business Logic Error}}
+
+\emph{Business Logic Error}(BLE) adalah kategori celah keamanan berasal dari kesalahan
+yang biasanya memudahkan penyerang untuk memanipulasi logika bisnis aplikasi (\cite{ble_cwe}).
+BLE biasanya sulit untuk ditemukan secara otomatis, karena mereka biasanya melibatkan
+penggunaan fungsionalitas aplikasi dengan sah. Namun, banyak BLE dapat memiliki
+pola-pola yang mirip dengan kelemahan implementasi dan detail yang sudah banyak dimengerti.
+
+Klasifikasi dari BLE masih kurang dipelajari, walaupun eksploitasi dari BLE
+sering terjadi di sistem nyata. Masih banyak perdebatan apakah BLE merepresentasikan
+sebuah konsep baru, atau variasi dari konsep yang sudah dipahami.
+
+Beberapa kategori dari BLE adalah:
+
+\begin{enumerate}
+    \item Melewati authentikasi dengan alur berbeda (CWE-288)
+    \item Incorrect Behavior Order: Early Amplification (CWE-408)
+    \item Melewati authorisasi dengan parameter dari user (CWE-408)
+    \item Mekanisme pengembalian password yang lemah (CWE-640)
+\end{enumerate}
+
+Banyak BLE berorientasi terhadap proses bisnis, alur aplikasi, dan urutan perilaku,
+yang dimana kelemahan-kelemahannya tidak banyak dipelajari di CWE.
+
 \section{\emph{Domain-Specific Language}}
 
 \emph{Domain-Specific Language} (DSL) adalah bahasa pemrograman berkemampuan terbatas yang
-berfokus pada suatu domain tertentu.
+berfokus pada suatu domain tertentu (\cite{fowler_dsl}).
 
 Dari definisi diatas, ada empat poin penting:
 
@@ -285,4 +315,176 @@ Sementara kekurangan menggunakan DSL adalah:
 
 \end{enumerate}
 
-% TODO: BDD Testing and Gherkin
+
+
+\section{\emph{Behavior-Driven Development}}
+
+\emph{Behavior-Driven Development}(BDD) adalah kerangka pengembangan dan pengujian perangkat lunak
+yang mendorong percakapan dan contoh konkret untuk memberikan pemahaman bersama atas tingkah laku
+perangkat (\cite{dan_bdd}). BDD adalah ekstensi dari kerangka TDD, dimana yang didefinisikan adalah
+tingkah laku(\emph{behavior}) dari perangkat lunak, bukan kasus-kasus uji eksplisit.
+
+% Dalam BDD, kasus uji dideskripsikan dengan skenario bagaimana perangkat lunak harus berperilaku terhadap
+% masing masing fiturnya. Deskripsi ini dibuat dan dibahas oleh banyak pihak seperti \emph{programmer}
+% , \emph{test engineer}, dan \emph{business analist}.
+% Deskripsi skenario tersebut ditulis dalam langkah-langkah kecil (\emph{step}) dengan menggunakan
+% bahasa yang simpel dan bisa dipahami oleh seluruh pihak.
+
+Menurut (\cite{bdd_char}), BDD memiliki 6 karakteristik utama yaitu:
+\begin{enumerate}
+    \item \emph{Ubiquitous Language}
+    
+    \emph{Ubiquitous Language} (Bahasa Umum) adalah sebuah bahasa yang strukturnya berasal dari model domain dan
+    mengandung istilah-istilah yang akan digunakan untuk mendeskripsikan perilaku suatu perangkat lunak.
+    Bahasa umum yang didasari dari domain bisnis memungkinkan customer, bisnis, dan \emph{developer}
+    saling berkomunikasi dengan jelas dan tanpa ambigu.
+
+    BDD sendiri juga memiliki bahasa umumnya yang digunakan untuk mendeskripsikan fitur dan skenario
+    perilaku perangkat lunak. Bahasa ini \emph{domain independent}.
+
+    \item Proses Dekomposisi Iteratif
+
+    Pada BDD analisis dimulai dengan identifikasi perilaku yang diharapkan dari sistem, yang lebih konkret
+    dan mudah ditentukan. Lalu perilaku sistem akan diturunkan dari hasil bisnis yang seharusnya terjadi.
+    Hasil bisnis itu kemudian diubah menjadi kumpulan fitur yang menyatakan apa saja yang harus ada
+    agar hasil bisnis dihasilkan.
+    Proses dekomposisi ini dilakukan secara iteratif, yang berarti tidak harus melakukan banyak analisi pada
+    awalnya. 
+
+    \item Penjelasan \emph{User Story} dan Skenario dengan Simpel
+
+    Pada BDD, biasanya deskripsi skenario, fitur, dan \emph{user story} ditulis dalam sebuah template tertentu
+    dengan menggunakan bahasa simpel. Berbagai macam kakas BDD seperti JBehave, NBehave, SpecFlow, dan Cucumber
+    menggunakan cara ini walaupun memiliki kata kunci berbeda, tetapi masih memiliki arti
+    semantik yang sama.
+
+    \item Pengujian Penerimaan Otomatis
+
+    Pada BDD, skenario-skenario dari fitur yang telah sebelumnya dideskripsikan digunakan sebagai acuan
+    untuk melakukan uji penerimaan (\emph{acceptance testing}) secara otomatis. \emph{Programmer} akan
+    mulai dari salah satu skenario yang telah didefinisikan, yang kemudian dijadikan
+    kode pengujian yang akan mengarahkan implementasi. Sebuah skenario terdiri dari langkah-langkah
+    yang menggambarkan elemen-elemen yang ada dalam sebuah skenario.
+    
+    \item Kode Spesifikasi Berorientasi Perilaku yang Mudah Dibaca 
+
+    BDD menganjurkan bahwa kode seharusnya menjadi bagian dari dokumentasi sistem. Kode seharusnya
+    mudah dibaca dan spesifikasi seharusnya menjadi bagian dari kode. 
+
+    StoryQ dan JSpec menyediakan API yang memungkinkan \emph{programmer} untuk mendeskripsikan
+    \emph{user story} dan skenario sebagai kode. JBehave dan NBehave juga membantu untuk menulis
+    skenario sebagai kode dengan menggunakan \emph{annotation}. Kebalikannya, Cucumber tidak
+    berfokus kepada tingkat implementasi sehingga tidak memiliki karakteristik ini.
+    
+    \item \emph{Behaviour Driven} pada Fase Berbeda
+    
+    Karakteristik-karakteristik BDD yang telah dideskripsikan sebelumnya terjadi
+    pada fase-fase yang berbeda selama dalam siklus pengembangan perangkat lunak.
+    Pada fase rencana awal, perilaku perangkat lunak berhubungan dengan hasil bisnis.
+    Pada fase analisis, hasil bisnis dipecah menjadi sekumpulan fitur yang melingkupi
+    perilaku sistem. 
+    Pada fase implementasi, spesifikasi tersebut digunakan untuk mengarahkan implementasi
+    dan pengujian otomatis. \emph{Programmer} dianjurkan untuk memikirkan perilaku dari
+    komponen yang sedang mereka kembangkan dan interaksinya dengan komponen lain.
+
+\end{enumerate}
+
+
+
+\section{Cucumber dan Gherkin}
+
+Cucumber adalah salah satu kakas yang mendukung kerangka BDD (\cite{cucumber_book}).
+Cucumber memungkinkan \emph{programmer} untuk menulis spesifikasi
+perilaku perangkat lunak dengan mudah dan kemudian dijalankan dalam pengujian,
+spesifikasi ini ditulis dengan bahasa Gherkin.
+
+Gherkin adalah sebuah DSL yang digunakan untuk mendeskripsikan fitur dan skenario
+yang digunakan sebagai spesifikasi perilaku perangkat lunak. Gherkin ditulis
+dengan bahasa manusia sehingga dapat dipahami oleh seluruh pihak, namun walaupun
+ditulis dengan bahasa manusia, Gherkin dapat diolah dan digunakan oleh
+komputer sebagai garis besar penjalanan pengujian otomatis.
+
+\begin{lstlisting}[language=Gherkin]
+Feature: Guess the word
+  # The first example has two steps
+  Scenario: Maker starts a game
+    When the Maker starts a game
+    Then the Maker waits for a Breaker to join
+
+  # The second example has three steps
+  Scenario: Breaker joins a game
+    Given the Maker has started a game with the word "silky"
+    When the Breaker joins the Maker game
+    Then the Breaker must guess a word with 5 characters
+\end{lstlisting}
+
+Diatas adalah salah satu contoh kode Gherkin.
+Test dalam Gherkin dibagi menjadi fitur-fitur. Tiap fitur tersebut akan dibagi menjadi
+skenario, yang terdiri dari langkah-langkah.
+
+\subsection{\emph{Feature}}
+
+Fungsi dari \emph{Feature} adalah sebagai deskripsi level tinggi dari fitur perangkat lunak.
+\emph{Feature} juga berguna untuk mengelompokkan skenario yang berhubungan.
+Biasanya pada Cucumber, satu file hanya berisi satu \emph{Feature}.
+
+\subsection{\emph{Scenario / Example}}
+
+\emph{Scenario} adalah contoh konkret yang menggambarkan sebuah aturan bisnis yang terdiri
+dari langkah-langkah. \emph{Scenario} biasanya dideskripsikan dengan pola berupa:
+
+\begin{enumerate}
+    \item Nyatakan konteks awal (\emph{Given})
+    \item Nyatakan sebuah kejadian (\emph{When})
+    \item Nyatakan hasil yang diharapkan (\emph{Then})
+\end{enumerate}
+
+\subsection{\emph{Step}}
+
+\emph{Step} merupakan langkah kerja yang konkret.
+Setiap \emph{step} dimulai dengan \texttt{Given}, \texttt{When}, \texttt{Then},
+\texttt{And}, dan \texttt{But}.
+Cucumber akan menjalankan tiap \emph{step} dalam sebuah \emph{scenario} secara berurutan.
+Saat Cucumber akan menjalankan sebuah \emph{step}, ia akan mencari kode definisi step yang sesuai.
+Misal jika sebuah \emph{step} ditulis sebagai \texttt{When the maker starts a game},
+maka Cucumber akan mencari \emph{step definition} yang bernama
+\texttt{the maker starts a game}.
+
+\subsection{\emph{Step Definition}}
+
+Cucumber memungkinkan terhubungnya antara definisi langkah pada Gherkin 
+dengan kode test nyata melalui nama pada \emph{step}.
+Cucumber dapat digunakan dengan beberapa bahasa pemrograman berbeda.
+\emph{Step definition} pada Cucumber didefinisikan menggunakan fungsi-fungsi simpel, seperti:
+
+\begin{lstlisting}[language=java]
+package com.example;
+import io.cucumber.java.en.Given;
+
+public class StepDefinitions {
+    @Given("I have {int} cukes in my belly")
+    public void i_have_n_cukes_in_my_belly(int cukes) {
+        System.out.format("Cukes: %n\n", cukes);
+    }
+}
+\end{lstlisting}
+
+\emph{Step definition} juga bisa dapat diberi variabel untuk meningkatkan \emph{code reuse}.
+
+\subsection{\emph{Scenario Outline}}
+
+Terkadang, ada beberapa \emph{scenario} yang ternyata memiliki kerangka yang sama,
+hanya saja berbeda pada bagian-bagian kecil seperti angka-angka. Beberapa skenario
+mirip ini dapat digabungkan menjadi satu skenario menggunakan \emph{scenario outline}.
+
+\begin{lstlisting}[language=gherkin]
+  Scenario Outline: eating
+  Given there are <start> cucumbers
+  When I eat <eat> cucumbers
+  Then I should have <left> cucumbers
+
+  Scenarios:
+    | start | eat | left |
+    |    12 |   5 |    7 |
+    |    20 |   5 |   15 |
+\end{lstlisting}
