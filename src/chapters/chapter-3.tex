@@ -4,6 +4,124 @@
 
 \subsection{Analisis}
 
+Celah keamanan bisa terjadi karena pada pada siklus pengembangan perangkat lunak
+biasa, \emph{programmer} hanya fokus terhadap kebutuhan fungsional,
+memerhatikan aspek keamanan. Hal ini juga menjadi penyebab dari BLE.
+BLE, secara spesifik, terjadi karena beberapa hal.
+Pertama, adanya perbedaan kecil dari step sebuah skenario fitur, misal pada state awal,
+jika fitur
+menambahkan barang ke dalam keranjang membutuhkan state awal user untuk telah login,
+apa yang terjadi jika penambahan barang dilakukan saat user belum login.
+Kedua, saat \emph{business} menuliskan deskripsi skenario business logic,
+yang bisa dituliskan dengan mudah biasanya hanya skenario positif dimana
+fitur berjalan sebagaimana seharusnya. Namun, kasus-kasus dimana fitur
+tidak berjalan sesuai dengan seharusnya tidak dituliskan, karena bagi orang bisnis,
+hal itu adalah sesuatu hal yang mereka rasakan \emph{obvious}.
+BLE terjadi saat \emph{programmer} dan \emph{tester} yang tidak memiliki
+pengetahuan domain sebanyak orang bisnis, tidak mengetahun asumsi-asumsi tersebut dan lupa
+untuk mengujinya.
+
+Dalam masa pengembangan suatu fitur, \emph{programmer} bisa saja memikirkan
+apa saja kemungkinan variasi dari nilai-nilai suatu fitur. Programmer
+dapat mencoba mengakomodasi semua variasi itu, tetapi pengetahuan tentang
+adanya variasi tersebut mungkin hanya teringat pada saat mengerjakan
+fitur tersebut. Sehingga di akhir pada saat melakukan \emph{acceptance test},
+\emph{tester} tidak tau tentang variasi ini dan tidak mengujinya.
+Bahkan, bisa saja \emph{programmer} yang sedang mengerjakan fitur tersebut
+lupa terhadap variasi tersebut beberapa hari kemudian.
+
+\emph{Tester} bisa saja mencoba memikirkan banyak \emph{abuse case} pada saat
+akan melakukan pengujian suatu fitur, dan tentu menggunakan \emph{tester} yang
+berbeda dengan orang yang melakukan implementasi akan menghilangkan beberapa
+subjektifitas dalam \emph{abuse case}. Namun, sang \emph{programmer} tadi yang
+sempat memikirkan kasus-kasus variasi tentu juga memiliki pengetahuan yang banyak
+tentang fitur tersebut, namun tidak menuliskan kasus-kasus tersebut karena merasa 
+melakukan pengujian adalah pekerjaan \emph{tester}, merasa menuliskan kasus pengujian
+adalah hal yang sulit dan hal lainnya seperti di kejar
+deadline, dan lain lain. \emph{Insight} dari \emph{programmer ini} tentu berharga,
+namun tidak terdokumentasi dan hilang.
+
+\subsection{Language Requirement}
+
+Dari analisis di atas kita dapat mengetahui kebutuhan-kebutuhan bahasa
+agar dapat melakukan pengujian efektif terhadap BLE, yaitu:
+
+\begin{enumerate}
+    \item Mudah
+    
+    Bahasa yang akan dibuat haruslah mudah dipahami, sehingga semua pihak tetap
+    bisa memahaminya, dan mudah ditulis, sehingga \emph{programmer} yang ``sibuk''
+    terdorong untuk menulis kasus pengujian.
+
+    \item Bisa menyatakan kegagalan
+
+    Pada pengujian fungsionalitas, kita hanya menuliskan kasus-kasus positif
+    dimana skenario berjalan dengan benar. Namun untuk pengujian BLE,
+    menuliskan dan melakukan pengujian dimana skenario tidak berjalan dengan benar
+    haruslah sama mudahnya dengan skenario yang benar.
+
+    \item Bisa menyatakan variansi
+    
+    Seperti yang telah disebutkan di atas, salah satu penyebab dari BLE adalah
+    adanya variansi-variansi dari skenario.
+    Bahasa yang akan dibuat haruslah dapat menyatakan variansi ini dengan mudah.
+    Hal ini dapat mengurangi duplikasi dan meningkatkan pemahaman bersama.
+\end{enumerate}
+
+
+
+\section{Kondisi Gherkin}
+
+Kita dapat membandingkan kebutuhan bahasa yang telah dianalisa dengan keadaan Gherkin pada saat ini.
+
+\subsection*{Mudah}
+
+Gherkin yang menggunakan bahasa manusia sudah mudah dimengerti, dan kita ingin agar bahasa
+baru yang akan dibuat dapat dipahami dan ditulis semudah Gherkin.
+
+\subsection*{Bisa menyatakan kegagalan}
+
+Pada saat ini, penulisan \emph{step} pada Gherkin lebih berorientasi terhadap
+kasus sukses. Misalkan untuk step \texttt{Then the basket should have items in it},
+dapat memiliki step gagal berupa \texttt{Then the basket should not have items in it}.
+Secara semantik hal dua tadi adalah kebalikan, dimana logika pengujian
+sama, berbeda namun di akhir kode \emph{step definition}. Hal ini
+menyebabkan banyaknya duplikasi kode \emph{step definition} dan membuat \emph{programmer} malas untuk
+melakukannya.
+Duplikasi ini dikarenakan setiap kode \emph{step definition} dari Gherkin dianggap
+sukses/\emph{passing} jika tidak ada exception yang terjadi.
+Kita ingin mengurangi duplikasi dan mengingkatkan \emph{code reuse}.
+Kita ingin agar kode \emph{step definition} dari step \texttt{Then the basket should have items in it}
+dapat digunakan untuk skenario sukses ataupun gagal.
+
+Bahasa yang akan dibuat haruslah dapat menyatakan kegagalan dalam bagian bahasanya.
+Seperti Gherkin, namun memiliki keyword yang menyatakan bahwa suatu skenario
+harus lah gagal.
+
+\subsection*{Bisa menyatakan variansi}
+
+Gherkin pada saat ini memiliki fitur \emph{scenario outline} yang dapat menyatakan banyak skenario yang mirip
+hanya dalam satu skenario saja dengan menggunakan template dan tabel.
+\emph{Scenario outline} dapat memenuhi kebutuhan bahasa untuk menyatakan variansi. 
+
+Namun fitur ini dapat dikembangkan dengan menambah kemampuan untuk menyatakan domain/tipe data suatu variabel, misalkan 
+domain \texttt{integer}, \texttt{positive}, \texttt{string}, \emph{enum}, dan lain lainnya.
+Hal ini membuat deklarasi variansi lebih singkat dan padat.
+Kemampuan ini juga dapat digabungkan dengan poin sebelumnya.
+Untuk \emph{Scenario outline}, kita dapat menyatakan tabel \emph{example} dengan kombinasi-kombinasi varian yang harus gagal.
+Untuk domain variabel, kita dapat menyatakan nilai mana saja yang harus gagal.
+
+
+
+\section{Rencana Tindak Lanjut}
+
+Pada tugas akhir ini, akan dibuat bahasa yang merupakan \emph{fork} dari Gherkin.
+Implementasi akan dilakukan dengan melakukan \emph{fork} terhadap \emph{tooling} dari Cucumber dan Gherkin,
+menambahkan fitur-fitur yang dibutuhkan diatas.
+
+Kakas baru ini diharapkan agar dapat digunakan oleh semua pihak dalam siklus pengembangan,
+baik dari pihak bisnis, \emph{programmer}, ataupun \emph{tester}.
+
 % \section{Perbedaan Pengujian Fungsionalitas dan \emph{Business Logic Error}}
 
 % Pengujian untuk fungsionalitas dan untuk keamanan memiliki perbedaan. 
@@ -85,7 +203,3 @@
 % skenario yang harus gagal dapat mempermudah \emph{programmer}
 % dalam mendeskripsikan kasus-kasus pengujian keamanan bersamaan dengan
 % menulis kasus pengujian fungsionalitas.
-
-% =======================================================================================================
-% =======================================================================================================
-% =======================================================================================================
