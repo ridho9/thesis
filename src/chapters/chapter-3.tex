@@ -35,7 +35,7 @@ akan melakukan pengujian suatu fitur, dan tentu menggunakan \emph{tester} yang
 berbeda dengan orang yang melakukan implementasi akan menghilangkan beberapa
 subjektifitas dalam \emph{abuse case}. Namun, sang \emph{programmer} tadi yang
 sempat memikirkan kasus-kasus variasi tentu juga memiliki pengetahuan yang banyak
-tentang fitur tersebut, namun tidak menuliskan kasus-kasus tersebut karena merasa 
+tentang fitur tersebut, namun tidak menuliskan kasus-kasus tersebut karena merasa
 melakukan pengujian adalah pekerjaan \emph{tester}, merasa menuliskan kasus pengujian
 adalah hal yang sulit dan hal lainnya seperti di kejar
 deadline, dan lain lain. \emph{Insight} dari \emph{programmer ini} tentu berharga,
@@ -47,25 +47,25 @@ Dari analisis di atas kita dapat mengetahui kebutuhan-kebutuhan bahasa
 agar dapat melakukan pengujian efektif terhadap BLE, yaitu:
 
 \begin{enumerate}
-    \item Mudah
-    
-    Bahasa yang akan dibuat haruslah mudah dipahami, sehingga semua pihak tetap
-    bisa memahaminya, dan mudah ditulis, sehingga \emph{programmer} yang ``sibuk''
-    terdorong untuk menulis kasus pengujian.
+  \item Mudah
 
-    \item Bisa menyatakan kegagalan
+        Bahasa yang akan dibuat haruslah mudah dipahami, sehingga semua pihak tetap
+        bisa memahaminya, dan mudah ditulis, sehingga \emph{programmer} yang ``sibuk''
+        terdorong untuk menulis kasus pengujian.
 
-    Pada pengujian fungsionalitas, kita hanya menuliskan kasus-kasus positif
-    dimana skenario berjalan dengan benar. Namun untuk pengujian BLE,
-    menuliskan dan melakukan pengujian dimana skenario tidak berjalan dengan benar
-    haruslah sama mudahnya dengan skenario yang benar.
+  \item Bisa menyatakan kegagalan
 
-    \item Bisa menyatakan variansi
-    
-    Seperti yang telah disebutkan di atas, salah satu penyebab dari BLE adalah
-    adanya variansi-variansi dari skenario.
-    Bahasa yang akan dibuat haruslah dapat menyatakan variansi ini dengan mudah.
-    Hal ini dapat mengurangi duplikasi dan meningkatkan pemahaman bersama.
+        Pada pengujian fungsionalitas, kita hanya menuliskan kasus-kasus positif
+        dimana skenario berjalan dengan benar. Namun untuk pengujian BLE,
+        menuliskan dan melakukan pengujian dimana skenario tidak berjalan dengan benar
+        haruslah sama mudahnya dengan skenario yang benar.
+
+  \item Bisa menyatakan variansi
+
+        Seperti yang telah disebutkan di atas, salah satu penyebab dari BLE adalah
+        adanya variansi-variansi dari skenario.
+        Bahasa yang akan dibuat haruslah dapat menyatakan variansi ini dengan mudah.
+        Hal ini dapat mengurangi duplikasi dan meningkatkan pemahaman bersama.
 \end{enumerate}
 
 
@@ -102,9 +102,9 @@ harus lah gagal.
 
 Gherkin pada saat ini memiliki fitur \emph{scenario outline} yang dapat menyatakan banyak skenario yang mirip
 hanya dalam satu skenario saja dengan menggunakan template dan tabel.
-\emph{Scenario outline} dapat memenuhi kebutuhan bahasa untuk menyatakan variansi. 
+\emph{Scenario outline} dapat memenuhi kebutuhan bahasa untuk menyatakan variansi.
 
-Namun fitur ini dapat dikembangkan dengan menambah kemampuan untuk menyatakan domain/tipe data suatu variabel, misalkan 
+Namun fitur ini dapat dikembangkan dengan menambah kemampuan untuk menyatakan domain/tipe data suatu variabel, misalkan
 domain \texttt{integer}, \texttt{positive}, \texttt{string}, \emph{enum}, dan lain lainnya.
 Hal ini membuat deklarasi variansi lebih singkat dan padat.
 Kemampuan ini juga dapat digabungkan dengan poin sebelumnya.
@@ -112,15 +112,64 @@ Untuk \emph{Scenario outline}, kita dapat menyatakan tabel \emph{example} dengan
 Untuk domain variabel, kita dapat menyatakan nilai mana saja yang harus gagal.
 
 
+\section{Rancangan Solusi}
 
-\section{Rencana Tindak Lanjut}
+Dari bagian sebelumnya, pada bagian ini akan dibahas desain bahasa untuk fitur yang dianalisa
+dan cara implementasi.
 
-Pada tugas akhir ini, akan dibuat bahasa yang merupakan \emph{fork} dari Gherkin.
-Implementasi akan dilakukan dengan melakukan \emph{fork} terhadap \emph{tooling} dari Cucumber dan Gherkin,
-menambahkan fitur-fitur yang dibutuhkan diatas.
+\subsection{Menyatakan Kegagalan}
 
-Kakas baru ini diharapkan agar dapat digunakan oleh semua pihak dalam siklus pengembangan,
-baik dari pihak bisnis, \emph{programmer}, ataupun \emph{tester}.
+Pada saat ini Gherkin hanya menyatakan \textit{step} yang positif seperti
+"barang sukses ditambahkan ke dalam keranjang", namun butuh mendeskripsikan \textit{step function}
+lagi untuk negatif \textit{step} tersebut seperti "barang gagal ditambahkan ke dalam keranjang" atau
+"barang tidak sukses ditambahkan ke dalam keranjang".
+
+Untuk pembahasan fitur ini, kita akan mengacu pada kode Gherkin dibawah:
+\begin{lstlisting}[language=gherkin]
+Feature: keranjang
+  Scenario: menambahkan barang ke dalam keranjang
+    Given user telah login
+    When user memasukkan 1 barang
+    Then ada 1 barang di dalam keranjang
+\end{lstlisting}
+
+Untuk desain fitur Failure dapat kita lakukan beberapa hal.
+
+\subsubsection{Scenario Outline}
+Screnario di atas memiliki initial state dimana user telah login.
+Programmer dapat menambahkan satu skenario lagi untuk keadaan dimana user gagal login, seperti:
+\begin{lstlisting}[language=gherkin]
+Feature: keranjang
+  Scenario: menambahkan barang ke dalam keranjang
+    Given user telah login
+    When user memasukkan 1 barang
+    Then sukses ada 1 barang di dalam keranjang
+  Scenario: user belum login menambahkan barang 
+    Given user belum login
+    When user memasukkan 1 barang
+    Then gagal ada 1 barang di dalam keranjang
+\end{lstlisting}
+
+Fitur \textit{Scenario Outline} dari Gherkin dapat dimanfaatkan untuk memperpendek skenario ini menjadi
+
+\begin{lstlisting}[language=gherkin]
+Feature: keranjang
+  Scenario Outline: menambahkan barang ke dalam keranjang
+    Given user <login state> login
+    When user memasukkan 1 barang
+    Then <result state> ada 1 barang di dalam keranjang
+
+    Examples:
+      | login state | result state |
+      | sudah       | sukses       |
+      | belum       | gagal        |
+\end{lstlisting}
+
+Dengan begini, masalah duplikasi skenario terselesaikan namun programmer tetap
+harus mendefinisikan tabel pada scenario outline, dan \textit{step} yang didefinisikan
+pada bagian \textit{Then} tetap harus dibuat \textit{step definition}nya.
+
+\subsubsection{Scenario Outline}
 
 % \section{Perbedaan Pengujian Fungsionalitas dan \emph{Business Logic Error}}
 
