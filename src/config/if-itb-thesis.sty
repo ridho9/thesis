@@ -19,7 +19,9 @@
 \usepackage{mathptmx}
 
 % Judul bahasa Indonesia
-\usepackage[bahasa]{babel}
+\usepackage[indonesian]{babel}
+% \usepackage{polyglossia}
+% \setdefaultlanguage[variant=indonesian]{malay}
 
 % Format citation
 \usepackage[backend=bibtex,citestyle=authoryear]{biblatex}
@@ -35,6 +37,7 @@
 \usepackage{titlesec}       % Package Format judul
 \usepackage{parskip}
 \usepackage{listings}
+% \usepackage{csquotes}
 
 % Line satu setengah spasi
 \renewcommand{\baselinestretch}{1.5}
@@ -69,3 +72,26 @@
 \lstset{
   showstringspaces=false
 }
+
+\begin{filecontents*}{indonesian.lbx}
+\ProvidesFile{indonesian.lbx}[2020]
+
+\InheritBibliographyExtras{english}
+
+\DeclareBibliographyStrings{%
+  bibliography  = {{Bibliografi}{Bibliografi}},
+  and           = {{dan}{dan}},
+  in            = {{dalam}{dalam}},
+  june          = {{juni}{jun\adddot}},
+  january       = {{januari}{jan\adddot}},
+  march         = {{march}{mar\adddot}},
+  february      = {{februari}{feb\adddot}},
+  july          = {{july}{jul\adddot}},
+  august        = {{agustus}{aug\adddot}},
+  september     = {{september}{sept\adddot}},
+  pages         = {{halaman}{hal\adddot}}
+}
+
+\endinput
+
+\end{filecontents*}
