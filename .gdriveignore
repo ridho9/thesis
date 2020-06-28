@@ -1,2 +1,4 @@
 .git
 build
+*_cache/
+*.egg-info/
