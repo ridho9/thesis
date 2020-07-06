@@ -68,48 +68,13 @@ def test_scenario_1():
     assert parse.parse_scenario(case) == (result, rest)
 
 
-def test_scenarios_1():
+def test_background_scenario_1():
     case = """\
-    scenario: scenario 1
+    background: background 1
         given aaa
-        when bbb
-        
-    scenario: scenario 2
-        given ccc
-        when ddd"""
-    result = [
-        Scenario(
-            "scenario 1", [Step(StepType.GIVEN, "aaa"), Step(StepType.WHEN, "bbb")]
-        ),
-        Scenario(
-            "scenario 2", [Step(StepType.GIVEN, "ccc"), Step(StepType.WHEN, "ddd")]
-        ),
-    ]
+        when bbb"""
+    result = Scenario(
+        "background 1", [Step(StepType.GIVEN, "aaa"), Step(StepType.WHEN, "bbb")]
+    )
     rest = ""
-    assert parse.parse_scenarios(case) == (result, rest)
-
-
-# def test_feature_1():
-#     case = """\
-#     feature: feature 1
-#         given aaa
-#         when bbb
-#         then ccc"""
-#     result = Feature(
-#         "feature 1",
-#         "",
-#         [
-#             Step(StepType.GIVEN, "aaa"),
-#             Step(StepType.WHEN, "bbb"),
-#             Step(StepType.THEN, "ccc"),
-#         ],
-#     )
-#     rest = ""
-#     assert parse.parse_feature(case) == (result, rest)
-
-
-# def test_feature_2():
-#     case = """then ccc"""
-#     result = None
-#     rest = "then ccc"
-#     assert parse.parse_feature(case) == (result, rest)
+    assert parse.parse_background_scenario(case) == (result, rest)

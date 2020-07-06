@@ -57,5 +57,4 @@ def parse_scenario(
     return (Scenario(name, steps), input)
 
 
-parse_scenarios = create_parse_multiple(parse_scenario)
-
+parse_background_scenario = lambda input: parse_scenario(input, "background")
