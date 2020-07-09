@@ -150,8 +150,10 @@ def parse_feature(input: ParserInput) -> ParserResult[Feature]:
         pass
 
     scenarios, next_input = parse_scenarios(next_input)
-    print(scenarios)
 
     feature = Feature(tags, rest, background, scenarios, cur_idx, input.filename)
 
     return feature, next_input
+
+
+parse_features = one_or_more(parse_feature)

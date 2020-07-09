@@ -111,6 +111,14 @@ pyparsing = ">=2.0.2"
 six = "*"
 
 [[package]]
+category = "main"
+description = "parse() is the opposite of format()"
+name = "parse"
+optional = false
+python-versions = "*"
+version = "1.15.0"
+
+[[package]]
 category = "dev"
 description = "Utility library for gitignore style pattern matching of file paths."
 name = "pathspec"
@@ -216,7 +224,7 @@ python-versions = "*"
 version = "0.2.5"
 
 [metadata]
-content-hash = "9fbaa4b73105789a0674a4abdca8f56c3e9d12afcd3ee5c86ffb24a317b703e6"
+content-hash = "a93df1bd4f686c203ba0d82d43f456c33a10d61e13d0c36392fe67cceebb1f36"
 python-versions = "^3.8"
 
 [metadata.files]
@@ -271,6 +279,9 @@ mypy-extensions = [
 packaging = [
     {file = "packaging-20.4-py2.py3-none-any.whl", hash = "sha256:998416ba6962ae7fbd6596850b80e17859a5753ba17c32284f67bfff33784181"},
     {file = "packaging-20.4.tar.gz", hash = "sha256:4357f74f47b9c12db93624a82154e9b120fa8293699949152b22065d556079f8"},
+]
+parse = [
+    {file = "parse-1.15.0.tar.gz", hash = "sha256:a6d4e2c2f1fbde6717d28084a191a052950f758c0cbd83805357e6575c2b95c0"},
 ]
 pathspec = [
     {file = "pathspec-0.8.0-py2.py3-none-any.whl", hash = "sha256:7d91249d21749788d07a2d0f94147accd8f845507400749ea19c1ec9054a12b0"},
