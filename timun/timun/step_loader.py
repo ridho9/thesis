@@ -22,7 +22,7 @@ def all_py_files_in_dir(dir: str):
 
 
 def load_step_from_file(filename: str):
-    filename = abspath(filename)
+    # filename = abspath(filename)
     file_path = filename
     module_name = basename(file_path)[:-3]
 

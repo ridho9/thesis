@@ -11,7 +11,7 @@ from timun.step_loader import load_step_from_file
 
 def all_feature_files_in_dir(dir: str) -> List[str]:
     return [
-        abspath(join(dir, f))
+        join(dir, f)
         for f in os.listdir(dir)
         if isfile(join(dir, f)) and f.endswith(".feature")
     ]

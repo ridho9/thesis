@@ -1,6 +1,7 @@
 from typing import Callable, Dict
-from timun.model import StepType
 from dataclasses import dataclass
+
+from timun.model import StepType
 
 from parse import parse, Parser
 from parse import compile as pcompile
@@ -21,15 +22,16 @@ class StepDescriptor:
 StepDict = Dict[str, StepDescriptor]
 
 
-def step(head, text):
+def step(head, text: str):
     def decorator(func):
         # return func
         type = StepType.from_string(head)
         if type == None:
             raise Exception(f"invalid step type '{head}'")
 
-        pattern = pcompile(text)
-        descriptor = StepDescriptor(type, text, pattern, "??", func)
+        t = text.strip()
+        pattern = pcompile(t)
+        descriptor = StepDescriptor(type, t, pattern, "??", func)
         setattr(func, "__TIMUN_STEP__", descriptor)
 
         return func
