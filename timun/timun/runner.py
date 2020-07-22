@@ -23,15 +23,15 @@ class ScenarioTestReport:
     def __str__(self) -> str:
         res = f"Scenario: {self.scenario.text}"
         res += f"@{self.feature.filename}:{self.scenario.idx + 1} - "
-        if self.fail_step and self.step_desc:
+        if self.fail_step and self.step_desc and self.traceback:
             res += (
                 "Failed:\n\t"
                 f"Step: {self.fail_step.text}:{self.fail_step.idx}"
                 f" (desc {self.step_desc.function.__name__}"
                 f"@{self.step_desc.filename}:{self.step_desc.function.__code__.co_firstlineno})"
-                "\n"
-                f"{self.traceback}"
             )
+            for l in self.traceback.splitlines():
+                res += f"\n\t| {l}"
         else:
             res += "SUCCESS"
 

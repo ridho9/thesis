@@ -4,7 +4,7 @@ from timun import *
 @given("we have behave installed")
 def step_impl(context):
 
-    # raise Exception(5)
+    raise Exception(5)
     print("aaaaaaaaaa")
     pass
 
