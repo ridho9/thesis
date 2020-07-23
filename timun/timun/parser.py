@@ -1,3 +1,4 @@
+from timun.step import then
 from typing import Tuple, List, Callable, TypeVar, Optional
 from dataclasses import dataclass
 from timun.model import Step, StepType, Scenario, ScenarioType, Feature
@@ -17,14 +18,6 @@ class ParserError(Exception):
     def __init__(self, message: str, input: ParserInput):
         self.message = f"{message} [{input.filename}:{input.idx+1}]"
         super().__init__(self.message)
-
-
-# def parser(name: str) -> Callable[[Parser[T]], Parser[T]]:
-#     def decorator(func: Parser[T]) -> Parser[T]:
-#         setattr(func, "__PARSER__", name)
-#         return func
-
-#     return decorator
 
 
 def create_input(filename: str, content: str) -> ParserInput:
@@ -78,6 +71,27 @@ def one_or_more(parser: Parser[T]) -> Parser[List[T]]:
     return f
 
 
+def parser_or(*parsers: Parser) -> Parser:
+    desc_line = " or ".join([p.__PARSER__ for p in parsers])  # type: ignore
+
+    def f(input: ParserInput) -> ParserResult:
+        for parser in parsers:
+            try:
+                result = parser(input)
+                return result
+            except ParserError as p:
+                continue
+
+        raise ParserError(f"expected one of {desc_line}", input)
+
+    setattr(f, "__PARSER__", desc_line)
+
+    return f
+
+
+# ========= PARSER DEFINITION =================
+
+
 def parse_step(input: ParserInput) -> ParserResult[Step]:
 
     cur_line, cur_idx, next_input = next_nonempty_line(input)
@@ -126,7 +140,16 @@ parse_scenario: Parser[Scenario] = lambda input: parse_scenario_like(
 
 setattr(parse_scenario, "__PARSER__", "scenario")
 
-parse_scenarios: Parser[List[Scenario]] = one_or_more(parse_scenario)
+parse_fail_scenario: Parser[Scenario] = lambda input: parse_scenario_like(
+    input, ScenarioType.FAIL_SCENARIO
+)
+
+setattr(parse_fail_scenario, "__PARSER__", "fail scenario")
+
+parse_scenario_family = parser_or(parse_scenario, parse_fail_scenario)
+
+# parse_scenarios: Parser[List[Scenario]] = one_or_more(parse_scenario)
+parse_scenarios: Parser[List[Scenario]] = one_or_more(parse_scenario_family)
 
 
 def parse_feature(input: ParserInput) -> ParserResult[Feature]:

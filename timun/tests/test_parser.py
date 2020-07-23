@@ -162,3 +162,107 @@ def test_parse_feature_1():
     res_input = ([], 5, "file")
 
     assert parse_feature(input) == (expect, res_input)
+
+
+def test_parse_fail_scenario_1():
+    content = """\
+        fail scenario: 1
+            given a
+            when b
+            then c\
+    """
+
+    input = create_input("file", content)
+
+    expect = Scenario(
+        ScenarioType.FAIL_SCENARIO,
+        "1",
+        [
+            Step(StepType.GIVEN, "a", 1),
+            Step(StepType.WHEN, "b", 2),
+            Step(StepType.THEN, "c", 3),
+        ],
+        0,
+    )
+    res_input = ([], 4, "file")
+
+    assert parse_fail_scenario(input) == (expect, res_input)
+
+
+def test_parse_scenarios_family_1():
+    content = """\
+        scenario: 1
+            given a
+            when b
+            then c\
+    """
+
+    input = create_input("file", content)
+
+    expect = Scenario(
+        ScenarioType.SCENARIO,
+        "1",
+        [
+            Step(StepType.GIVEN, "a", 1),
+            Step(StepType.WHEN, "b", 2),
+            Step(StepType.THEN, "c", 3),
+        ],
+        0,
+    )
+
+    res_input = ([], 4, "file")
+
+    assert parse_scenario_family(input) == (expect, res_input)
+
+
+def test_parse_scenarios_family_2():
+    content = """\
+        fail scenario: 1
+            given a
+            when b
+            then c\
+    """
+
+    input = create_input("file", content)
+
+    expect = Scenario(
+        ScenarioType.FAIL_SCENARIO,
+        "1",
+        [
+            Step(StepType.GIVEN, "a", 1),
+            Step(StepType.WHEN, "b", 2),
+            Step(StepType.THEN, "c", 3),
+        ],
+        0,
+    )
+
+    res_input = ([], 4, "file")
+
+    assert parse_scenario_family(input) == (expect, res_input)
+
+
+def test_parse_scenarios_1():
+    content = """\
+        scenario: 1
+            given a
+            when b
+            then c\
+    """
+
+    input = create_input("file", content)
+
+    expect = [
+        Scenario(
+            ScenarioType.SCENARIO,
+            "1",
+            [
+                Step(StepType.GIVEN, "a", 1),
+                Step(StepType.WHEN, "b", 2),
+                Step(StepType.THEN, "c", 3),
+            ],
+            0,
+        )
+    ]
+    res_input = ([], 4, "file")
+
+    assert parse_scenarios(input) == (expect, res_input)

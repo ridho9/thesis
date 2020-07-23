@@ -24,10 +24,14 @@ class Step:
 class ScenarioType(Enum):
     SCENARIO = 0
     BACKGROUND = 1
+    FAIL_SCENARIO = 2
 
     @classmethod
     def from_string(cls, input: str) -> Optional["ScenarioType"]:
         input = input.strip().upper()
+        if input == "FAIL SCENARIO":
+            return cls.FAIL_SCENARIO
+
         return getattr(ScenarioType, input, None)
 
 
