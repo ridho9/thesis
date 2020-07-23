@@ -2,8 +2,10 @@ import traceback
 from typing import List, Dict, Optional
 from dataclasses import dataclass
 
+
 from timun.model import Feature, Scenario, Step
 from timun.step import StepDescriptor
+from termcolor import colored
 
 
 class ScenarioRunException(Exception):
@@ -21,11 +23,11 @@ class ScenarioTestReport:
     traceback: Optional[str] = None
 
     def __str__(self) -> str:
-        res = f"Scenario: {self.scenario.text}"
+        res = f"{colored('Scenario', 'blue')}: {self.scenario.text}"
         res += f"@{self.feature.filename}:{self.scenario.idx + 1} - "
         if self.fail_step and self.step_desc and self.traceback:
             res += (
-                "Failed:\n\t"
+                f"{colored('FAILED', 'red')}:\n\t"
                 f"Step: {self.fail_step.text}:{self.fail_step.idx}"
                 f" (desc {self.step_desc.function.__name__}"
                 f"@{self.step_desc.filename}:{self.step_desc.function.__code__.co_firstlineno})"
@@ -33,7 +35,7 @@ class ScenarioTestReport:
             for l in self.traceback.splitlines():
                 res += f"\n\t| {l}"
         else:
-            res += "SUCCESS"
+            res += colored("SUCCESS", "green")
 
         return res
 
@@ -51,10 +53,14 @@ class TestRunner:
         for feature in self.features:
             self.run_feature(feature)
 
-        # for report in self.test_report:
-        #     print(report)
+        print("==== Failed Scenarios ====")
+        for report in self.test_report:
+            if report.fail_step != None:
+                print(report)
 
     def run_feature(self, feature: Feature):
+        print(f"==== Feature: {feature.text} @ {feature.filename}:{feature.idx+1}")
+
         for scenario in feature.scenarios:
             self.run_scenario(feature, scenario)
 
@@ -95,3 +101,4 @@ class TestRunner:
         # TODO: Raise exception when multiple matching steps found
 
         return matching_step[0]
+
