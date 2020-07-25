@@ -3,7 +3,7 @@ from typing import List, Dict, Optional
 from dataclasses import dataclass
 
 
-from timun.model import Feature, Scenario, Step
+from timun.model import Feature, Scenario, ScenarioType, Step
 from timun.step import StepDescriptor
 from termcolor import colored
 
@@ -20,22 +20,29 @@ class ScenarioTestReport:
     fail_step: Optional[Step] = None
     exception: Optional[Exception] = None
     step_desc: Optional[StepDescriptor] = None
-    traceback: Optional[str] = None
+    message: Optional[str] = None
 
     def __str__(self) -> str:
-        res = f"{colored('Scenario', 'blue')}: {self.scenario.text}"
+        res = f"{colored(self.scenario.keyword.name, 'blue')}\t: {self.scenario.text}"
         res += f"@{self.feature.filename}:{self.scenario.idx + 1} - "
-        if self.fail_step and self.step_desc and self.traceback:
-            res += (
-                f"{colored('FAILED', 'red')}:\n\t"
-                f"Step: {self.fail_step.text}:{self.fail_step.idx}"
-                f" (desc {self.step_desc.function.__name__}"
-                f"@{self.step_desc.filename}:{self.step_desc.function.__code__.co_firstlineno})"
-            )
-            for l in self.traceback.splitlines():
-                res += f"\n\t| {l}"
+        if self.exception:
+            res += f"{colored('FAILED', 'red')}:"
+
+            if self.fail_step:
+                f"\n\tStep: {self.fail_step.text}:{self.fail_step.idx}"
+
+            if self.step_desc:
+                res += f" (desc {self.step_desc.function.__name__}"
+                res += f"@{self.step_desc.filename}:{self.step_desc.function.__code__.co_firstlineno})"
+
+            if self.message == None:
+                self.message = "\n".join(self.exception.args)
         else:
             res += colored("SUCCESS", "green")
+
+        if self.message:
+            for l in self.message.splitlines():
+                res += f"\n\t| {l}"
 
         return res
 
@@ -55,7 +62,7 @@ class TestRunner:
 
         print("==== Failed Scenarios ====")
         for report in self.test_report:
-            if report.fail_step != None:
+            if report.exception != None:
                 print(report)
 
     def run_feature(self, feature: Feature):
@@ -69,15 +76,28 @@ class TestRunner:
 
         report = ScenarioTestReport(feature, scenario)
 
-        for step in scenario.steps:
+        scenario_type = scenario.keyword
+
+        if scenario_type == ScenarioType.FAIL_SCENARIO:
             try:
-                self.run_step(step, context)
+                for step in scenario.steps:
+                    self.run_step(step, context)
+
+                report.exception = Exception(
+                    "All test in this scenario passes, expected failure"
+                )
             except Exception as e:
-                report.fail_step = step
-                report.exception = e
-                report.step_desc = self.find_matching_step(step)
-                report.traceback = traceback.format_exc().strip()
-                break
+                pass
+        else:
+            for step in scenario.steps:
+                try:
+                    self.run_step(step, context)
+                except Exception as e:
+                    report.fail_step = step
+                    report.exception = e
+                    report.step_desc = self.find_matching_step(step)
+                    report.message = traceback.format_exc().strip()
+                    break
 
         print(report)
         self.test_report.append(report)

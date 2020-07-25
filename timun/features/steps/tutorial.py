@@ -17,3 +17,13 @@ def step_impl_2(context):
 @then("behave will test it for us!")
 def step_impl_3(context):
     assert context["failed"] is False
+
+
+@then("this will succeed")
+def step_impl_4(context):
+    pass
+
+
+@then("this will fail")
+def step_imple_5(context):
+    assert False

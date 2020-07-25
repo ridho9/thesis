@@ -1,11 +1,7 @@
-Feature: showing off behave
+Feature: eyy
 
-  Scenario: run a simple test
-     Given we have behave installed
-      When we implement a test
-      Then behave will test it for us!
+  Scenario: succeed test
+      Then this will fail
 
-  Scenario: run a simple test
-     Given we have behave installed
-      When we implement a test
-      Then behave will test it for us!
+  Fail Scenario: this should pass
+      Then this will succeed
