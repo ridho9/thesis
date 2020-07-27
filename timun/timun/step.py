@@ -1,4 +1,4 @@
-from typing import Callable, Dict
+from typing import Callable, Dict, List
 from dataclasses import dataclass
 
 from timun.model import StepType
@@ -12,6 +12,7 @@ class StepDescriptor:
     type: StepType
     text: str
     pattern: Parser
+    fields: List[str]
     filename: str
     function: Callable
 
@@ -31,7 +32,8 @@ def step(head, text: str):
 
         t = text.strip()
         pattern = pcompile(t)
-        descriptor = StepDescriptor(type, t, pattern, "??", func)
+        named_fields = pattern._named_fields
+        descriptor = StepDescriptor(type, t, pattern, named_fields, "??", func)
         setattr(func, "__TIMUN_STEP__", descriptor)
 
         return func

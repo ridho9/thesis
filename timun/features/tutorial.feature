@@ -1,7 +1,7 @@
 Feature: eyy
 
   Scenario: succeed test
-      Then this will fail
+      Then this will succeed
 
   Fail Scenario: this should pass
-      Then this will succeed
+      Then this will fail

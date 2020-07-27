@@ -95,7 +95,7 @@ class TestRunner:
                 except Exception as e:
                     report.fail_step = step
                     report.exception = e
-                    report.step_desc = self.find_matching_step(step)
+                    report.step_desc, _ = self.find_matching_step(step)
                     report.message = traceback.format_exc().strip()
                     break
 
@@ -103,8 +103,8 @@ class TestRunner:
         self.test_report.append(report)
 
     def run_step(self, step: Step, context):
-        step_definition = self.find_matching_step(step)
-        step_definition.function(context)
+        step_definition, match = self.find_matching_step(step)
+        step_definition.function(context, **match.named)
 
     def find_matching_step(self, step: Step):
         matching_step: List[StepDescriptor] = []
@@ -120,5 +120,5 @@ class TestRunner:
 
         # TODO: Raise exception when multiple matching steps found
 
-        return matching_step[0]
+        return matching_step[0], matching_step[0].pattern.parse(step.text)
 
