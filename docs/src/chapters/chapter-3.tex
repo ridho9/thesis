@@ -1,47 +1,78 @@
 \chapter{Analisis dan Perancangan}
 
-\section{Analisis \emph{Business Logic Error}}
+\section{???}
 
-\subsection{Analisis}
+\subsection{???}
 
-Celah keamanan bisa terjadi karena pada pada siklus pengembangan perangkat lunak
-biasa, \emph{programmer} hanya fokus terhadap kebutuhan fungsional,
-memerhatikan aspek keamanan. Hal ini juga menjadi penyebab dari BLE.
-BLE, secara spesifik, terjadi karena beberapa hal.
-Pertama, adanya perbedaan kecil dari step sebuah skenario fitur, misal pada state awal,
-jika fitur
-menambahkan barang ke dalam keranjang membutuhkan state awal user untuk telah login,
-apa yang terjadi jika penambahan barang dilakukan saat user belum login.
-Kedua, saat \emph{business} menuliskan deskripsi skenario business logic,
-yang bisa dituliskan dengan mudah biasanya hanya skenario positif dimana
-fitur berjalan sebagaimana seharusnya. Namun, kasus-kasus dimana fitur
-tidak berjalan sesuai dengan seharusnya tidak dituliskan, karena bagi orang bisnis,
-hal itu adalah sesuatu hal yang mereka rasakan \emph{obvious}.
-BLE terjadi saat \emph{programmer} dan \emph{tester} yang tidak memiliki
-pengetahuan domain sebanyak orang bisnis, tidak mengetahun asumsi-asumsi tersebut dan lupa
-untuk mengujinya.
+Dalam kebanyakan \textit{Software Development Life Cycle}(SDLC), setelah dilakukan
+penggalian kebutuhan, pemodelan arsitektur, dan desain detail akan didapatkan
+skenario yang berisi deskripsi-deskripsi fitur yang akan diimplementasikan,
+kemudian \emph{programmer} akan mulai melakukan implementasi.
+Sementara \emph{tester} akan melakukan
+pengumpulan \emph{security requirement} dan \emph{threat modelling} sehingga didapatkan
+\emph{misuse case, abuse case} dan \emph{threat model}. Setelah hasil pengumpulan ini
+didapatkan, kasus-kasus ini dapat diubah menjadi skenario-skenario yang berisi
+langkah-langkah dalam terjadinya suatu kasus.
 
-Dalam masa pengembangan suatu fitur, \emph{programmer} bisa saja memikirkan
-apa saja kemungkinan variasi dari nilai-nilai suatu fitur. Programmer
-dapat mencoba mengakomodasi semua variasi itu, tetapi pengetahuan tentang
-adanya variasi tersebut mungkin hanya teringat pada saat mengerjakan
-fitur tersebut. Sehingga di akhir pada saat melakukan \emph{acceptance test},
-\emph{tester} tidak tau tentang variasi ini dan tidak mengujinya.
-Bahkan, bisa saja \emph{programmer} yang sedang mengerjakan fitur tersebut
-lupa terhadap variasi tersebut beberapa hari kemudian.
+(?)Menurut kemudahan pengujiannya, kelemahan kemanan terbagi menjadi yang mudah diuji
+dan yang sulit diuji. Kelemakan keamanan yang mudah diuji biasanya memiliki penyebab
+yang jelas, telah banyak dipelajari, dan memiliki langkah yang mudah untuk mengujinya.
+Salah beberapa contoh dari kelemahan ini adalah \emph{Cross Site Scripting}(XSS) dan
+\emph{SQL injection}. Kedua kelemahan ini telah banyak dipelajari dan dipahami mekanismenya
+sehingga untuk mengujinya telah ada kumpulan \emph{payload} yang bisa digunakan untuk menguji
+kelemahan ini. Selanjutnya adalah kelemahan yang sulit diuji.
 
-\emph{Tester} bisa saja mencoba memikirkan banyak \emph{abuse case} pada saat
-akan melakukan pengujian suatu fitur, dan tentu menggunakan \emph{tester} yang
-berbeda dengan orang yang melakukan implementasi akan menghilangkan beberapa
-subjektifitas dalam \emph{abuse case}. Namun, sang \emph{programmer} tadi yang
-sempat memikirkan kasus-kasus variasi tentu juga memiliki pengetahuan yang banyak
-tentang fitur tersebut, namun tidak menuliskan kasus-kasus tersebut karena merasa
-melakukan pengujian adalah pekerjaan \emph{tester}, merasa menuliskan kasus pengujian
-adalah hal yang sulit dan hal lainnya seperti di kejar
-deadline, dan lain lain. \emph{Insight} dari \emph{programmer ini} tentu berharga,
-namun tidak terdokumentasi dan hilang.
+Dalam BDD, fitur-fitur yang ada dalam sebuah program dideskripsikan dengan skenario
+berisi langkah yang menjelaskan alur terjadinya sebuah skenario. Pada kakas BDD
+yang ada pada saat ini, biasanya kasus test ini ditulis dengan bahasa dan \emph{syntax}
+yang mudah dimengerti semua pihak mulai dari \emph{programmer} yang akan melakukan implementasi
+hingga \emph{stakeholder} yang memiliki aplikasi. Penggunaan bahasa tentu saja memiliki \emph{tradeoff}
+yang berbentuk dalam sulitnya untuk mendeksripsikan keadaan yang lebih kompleks.
 
-\subsection{Language Requirement}
+% \section{============}
+
+% \section{Analisis \emph{Business Logic Error}}
+
+% \subsection{Analisis}
+
+% Celah keamanan bisa terjadi karena pada pada siklus pengembangan perangkat lunak
+% biasa, \emph{programmer} hanya fokus terhadap kebutuhan fungsional,
+% memerhatikan aspek keamanan. Hal ini juga menjadi penyebab dari BLE.
+% BLE, secara spesifik, terjadi karena beberapa hal.
+% Pertama, adanya perbedaan kecil dari step sebuah skenario fitur, misal pada state awal,
+% jika fitur
+% menambahkan barang ke dalam keranjang membutuhkan state awal user untuk telah login,
+% apa yang terjadi jika penambahan barang dilakukan saat user belum login.
+% Kedua, saat \emph{business} menuliskan deskripsi skenario business logic,
+% yang bisa dituliskan dengan mudah biasanya hanya skenario positif dimana
+% fitur berjalan sebagaimana seharusnya. Namun, kasus-kasus dimana fitur
+% tidak berjalan sesuai dengan seharusnya tidak dituliskan, karena bagi orang bisnis,
+% hal itu adalah sesuatu hal yang mereka rasakan \emph{obvious}.
+% BLE terjadi saat \emph{programmer} dan \emph{tester} yang tidak memiliki
+% pengetahuan domain sebanyak orang bisnis, tidak mengetahun asumsi-asumsi tersebut dan lupa
+% untuk mengujinya.
+
+% Dalam masa pengembangan suatu fitur, \emph{programmer} bisa saja memikirkan
+% apa saja kemungkinan variasi dari nilai-nilai suatu fitur. Programmer
+% dapat mencoba mengakomodasi semua variasi itu, tetapi pengetahuan tentang
+% adanya variasi tersebut mungkin hanya teringat pada saat mengerjakan
+% fitur tersebut. Sehingga di akhir pada saat melakukan \emph{acceptance test},
+% \emph{tester} tidak tau tentang variasi ini dan tidak mengujinya.
+% Bahkan, bisa saja \emph{programmer} yang sedang mengerjakan fitur tersebut
+% lupa terhadap variasi tersebut beberapa hari kemudian.
+
+% \emph{Tester} bisa saja mencoba memikirkan banyak \emph{abuse case} pada saat
+% akan melakukan pengujian suatu fitur, dan tentu menggunakan \emph{tester} yang
+% berbeda dengan orang yang melakukan implementasi akan menghilangkan beberapa
+% subjektifitas dalam \emph{abuse case}. Namun, sang \emph{programmer} tadi yang
+% sempat memikirkan kasus-kasus variasi tentu juga memiliki pengetahuan yang banyak
+% tentang fitur tersebut, namun tidak menuliskan kasus-kasus tersebut karena merasa
+% melakukan pengujian adalah pekerjaan \emph{tester}, merasa menuliskan kasus pengujian
+% adalah hal yang sulit dan hal lainnya seperti di kejar
+% deadline, dan lain lain. \emph{Insight} dari \emph{programmer ini} tentu berharga,
+% namun tidak terdokumentasi dan hilang.
+
+\section{Language Requirement}
 
 Dari analisis di atas kita dapat mengetahui kebutuhan-kebutuhan bahasa
 agar dapat melakukan pengujian efektif terhadap BLE, yaitu:
