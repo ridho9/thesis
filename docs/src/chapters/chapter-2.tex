@@ -52,6 +52,37 @@ cara yang lebih bagus tentu saja memperbaiki perangkat lunak dari kodenya sehing
 tidak ada kemungkinan \emph{buffer overflow} (\cite{grawsec}).
 
 
+\section{CWE dan \emph{Business Logic Error}}
+
+\emph{Common Weakness Enumeration} (CWE) adalah daftar dan kategorisasi dari kelemahan keamanan
+yang umum ditemukan pada perangkat lunak dan keras (\cite{cwe}). CWE dikelola oleh MITRE
+yang merupakan organisasi non profit. CWE memungkinkan \emph{security engineer} untuk memiliki
+bahasa umum untuk menyampaikan kelemahan keamanan yang ada. CWE juga mengeluarkan daftar 25
+kelemahan keamanan yang paling banyak digunakan, daftar ini dapat digunakan oleh \emph{programmer}
+dan \emph{tester} untuk membantu dalam pengembangan aplikasi.
+
+\emph{Business Logic Error}(BLE) adalah kategori celah keamanan berasal dari kesalahan
+yang biasanya memudahkan penyerang untuk memanipulasi logika bisnis aplikasi (\cite{ble_cwe}).
+BLE biasanya sulit untuk ditemukan secara otomatis, karena mereka biasanya melibatkan
+penggunaan fungsionalitas aplikasi dengan sah. Namun, banyak BLE dapat memiliki
+pola-pola yang mirip dengan kelemahan implementasi dan detail yang sudah banyak dimengerti.
+
+Klasifikasi dari BLE masih kurang dipelajari, walaupun eksploitasi dari BLE
+sering terjadi di sistem nyata. Masih banyak perdebatan apakah BLE merepresentasikan
+sebuah konsep baru, atau variasi dari konsep yang sudah dipahami.
+
+Beberapa kategori dari BLE adalah:
+
+\begin{enumerate}
+      \item Melewati authentikasi dengan alur berbeda (CWE-288)
+      \item Incorrect Behavior Order: Early Amplification (CWE-408)
+      \item Melewati authorisasi dengan parameter dari user (CWE-408)
+      \item Mekanisme pengembalian password yang lemah (CWE-640)
+\end{enumerate}
+
+Banyak BLE berorientasi terhadap proses bisnis, alur aplikasi, dan urutan perilaku,
+yang dimana kelemahan-kelemahannya tidak banyak dipelajari di CWE.
+
 
 \section{Pengujian Keamanan Perangkat Lunak}
 
@@ -60,12 +91,12 @@ Mengelola risiko keamanan ini menjadi seminimal mungkin adalah salah satu tugas 
 Dalam mengelola risiko ini dilakukan beberapa hal (\cite{grawsectest}), diantaranya:
 
 \begin{itemize}
-    \item Membuat kasus penyalahgunaan
-    \item Membuat daftar kebutuhan keamanan
-    \item Melakukan analisis risiko arsitektur
-    \item Membuat perencanaan pengujian keamanan berbasis risiko
-    \item Melakukan pengujian keamanan
-    \item Melakukan pembersihan setelah terjadinya pelanggaran keamanan
+      \item Membuat kasus penyalahgunaan
+      \item Membuat daftar kebutuhan keamanan
+      \item Melakukan analisis risiko arsitektur
+      \item Membuat perencanaan pengujian keamanan berbasis risiko
+      \item Melakukan pengujian keamanan
+      \item Melakukan pembersihan setelah terjadinya pelanggaran keamanan
 \end{itemize}
 
 Sistem keamanan bukanlah keamanan sistem. Walaupun fitur keamanan seperti \emph{cryptography},
@@ -76,8 +107,8 @@ fitur keamanan ataupun di dalam sebuah tampilan non-kritikal.
 Karena itu dalam menguji keamanan perangkat lunak memiliki dua macam pendekatan (\cite{grawsec}):
 
 \begin{enumerate}
-    \item Menguji mekanisme keamanan untuk memastikan bahwa fungsionalitasnya telah diterapkan dengan baik
-    \item Melakukan pengujian keamanan berbasis risiko berdasarkan pemahaman dan menyimulasikan pendekatan si penyerang sistem
+      \item Menguji mekanisme keamanan untuk memastikan bahwa fungsionalitasnya telah diterapkan dengan baik
+      \item Melakukan pengujian keamanan berbasis risiko berdasarkan pemahaman dan menyimulasikan pendekatan si penyerang sistem
 \end{enumerate}
 
 Banyak \emph{programmer} yang dengan salah mengira bahwa keamanan cukup hanya dengan mengimplementasikan dan
@@ -111,59 +142,59 @@ tidak memiliki waktu dan sumberdaya untuk melakukan pengujian yang cukup.
 
 Dalam melakukan pengujian keamanan, ada beberapa tantangan yang mungkin dihadapi (\cite{thompsonsectest}):
 \begin{enumerate}
-    \item Adanya efek samping
-    
-    Dalam melakukan pengujian keamanan dengan pendekatan menguji fungsionalitas perangkat lunak,
-    biasanya diberikan sebuah masukan A dan diperiksa apakah perangkat lunak mengembalikan
-    hasil B sesuai dengan spesifikasi.
-    Namun yang kadang terlupakan bahwa aplikasi dapat memiliki efek samping yang dapat dimanfaatkan
-    penyerang sebagai celah keamanan. Salah satu contohnya adalah perangkat utilitas 
-    RDISK pada Windows NT 4.0,  yang berfungsi untuk membuat \emph{Emergency Repair Disk}.
-    Program ini pada umumnya berjalan baik sesuai spesifikasi, namun saat program berjalan,
-    ia membuat sebuah file sementara yang dapat dibaca oleh siapa saja.
-    Hal ini berarti pengguna tamu (\emph{guest}) dapat membaca isi file tersebut yang
-    termasuk \emph{registry Windows} yang berisi pengaturan tentang sistem yang dapat dimanfaatkan penyerang.
+      \item Adanya efek samping
 
-    \item Keadaan Pengujian Keamanan Saat Ini
+            Dalam melakukan pengujian keamanan dengan pendekatan menguji fungsionalitas perangkat lunak,
+            biasanya diberikan sebuah masukan A dan diperiksa apakah perangkat lunak mengembalikan
+            hasil B sesuai dengan spesifikasi.
+            Namun yang kadang terlupakan bahwa aplikasi dapat memiliki efek samping yang dapat dimanfaatkan
+            penyerang sebagai celah keamanan. Salah satu contohnya adalah perangkat utilitas
+            RDISK pada Windows NT 4.0,  yang berfungsi untuk membuat \emph{Emergency Repair Disk}.
+            Program ini pada umumnya berjalan baik sesuai spesifikasi, namun saat program berjalan,
+            ia membuat sebuah file sementara yang dapat dibaca oleh siapa saja.
+            Hal ini berarti pengguna tamu (\emph{guest}) dapat membaca isi file tersebut yang
+            termasuk \emph{registry Windows} yang berisi pengaturan tentang sistem yang dapat dimanfaatkan penyerang.
 
-    Perusahaan yang menyediakan jasa pengujian keamanan biasanya memiliki daftar-daftar celah yang umum ada.
-    Mereka biasanya hanya menggunakan daftar tersebut untuk membuat rencana pengujian.
-    Cara seperti ini biasanya tidak akan dapat menemukan celah-celah keamanan yang baru.
+      \item Keadaan Pengujian Keamanan Saat Ini
 
-    \item Ketidakamanan dan kegagalan aplikasi penunjang
+            Perusahaan yang menyediakan jasa pengujian keamanan biasanya memiliki daftar-daftar celah yang umum ada.
+            Mereka biasanya hanya menggunakan daftar tersebut untuk membuat rencana pengujian.
+            Cara seperti ini biasanya tidak akan dapat menemukan celah-celah keamanan yang baru.
 
-    Perangkat lunak modern berjalan pada sistem yang saling bergantung satu sama lain,
-    dimana satu aplikasi menggunakan puluhan \emph{library} dan berkomunikasi dengan
-    beberapa komponen lainnya.
-    Hal ini dapat menimbulkan dua masalah.
-    Pertama, aplikasi dapat memiliki celah dari salah satu komponen yang ia gunakan.
-    Kedua, sebuah komponen yang digunakan untuk menyediakan fungsionalitas keamanan
-    dapat saja pada suatu saat rusak dan berhenti bekerja.
+      \item Ketidakamanan dan kegagalan aplikasi penunjang
 
-    \item Masukan tidak terkira dari pengguna
+            Perangkat lunak modern berjalan pada sistem yang saling bergantung satu sama lain,
+            dimana satu aplikasi menggunakan puluhan \emph{library} dan berkomunikasi dengan
+            beberapa komponen lainnya.
+            Hal ini dapat menimbulkan dua masalah.
+            Pertama, aplikasi dapat memiliki celah dari salah satu komponen yang ia gunakan.
+            Kedua, sebuah komponen yang digunakan untuk menyediakan fungsionalitas keamanan
+            dapat saja pada suatu saat rusak dan berhenti bekerja.
 
-    Masukan dari pengguna adalah salah satu sumber celah yang paling umum dan paling mudah dieksploitasi.
-    Beberapa contoh yang umum digunakan adalah masukan yang panjang, karakter spesial, dan nilai-nilai khusus.
-    Salah satu contoh celah yang terjadi dari masukan pengguna ini adalah \emph{buffer overflow},
-    yang memungkinkan penyerang menyisipkan kode pada masukan yang sangat panjang,
-    hingga tidak bisa ditampung \emph{buffer} dan dijalankan oleh komputer. 
+      \item Masukan tidak terkira dari pengguna
 
-    \item Ketidakamanan desain
+            Masukan dari pengguna adalah salah satu sumber celah yang paling umum dan paling mudah dieksploitasi.
+            Beberapa contoh yang umum digunakan adalah masukan yang panjang, karakter spesial, dan nilai-nilai khusus.
+            Salah satu contoh celah yang terjadi dari masukan pengguna ini adalah \emph{buffer overflow},
+            yang memungkinkan penyerang menyisipkan kode pada masukan yang sangat panjang,
+            hingga tidak bisa ditampung \emph{buffer} dan dijalankan oleh komputer.
 
-    Banyak celah keamanan terjadi sejak perangkat lunak masih dalam tahap desain.
-    Kadang celah tersebut tidak bisa langsung diketahui karena terjadi setelah semua
-    bagian sistem selesai dirancang namun gabungan dari keseluruhan sistem tersebut
-    menyebabkan adanya celah.
-    Kadang celah juga terjadi pada test interface, yaitu bagian program yang sengaja
-    disisipkan dan memberi celah untuk pengujian, namun tidak dihilangkan saat program akan dirilis.
+      \item Ketidakamanan desain
 
-    \item Ketidakamanan implementasi
+            Banyak celah keamanan terjadi sejak perangkat lunak masih dalam tahap desain.
+            Kadang celah tersebut tidak bisa langsung diketahui karena terjadi setelah semua
+            bagian sistem selesai dirancang namun gabungan dari keseluruhan sistem tersebut
+            menyebabkan adanya celah.
+            Kadang celah juga terjadi pada test interface, yaitu bagian program yang sengaja
+            disisipkan dan memberi celah untuk pengujian, namun tidak dihilangkan saat program akan dirilis.
 
-    Walaupun spesifikasi perangkat lunak telah didesain sebaik mungkin dengan
-    mempertimbangkan berbagai macam aspek keamanan,
-    celah tetap dapat terjadi karena implementasi perangkat lunak yang tidak sempurna.
+      \item Ketidakamanan implementasi
 
-\end{enumerate} 
+            Walaupun spesifikasi perangkat lunak telah didesain sebaik mungkin dengan
+            mempertimbangkan berbagai macam aspek keamanan,
+            celah tetap dapat terjadi karena implementasi perangkat lunak yang tidak sempurna.
+
+\end{enumerate}
 
 \section{Tantangan Dalam Pengujian Aplikasi \emph{Web}}
 
@@ -177,142 +208,33 @@ pada aplikasi web jika tidak diperhatikan (\cite{websecchal}).
 
 Beberapa masalah umum yang ada pada perangkat lunak berbasis web adalah:
 \begin{enumerate}
-    \item Autentikasi: memastikan pengguna yang meminta data adalah benar pengguna tersebut
-    \item Autorisasi: memastikan pengguna boleh melakukan hal yang dilakukannya.
+      \item Autentikasi: memastikan pengguna yang meminta data adalah benar pengguna tersebut
+      \item Autorisasi: memastikan pengguna boleh melakukan hal yang dilakukannya.
 
-    \item \emph{Cross-site scripting}:
-    celah dimana penyerang dapat memasukkan kode jahat ke halaman web yang dijalankan di browser pengguna lain.
+      \item \emph{Cross-site scripting}:
+            celah dimana penyerang dapat memasukkan kode jahat ke halaman web yang dijalankan di browser pengguna lain.
 
-    \item \emph{SQL injection}:
-    celah dimana disisipkannya kode jahat di dalam perintah SQL yang kemudian dijalankan oleh \emph{database}.
+      \item \emph{SQL injection}:
+            celah dimana disisipkannya kode jahat di dalam perintah SQL yang kemudian dijalankan oleh \emph{database}.
 
-    \item \emph{Cross-site request forgery}:
-    celah dimana sebuah \emph{website} dapat dieksploitasi untuk mengirimkan perintah palsu dari sebuah user.
+      \item \emph{Cross-site request forgery}:
+            celah dimana sebuah \emph{website} dapat dieksploitasi untuk mengirimkan perintah palsu dari sebuah user.
 
-    \item \emph{Malicious file execution}:
-    aplikasi web menjalankan kode jahat yang berada di sebuah file bebas
+      \item \emph{Malicious file execution}:
+            aplikasi web menjalankan kode jahat yang berada di sebuah file bebas
 \end{enumerate}
 
-Beberapa tantangan dalam melakukan pengujian keamanan terhadap aplikasi web adalah:
+Beberapa tantangan dalam melakukan pengujian keamanan terhadap aplikasi web adalah (\cite{websecchal}):
 \begin{enumerate}
-    \item Butuhnya pengembangan kakas yang dapat mengotomatisasi pengujian aplikasi web.
-    
-    \item Pengembangan aplikasi web yang dinamis dan \emph{Rich Content} seperti \emph{Single-Page Application}
-    mempersulit \emph{crawling} halaman web sehingga bisa saja ada state halaman yang
-    tidak bisa dicapai oleh kakas pengujian.
+      \item Butuhnya pengembangan kakas yang dapat mengotomatisasi pengujian aplikasi web.
 
-    \item Bahasa pemrograman yang digunakan pada implementasi tidak memiliki fitur yang
-    dapat memaksa penggunaan aturan keamanan yang dapat menyebabkan bahaya terhadap keamanan
-    dan integritas data pengguna.
-\end{enumerate}
+      \item Pengembangan aplikasi web yang dinamis dan \emph{Rich Content} seperti \emph{Single-Page Application}
+            mempersulit \emph{crawling} halaman web sehingga bisa saja ada state halaman yang
+            tidak bisa dicapai oleh kakas pengujian.
 
-\section{\emph{Business Logic Error}}
-
-\emph{Business Logic Error}(BLE) adalah kategori celah keamanan berasal dari kesalahan
-yang biasanya memudahkan penyerang untuk memanipulasi logika bisnis aplikasi (\cite{ble_cwe}).
-BLE biasanya sulit untuk ditemukan secara otomatis, karena mereka biasanya melibatkan
-penggunaan fungsionalitas aplikasi dengan sah. Namun, banyak BLE dapat memiliki
-pola-pola yang mirip dengan kelemahan implementasi dan detail yang sudah banyak dimengerti.
-
-Klasifikasi dari BLE masih kurang dipelajari, walaupun eksploitasi dari BLE
-sering terjadi di sistem nyata. Masih banyak perdebatan apakah BLE merepresentasikan
-sebuah konsep baru, atau variasi dari konsep yang sudah dipahami.
-
-Beberapa kategori dari BLE adalah:
-
-\begin{enumerate}
-    \item Melewati authentikasi dengan alur berbeda (CWE-288)
-    \item Incorrect Behavior Order: Early Amplification (CWE-408)
-    \item Melewati authorisasi dengan parameter dari user (CWE-408)
-    \item Mekanisme pengembalian password yang lemah (CWE-640)
-\end{enumerate}
-
-Banyak BLE berorientasi terhadap proses bisnis, alur aplikasi, dan urutan perilaku,
-yang dimana kelemahan-kelemahannya tidak banyak dipelajari di CWE.
-
-\section{\emph{Domain-Specific Language}}
-
-\emph{Domain-Specific Language} (DSL) adalah bahasa pemrograman berkemampuan terbatas yang
-berfokus pada suatu domain tertentu (\cite{fowler_dsl}).
-
-Dari definisi diatas, ada empat poin penting:
-
-\begin{enumerate}
-    \item DSL dapat digunakan untuk memerintahkan komputer. Seperti bahasa pemrograman lainnya,
-    DSL haruslah bisa untuk dipahami manusia, tetapi masih mungkin diolah oleh komputer.
-
-    \item DSL adalah bahasa pemrograman komputer. Hal ini berarti DSL harus terasa seperti
-    bahasa yang dimana kemampuannya tidak hanya muncul dari masing-masing ekspresinya,
-    tetapi juga saat ekspresi-ekspresi tersebut digabungkan.
-
-    \item Bahasa pemrograman umum (\emph{General Purpose Programming Language}) memiliki banyak fitur.
-    Hal ini membuatnya sangat berguna, namun menjadi susah untuk dipelajari dan digunakan.
-    DSL dengan kemampuannya yang terbatas hanya memiliki fitur-fitur minimum yang dibutuhkan untuk domainnya.
-
-    \item Sebuah bahasa dengan kemampuan terbatas hanya akan berguna jika ia memiliki
-    fokus yang jelas terhadap sebuah domain kecil.
-\end{enumerate}
-
-DSL terbagi menjadi dua kategori, yaitu:
-
-\begin{enumerate}
-    \item \emph{External DSL}
-
-    DSL eksternal adalah bahasa yang terpisah dari bahasa utama aplikasi.
-    Biasanya, DSL eksternal memiliki syntaxnya sendiri, namun kadang dapat menggunakan
-    bahasa lain seperti XML. Sebuah kode pada DSL eksternal biasanya akan diproses oleh
-    aplikasi utama. Beberapa contoh DSL eksternal adalah Regex, SQL, awk, sed.
-
-    \item \emph{Internal DSL}
-    
-    DSL internal adalah sebuah cara tertentu untuk menggunakan sebuah bahasa.
-    Sebuah DSL internal ditulis dalam bahasa yang sama dengan bahasa utama aplikasi,
-    namun hanya menggunakan sebagian fitur bahasa untuk mengurusi bagian kecil 
-    dari keseluruhan sistem. Salah satu bahasa yang memiliki banyak DSL internal adalah Ruby,
-    karena struktur Ruby yang ekspresif memudahkan dibuatnya DSL.
-    Web framework Rails yang ditulis dengan Ruby adalah salah satu contoh DSL.
-\end{enumerate}
-
-DSL adalah sebuah alat yang memiliki fokus yang jelas dan hanya mengurusi suatu
-aspek kecil tertentu. Sebuah aplikasi bisa saja menggunakan banyak DSL untuk mengurusi
-berbagai aspek sistemnya. Beberapa kelebihan menggunakan DSL adalah:
-
-\begin{enumerate}
-    \item Meningkatkan produktivitas
-
-    Salah satu daya tarik utama dari DSL adalah ia menyediakan cara untuk menyampaikan
-    sebuah maksud sebuah sistem dengan lebih jelas.
-    Hal ini menyebabkan programmer lebih mudah memahami maksud dan
-    tujuan sebuah kode dan sistem.
-
-    \item Merepresentasikan pengetahuan domain dengan lebih baik
-
-    DSL dapat didesain sedemikian mungkin untuk merepresentasikan dan mengabstraksikan
-    suatu domain tertentu, sehingga
-    bisa digunakan bukan hanya oleh \emph{programmer} saja, tetapi juga oleh ahli domain tersebut.
-\end{enumerate}
-
-Sementara kekurangan menggunakan DSL adalah:
-
-\begin{enumerate}
-    \item \emph{Language cacophony}
-    
-    Beberapa komplain yang sering didengar saat menggunakan DSL adalah \emph{language cacophony},
-    dimana bahasa biasanya sulit untuk dipelajari, sehingga menggunakan banyak bahasa akan lebih
-    sulit dari pada menggunakan satu bahasa. Kebutuhuan untuk mempelajari banyak bahasa menyebabkan
-    sulit untuk mengerjakan proyek dan menambah orang baru kedalam proyek.
-
-    Namun dari komplain ini, banyak orang yang berpikiran bahwa mempelajari sebuah DSL akan sesulit
-    mempelajari bahasa pemrograman general biasa. Tetapi, DSL sebenarnya lebih mudah dipelajari
-    karena keterbatasannya.
-
-    \item Biaya pembuatan
-    
-    Seperti semua bagian dari program, DSL juga merupakan program yang harus dibuat dan dipelihara.
-    Tentu saja hal ini dapat menambah biaya yang harus dikeluarkan. Biaya pembuatan DSL juga dapat
-    lebih tinggi karena tim yang ada tidak terbiasa membuat DSL sehingga harus belajar lagi, yang
-    juga dapat menambah biaya.
-
+      \item Bahasa pemrograman yang digunakan pada implementasi tidak memiliki fitur yang
+            dapat memaksa penggunaan aturan keamanan yang dapat menyebabkan bahaya terhadap keamanan
+            dan integritas data pengguna.
 \end{enumerate}
 
 
@@ -332,62 +254,151 @@ tingkah laku(\emph{behavior}) dari perangkat lunak, bukan kasus-kasus uji ekspli
 
 Menurut (\cite{bdd_char}), BDD memiliki 6 karakteristik utama yaitu:
 \begin{enumerate}
-    \item \emph{Ubiquitous Language}
-    
-    \emph{Ubiquitous Language} (Bahasa Umum) adalah sebuah bahasa yang strukturnya berasal dari model domain dan
-    mengandung istilah-istilah yang akan digunakan untuk mendeskripsikan perilaku suatu perangkat lunak.
-    Bahasa umum yang didasari dari domain bisnis memungkinkan customer, bisnis, dan \emph{developer}
-    saling berkomunikasi dengan jelas dan tanpa ambigu.
+      \item \emph{Ubiquitous Language}
 
-    BDD sendiri juga memiliki bahasa umumnya yang digunakan untuk mendeskripsikan fitur dan skenario
-    perilaku perangkat lunak. Bahasa ini \emph{domain independent}.
+            \emph{Ubiquitous Language} (Bahasa Umum) adalah sebuah bahasa yang strukturnya berasal dari model domain dan
+            mengandung istilah-istilah yang akan digunakan untuk mendeskripsikan perilaku suatu perangkat lunak.
+            Bahasa umum yang didasari dari domain bisnis memungkinkan customer, bisnis, dan \emph{developer}
+            saling berkomunikasi dengan jelas dan tanpa ambigu.
 
-    \item Proses Dekomposisi Iteratif
+            BDD sendiri juga memiliki bahasa umumnya yang digunakan untuk mendeskripsikan fitur dan skenario
+            perilaku perangkat lunak. Bahasa ini \emph{domain independent}.
 
-    Pada BDD analisis dimulai dengan identifikasi perilaku yang diharapkan dari sistem, yang lebih konkret
-    dan mudah ditentukan. Lalu perilaku sistem akan diturunkan dari hasil bisnis yang seharusnya terjadi.
-    Hasil bisnis itu kemudian diubah menjadi kumpulan fitur yang menyatakan apa saja yang harus ada
-    agar hasil bisnis dihasilkan.
-    Proses dekomposisi ini dilakukan secara iteratif, yang berarti tidak harus melakukan banyak analisi pada
-    awalnya. 
+      \item Proses Dekomposisi Iteratif
 
-    \item Penjelasan \emph{User Story} dan Skenario dengan Simpel
+            Pada BDD analisis dimulai dengan identifikasi perilaku yang diharapkan dari sistem, yang lebih konkret
+            dan mudah ditentukan. Lalu perilaku sistem akan diturunkan dari hasil bisnis yang seharusnya terjadi.
+            Hasil bisnis itu kemudian diubah menjadi kumpulan fitur yang menyatakan apa saja yang harus ada
+            agar hasil bisnis dihasilkan.
+            Proses dekomposisi ini dilakukan secara iteratif, yang berarti tidak harus melakukan banyak analisi pada
+            awalnya.
 
-    Pada BDD, biasanya deskripsi skenario, fitur, dan \emph{user story} ditulis dalam sebuah template tertentu
-    dengan menggunakan bahasa simpel. Berbagai macam kakas BDD seperti JBehave, NBehave, SpecFlow, dan Cucumber
-    menggunakan cara ini walaupun memiliki kata kunci berbeda, tetapi masih memiliki arti
-    semantik yang sama.
+      \item Penjelasan \emph{User Story} dan Skenario dengan Simpel
 
-    \item Pengujian Penerimaan Otomatis
+            Pada BDD, biasanya deskripsi skenario, fitur, dan \emph{user story} ditulis dalam sebuah template tertentu
+            dengan menggunakan bahasa simpel. Berbagai macam kakas BDD seperti JBehave, NBehave, SpecFlow, dan Cucumber
+            menggunakan cara ini walaupun memiliki kata kunci berbeda, tetapi masih memiliki arti
+            semantik yang sama.
 
-    Pada BDD, skenario-skenario dari fitur yang telah sebelumnya dideskripsikan digunakan sebagai acuan
-    untuk melakukan uji penerimaan (\emph{acceptance testing}) secara otomatis. \emph{Programmer} akan
-    mulai dari salah satu skenario yang telah didefinisikan, yang kemudian dijadikan
-    kode pengujian yang akan mengarahkan implementasi. Sebuah skenario terdiri dari langkah-langkah
-    yang menggambarkan elemen-elemen yang ada dalam sebuah skenario.
-    
-    \item Kode Spesifikasi Berorientasi Perilaku yang Mudah Dibaca 
+      \item Pengujian Penerimaan Otomatis
 
-    BDD menganjurkan bahwa kode seharusnya menjadi bagian dari dokumentasi sistem. Kode seharusnya
-    mudah dibaca dan spesifikasi seharusnya menjadi bagian dari kode. 
+            Pada BDD, skenario-skenario dari fitur yang telah sebelumnya dideskripsikan digunakan sebagai acuan
+            untuk melakukan uji penerimaan (\emph{acceptance testing}) secara otomatis. \emph{Programmer} akan
+            mulai dari salah satu skenario yang telah didefinisikan, yang kemudian dijadikan
+            kode pengujian yang akan mengarahkan implementasi. Sebuah skenario terdiri dari langkah-langkah
+            yang menggambarkan elemen-elemen yang ada dalam sebuah skenario.
 
-    StoryQ dan JSpec menyediakan API yang memungkinkan \emph{programmer} untuk mendeskripsikan
-    \emph{user story} dan skenario sebagai kode. JBehave dan NBehave juga membantu untuk menulis
-    skenario sebagai kode dengan menggunakan \emph{annotation}. Kebalikannya, Cucumber tidak
-    berfokus kepada tingkat implementasi sehingga tidak memiliki karakteristik ini.
-    
-    \item \emph{Behaviour Driven} pada Fase Berbeda
-    
-    Karakteristik-karakteristik BDD yang telah dideskripsikan sebelumnya terjadi
-    pada fase-fase yang berbeda selama dalam siklus pengembangan perangkat lunak.
-    Pada fase rencana awal, perilaku perangkat lunak berhubungan dengan hasil bisnis.
-    Pada fase analisis, hasil bisnis dipecah menjadi sekumpulan fitur yang melingkupi
-    perilaku sistem. 
-    Pada fase implementasi, spesifikasi tersebut digunakan untuk mengarahkan implementasi
-    dan pengujian otomatis. \emph{Programmer} dianjurkan untuk memikirkan perilaku dari
-    komponen yang sedang mereka kembangkan dan interaksinya dengan komponen lain.
+      \item Kode Spesifikasi Berorientasi Perilaku yang Mudah Dibaca
+
+            BDD menganjurkan bahwa kode seharusnya menjadi bagian dari dokumentasi sistem. Kode seharusnya
+            mudah dibaca dan spesifikasi seharusnya menjadi bagian dari kode.
+
+            StoryQ dan JSpec menyediakan API yang memungkinkan \emph{programmer} untuk mendeskripsikan
+            \emph{user story} dan skenario sebagai kode. JBehave dan NBehave juga membantu untuk menulis
+            skenario sebagai kode dengan menggunakan \emph{annotation}. Kebalikannya, Cucumber tidak
+            berfokus kepada tingkat implementasi sehingga tidak memiliki karakteristik ini.
+
+      \item \emph{Behaviour Driven} pada Fase Berbeda
+
+            Karakteristik-karakteristik BDD yang telah dideskripsikan sebelumnya terjadi
+            pada fase-fase yang berbeda selama dalam siklus pengembangan perangkat lunak.
+            Pada fase rencana awal, perilaku perangkat lunak berhubungan dengan hasil bisnis.
+            Pada fase analisis, hasil bisnis dipecah menjadi sekumpulan fitur yang melingkupi
+            perilaku sistem.
+            Pada fase implementasi, spesifikasi tersebut digunakan untuk mengarahkan implementasi
+            dan pengujian otomatis. \emph{Programmer} dianjurkan untuk memikirkan perilaku dari
+            komponen yang sedang mereka kembangkan dan interaksinya dengan komponen lain.
 
 \end{enumerate}
+
+
+
+
+\section{\emph{Domain-Specific Language}}
+
+\emph{Domain-Specific Language} (DSL) adalah bahasa pemrograman berkemampuan terbatas yang
+berfokus pada suatu domain tertentu (\cite{fowler_dsl}).
+
+Dari definisi diatas, ada empat poin penting:
+
+\begin{enumerate}
+      \item DSL dapat digunakan untuk memerintahkan komputer. Seperti bahasa pemrograman lainnya,
+            DSL haruslah bisa untuk dipahami manusia, tetapi masih mungkin diolah oleh komputer.
+
+      \item DSL adalah bahasa pemrograman komputer. Hal ini berarti DSL harus terasa seperti
+            bahasa yang dimana kemampuannya tidak hanya muncul dari masing-masing ekspresinya,
+            tetapi juga saat ekspresi-ekspresi tersebut digabungkan.
+
+      \item Bahasa pemrograman umum (\emph{General Purpose Programming Language}) memiliki banyak fitur.
+            Hal ini membuatnya sangat berguna, namun menjadi susah untuk dipelajari dan digunakan.
+            DSL dengan kemampuannya yang terbatas hanya memiliki fitur-fitur minimum yang dibutuhkan untuk domainnya.
+
+      \item Sebuah bahasa dengan kemampuan terbatas hanya akan berguna jika ia memiliki
+            fokus yang jelas terhadap sebuah domain kecil.
+\end{enumerate}
+
+DSL terbagi menjadi dua kategori, yaitu:
+
+\begin{enumerate}
+      \item \emph{External DSL}
+
+            DSL eksternal adalah bahasa yang terpisah dari bahasa utama aplikasi.
+            Biasanya, DSL eksternal memiliki syntaxnya sendiri, namun kadang dapat menggunakan
+            bahasa lain seperti XML. Sebuah kode pada DSL eksternal biasanya akan diproses oleh
+            aplikasi utama. Beberapa contoh DSL eksternal adalah Regex, SQL, awk, sed.
+
+      \item \emph{Internal DSL}
+
+            DSL internal adalah sebuah cara tertentu untuk menggunakan sebuah bahasa.
+            Sebuah DSL internal ditulis dalam bahasa yang sama dengan bahasa utama aplikasi,
+            namun hanya menggunakan sebagian fitur bahasa untuk mengurusi bagian kecil
+            dari keseluruhan sistem. Salah satu bahasa yang memiliki banyak DSL internal adalah Ruby,
+            karena struktur Ruby yang ekspresif memudahkan dibuatnya DSL.
+            Web framework Rails yang ditulis dengan Ruby adalah salah satu contoh DSL.
+\end{enumerate}
+
+DSL adalah sebuah alat yang memiliki fokus yang jelas dan hanya mengurusi suatu
+aspek kecil tertentu. Sebuah aplikasi bisa saja menggunakan banyak DSL untuk mengurusi
+berbagai aspek sistemnya. Beberapa kelebihan menggunakan DSL adalah:
+
+\begin{enumerate}
+      \item Meningkatkan produktivitas
+
+            Salah satu daya tarik utama dari DSL adalah ia menyediakan cara untuk menyampaikan
+            sebuah maksud sebuah sistem dengan lebih jelas.
+            Hal ini menyebabkan programmer lebih mudah memahami maksud dan
+            tujuan sebuah kode dan sistem.
+
+      \item Merepresentasikan pengetahuan domain dengan lebih baik
+
+            DSL dapat didesain sedemikian mungkin untuk merepresentasikan dan mengabstraksikan
+            suatu domain tertentu, sehingga
+            bisa digunakan bukan hanya oleh \emph{programmer} saja, tetapi juga oleh ahli domain tersebut.
+\end{enumerate}
+
+Sementara kekurangan menggunakan DSL adalah:
+
+\begin{enumerate}
+      \item \emph{Language cacophony}
+
+            Beberapa komplain yang sering didengar saat menggunakan DSL adalah \emph{language cacophony},
+            dimana bahasa biasanya sulit untuk dipelajari, sehingga menggunakan banyak bahasa akan lebih
+            sulit dari pada menggunakan satu bahasa. Kebutuhuan untuk mempelajari banyak bahasa menyebabkan
+            sulit untuk mengerjakan proyek dan menambah orang baru kedalam proyek.
+
+            Namun dari komplain ini, banyak orang yang berpikiran bahwa mempelajari sebuah DSL akan sesulit
+            mempelajari bahasa pemrograman general biasa. Tetapi, DSL sebenarnya lebih mudah dipelajari
+            karena keterbatasannya.
+
+      \item Biaya pembuatan
+
+            Seperti semua bagian dari program, DSL juga merupakan program yang harus dibuat dan dipelihara.
+            Tentu saja hal ini dapat menambah biaya yang harus dikeluarkan. Biaya pembuatan DSL juga dapat
+            lebih tinggi karena tim yang ada tidak terbiasa membuat DSL sehingga harus belajar lagi, yang
+            juga dapat menambah biaya.
+
+\end{enumerate}
+
 
 
 
@@ -422,22 +433,22 @@ Diatas adalah salah satu contoh kode Gherkin.
 Test dalam Gherkin dibagi menjadi fitur-fitur. Tiap fitur tersebut akan dibagi menjadi
 skenario, yang terdiri dari langkah-langkah.
 
-\subsection{\emph{Feature}}
+% \subsection{\emph{Feature}}
 
-Fungsi dari \emph{Feature} adalah sebagai deskripsi level tinggi dari fitur perangkat lunak.
-\emph{Feature} juga berguna untuk mengelompokkan skenario yang berhubungan.
-Biasanya pada Cucumber, satu file hanya berisi satu \emph{Feature}.
+% Fungsi dari \emph{Feature} adalah sebagai deskripsi level tinggi dari fitur perangkat lunak.
+% \emph{Feature} juga berguna untuk mengelompokkan skenario yang berhubungan.
+% Biasanya pada Cucumber, satu file hanya berisi satu \emph{Feature}.
 
-\subsection{\emph{Scenario / Example}}
+% \subsection{\emph{Scenario / Example}}
 
-\emph{Scenario} adalah contoh konkret yang menggambarkan sebuah aturan bisnis yang terdiri
-dari langkah-langkah. \emph{Scenario} biasanya dideskripsikan dengan pola berupa:
+% \emph{Scenario} adalah contoh konkret yang menggambarkan sebuah aturan bisnis yang terdiri
+% dari langkah-langkah. \emph{Scenario} biasanya dideskripsikan dengan pola berupa:
 
-\begin{enumerate}
-    \item Nyatakan konteks awal (\emph{Given})
-    \item Nyatakan sebuah kejadian (\emph{When})
-    \item Nyatakan hasil yang diharapkan (\emph{Then})
-\end{enumerate}
+% \begin{enumerate}
+%       \item Nyatakan konteks awal (\emph{Given})
+%       \item Nyatakan sebuah kejadian (\emph{When})
+%       \item Nyatakan hasil yang diharapkan (\emph{Then})
+% \end{enumerate}
 
 \subsection{\emph{Step}}
 
@@ -452,7 +463,7 @@ maka Cucumber akan mencari \emph{step definition} yang bernama
 
 \subsection{\emph{Step Definition}}
 
-Cucumber memungkinkan terhubungnya antara definisi langkah pada Gherkin 
+Cucumber memungkinkan terhubungnya antara definisi langkah pada Gherkin
 dengan kode test nyata melalui nama pada \emph{step}.
 Cucumber dapat digunakan dengan beberapa bahasa pemrograman berbeda.
 \emph{Step definition} pada Cucumber didefinisikan menggunakan fungsi-fungsi simpel, seperti:
@@ -469,22 +480,22 @@ public class StepDefinitions {
 }
 \end{lstlisting}
 
-\emph{Step definition} juga bisa dapat diberi variabel untuk meningkatkan \emph{code reuse}.
+% \emph{Step definition} juga bisa dapat diberi variabel untuk meningkatkan \emph{code reuse}.
 
-\subsection{\emph{Scenario Outline}}
+% \subsection{\emph{Scenario Outline}}
 
-Terkadang, ada beberapa \emph{scenario} yang ternyata memiliki kerangka yang sama,
-hanya saja berbeda pada bagian-bagian kecil seperti angka-angka. Beberapa skenario
-mirip ini dapat digabungkan menjadi satu skenario menggunakan \emph{scenario outline}.
+% Terkadang, ada beberapa \emph{scenario} yang ternyata memiliki kerangka yang sama,
+% hanya saja berbeda pada bagian-bagian kecil seperti angka-angka. Beberapa skenario
+% mirip ini dapat digabungkan menjadi satu skenario menggunakan \emph{scenario outline}.
 
-\begin{lstlisting}[language=gherkin]
-  Scenario Outline: eating
-  Given there are <start> cucumbers
-  When I eat <eat> cucumbers
-  Then I should have <left> cucumbers
+% \begin{lstlisting}[language=gherkin]
+%   Scenario Outline: eating
+%   Given there are <start> cucumbers
+%   When I eat <eat> cucumbers
+%   Then I should have <left> cucumbers
 
-  Scenarios:
-    | start | eat | left |
-    |    12 |   5 |    7 |
-    |    20 |   5 |   15 |
-\end{lstlisting}
+%   Scenarios:
+%     | start | eat | left |
+%     |    12 |   5 |    7 |
+%     |    20 |   5 |   15 |
+% \end{lstlisting}

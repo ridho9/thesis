@@ -1,10 +1,30 @@
 \chapter{Analisis dan Perancangan}
 
-\section{???}
+\section{Analisis}
 
-\subsection{???}
+% \subsection{???}
 
-Dalam kebanyakan \textit{Software Development Life Cycle}(SDLC), setelah dilakukan
+Menurut kemudahan pengujiannya, kelemahan kemanan terbagi menjadi yang mudah diuji
+dan yang sulit diuji. Kelemakan keamanan yang mudah diuji biasanya memiliki penyebab
+yang jelas, telah banyak dipelajari, dan memiliki langkah yang mudah untuk mengujinya.
+Salah beberapa contoh dari kelemahan ini adalah \emph{Cross Site Scripting} (XSS) dan
+\emph{SQL injection}. Kedua kelemahan ini telah banyak dipelajari dan dipahami mekanismenya
+sehingga untuk mengujinya telah ada kumpulan \emph{payload} yang bisa digunakan untuk menguji
+kelemahan ini. Selanjutnya adalah kelemahan yang sulit diuji. Kelemahan keamanan
+yang sulit diuji biasanya belum banyak dipelajari dan membutuhkan penggunaan program
+secara normal sehingga tidak bisa langsung diketahui dari awal. Salah satu
+dari kelas kelemahan yang termasuk kedalam kelemahan yang sulit diuji adalah
+\emph{Business Logic Errors} (BLE).
+
+BLE (CWE-840) merupakan jenis kelemahan yang terjadi karena kekurangan
+dan cacat dalam logika bisnis program. Kelemahan BLE biasanya muncul dalam proses bisnis,
+alur aplikasi dan urutan langkah-langkah. Jenis kelemahan ini sulit diidentifikasi karena
+terjadi sebagai efek samping dari logika bisnis program, bukan karena kelemahan teknologi
+yang digunakan, dan sulit diuji karena bentuk nyata dari jenis kelemahan yang terjadi
+pada program sebenarnya dapat memiliki banyak bentuk dan untuk menguji kelemahan tersebut
+perlu dilakukan urutan langkah-langkah tertentu.
+
+Dalam kebanyakan \textit{Software Development Life Cycle} (SDLC), setelah dilakukan
 penggalian kebutuhan, pemodelan arsitektur, dan desain detail akan didapatkan
 skenario yang berisi deskripsi-deskripsi fitur yang akan diimplementasikan,
 kemudian \emph{programmer} akan mulai melakukan implementasi.
@@ -12,15 +32,7 @@ Sementara \emph{tester} akan melakukan
 pengumpulan \emph{security requirement} dan \emph{threat modelling} sehingga didapatkan
 \emph{misuse case, abuse case} dan \emph{threat model}. Setelah hasil pengumpulan ini
 didapatkan, kasus-kasus ini dapat diubah menjadi skenario-skenario yang berisi
-langkah-langkah dalam terjadinya suatu kasus.
-
-(?)Menurut kemudahan pengujiannya, kelemahan kemanan terbagi menjadi yang mudah diuji
-dan yang sulit diuji. Kelemakan keamanan yang mudah diuji biasanya memiliki penyebab
-yang jelas, telah banyak dipelajari, dan memiliki langkah yang mudah untuk mengujinya.
-Salah beberapa contoh dari kelemahan ini adalah \emph{Cross Site Scripting}(XSS) dan
-\emph{SQL injection}. Kedua kelemahan ini telah banyak dipelajari dan dipahami mekanismenya
-sehingga untuk mengujinya telah ada kumpulan \emph{payload} yang bisa digunakan untuk menguji
-kelemahan ini. Selanjutnya adalah kelemahan yang sulit diuji.
+langkah-langkah dalam terjadinya suatu kasus ancaman keamanan.
 
 Dalam BDD, fitur-fitur yang ada dalam sebuah program dideskripsikan dengan skenario
 berisi langkah yang menjelaskan alur terjadinya sebuah skenario. Pada kakas BDD
@@ -28,6 +40,26 @@ yang ada pada saat ini, biasanya kasus test ini ditulis dengan bahasa dan \emph{
 yang mudah dimengerti semua pihak mulai dari \emph{programmer} yang akan melakukan implementasi
 hingga \emph{stakeholder} yang memiliki aplikasi. Penggunaan bahasa tentu saja memiliki \emph{tradeoff}
 yang berbentuk dalam sulitnya untuk mendeksripsikan keadaan yang lebih kompleks.
+
+Hasil dari pemodelan ancaman keamanan yang berbentuk skenario yang terdiri dari langkah-langkah
+cocok dengan metodologi BDD yang juga mendeskripsikan skenario dari fitur program dalam bentuk
+langkah-langkah. \emph{File} fitur BDD berisi pengetahuan tentang kejadian apa saja yang mungkin
+terjadi terhadap suatu fitur program. Kumpulan pengetahuan ini dapat digunakan untuk
+membantu menemukan kelemahan keamanan yang termasuk kedalam BLE, karena kelemahan BLE
+umumnya terjadi setelah langkah-langkat tertentu dijalankan secara berurutan.
+
+Pada saat ini, ada beberapa kakas yang dapat digunakan untuk melakukan metodologi BDD.
+Beberapa diantaranya adalah Cucumber dan Rspec.
+Cucumber adalah kakas metodologi BDD yang menggunakan bahasa Gherkin. Kakas ini dapat
+digunakan dengan beberapa bahasa pemrograman seperti Java, Javascript, Ruby, dan Python.
+Sementara Rspec adalah kakas metodologi BDD yang menggunakan DSL Ruby, dan hanya bisa
+digunakan dengan bahasa pemrograman Ruby.
+Cucumber memiliki kelebihan dimana \emph{file} pengujian ditulis dengan bahasa Gherkin
+yang berbentuk bahasa manusia, sehingga dapat dimengerti oleh banyak pihak. Namun kekurangannya
+adalah \emph{syntax} Gherkin yang simpel menyebabkan sulitnya untuk mengekspresikan konstruk
+yang lebih kompleks karena hanya didesain untuk pengujian fungsionalitas, bukan untuk
+pengujian keamanan.
+
 
 % \section{============}
 
@@ -78,11 +110,11 @@ Dari analisis di atas kita dapat mengetahui kebutuhan-kebutuhan bahasa
 agar dapat melakukan pengujian efektif terhadap BLE, yaitu:
 
 \begin{enumerate}
-  \item Mudah
+  % \item Mudah
 
-        Bahasa yang akan dibuat haruslah mudah dipahami, sehingga semua pihak tetap
-        bisa memahaminya, dan mudah ditulis, sehingga \emph{programmer} yang ``sibuk''
-        terdorong untuk menulis kasus pengujian.
+  %       Bahasa yang akan dibuat haruslah mudah dipahami, sehingga semua pihak tetap
+  %       bisa memahaminya, dan mudah ditulis, sehingga \emph{programmer} yang ``sibuk''
+  %       terdorong untuk menulis kasus pengujian.
 
   \item Bisa menyatakan kegagalan
 
@@ -105,10 +137,10 @@ agar dapat melakukan pengujian efektif terhadap BLE, yaitu:
 
 Kita dapat membandingkan kebutuhan bahasa yang telah dianalisa dengan keadaan Gherkin pada saat ini.
 
-\subsection*{Mudah}
+% \subsection*{Mudah}
 
-Gherkin yang menggunakan bahasa manusia sudah mudah dimengerti, dan kita ingin agar bahasa
-baru yang akan dibuat dapat dipahami dan ditulis semudah Gherkin.
+% Gherkin yang menggunakan bahasa manusia sudah mudah dimengerti, dan kita ingin agar bahasa
+% baru yang akan dibuat dapat dipahami dan ditulis semudah Gherkin.
 
 \subsection*{Bisa menyatakan kegagalan}
 
