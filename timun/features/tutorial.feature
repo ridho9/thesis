@@ -1,4 +1,4 @@
-Feature: eyy
+Feature: fail scenario
 
   Scenario: succeed test
       Then this will succeed

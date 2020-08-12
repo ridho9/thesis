@@ -104,45 +104,39 @@ pengujian keamanan.
 % deadline, dan lain lain. \emph{Insight} dari \emph{programmer ini} tentu berharga,
 % namun tidak terdokumentasi dan hilang.
 
-\section{Language Requirement}
+% \section{Language Requirement}
 
-Dari analisis di atas kita dapat mengetahui kebutuhan-kebutuhan bahasa
-agar dapat melakukan pengujian efektif terhadap BLE, yaitu:
+% Dari analisis di atas kita dapat mengetahui kebutuhan-kebutuhan bahasa
+% agar dapat melakukan pengujian efektif terhadap BLE, yaitu:
 
-\begin{enumerate}
-  % \item Mudah
+% \begin{enumerate}
+%   % \item Mudah
 
-  %       Bahasa yang akan dibuat haruslah mudah dipahami, sehingga semua pihak tetap
-  %       bisa memahaminya, dan mudah ditulis, sehingga \emph{programmer} yang ``sibuk''
-  %       terdorong untuk menulis kasus pengujian.
+%   %       Bahasa yang akan dibuat haruslah mudah dipahami, sehingga semua pihak tetap
+%   %       bisa memahaminya, dan mudah ditulis, sehingga \emph{programmer} yang ``sibuk''
+%   %       terdorong untuk menulis kasus pengujian.
 
-  \item Bisa menyatakan kegagalan
+%   \item Bisa menyatakan kegagalan
+%   \item Bisa menyatakan variansi
 
-        Pada pengujian fungsionalitas, kita hanya menuliskan kasus-kasus positif
-        dimana skenario berjalan dengan benar. Namun untuk pengujian BLE,
-        menuliskan dan melakukan pengujian dimana skenario tidak berjalan dengan benar
-        haruslah sama mudahnya dengan skenario yang benar.
-
-  \item Bisa menyatakan variansi
-
-        Seperti yang telah disebutkan di atas, salah satu penyebab dari BLE adalah
-        adanya variansi-variansi dari skenario.
-        Bahasa yang akan dibuat haruslah dapat menyatakan variansi ini dengan mudah.
-        Hal ini dapat mengurangi duplikasi dan meningkatkan pemahaman bersama.
-\end{enumerate}
+%         Seperti yang telah disebutkan di atas, salah satu penyebab dari BLE adalah
+%         adanya variansi-variansi dari skenario.
+%         Bahasa yang akan dibuat haruslah dapat menyatakan variansi ini dengan mudah.
+%         Hal ini dapat mengurangi duplikasi dan meningkatkan pemahaman bersama.
+% \end{enumerate}
 
 
 
-\section{Kondisi Gherkin}
+\section{Kebutuhan dan Rancangan Solusi}
 
 Kita dapat membandingkan kebutuhan bahasa yang telah dianalisa dengan keadaan Gherkin pada saat ini.
 
-% \subsection*{Mudah}
+\subsection{Bisa menyatakan kegagalan}
 
-% Gherkin yang menggunakan bahasa manusia sudah mudah dimengerti, dan kita ingin agar bahasa
-% baru yang akan dibuat dapat dipahami dan ditulis semudah Gherkin.
-
-\subsection*{Bisa menyatakan kegagalan}
+Pada pengujian fungsionalitas, kita hanya menuliskan kasus-kasus positif
+dimana skenario berjalan dengan benar. Namun untuk pengujian BLE,
+menuliskan dan melakukan pengujian dimana skenario tidak berjalan dengan benar
+haruslah sama mudahnya dengan skenario yang benar.
 
 Pada saat ini, penulisan \emph{step} pada Gherkin lebih berorientasi terhadap
 kasus sukses. Misalkan untuk step \texttt{Then the basket should have items in it},
@@ -156,31 +150,6 @@ sukses/\emph{passing} jika tidak ada exception yang terjadi.
 Kita ingin mengurangi duplikasi dan mengingkatkan \emph{code reuse}.
 Kita ingin agar kode \emph{step definition} dari step \texttt{Then the basket should have items in it}
 dapat digunakan untuk skenario sukses ataupun gagal.
-
-Bahasa yang akan dibuat haruslah dapat menyatakan kegagalan dalam bagian bahasanya.
-Seperti Gherkin, namun memiliki keyword yang menyatakan bahwa suatu skenario
-harus lah gagal.
-
-\subsection*{Bisa menyatakan variansi}
-
-Gherkin pada saat ini memiliki fitur \emph{scenario outline} yang dapat menyatakan banyak skenario yang mirip
-hanya dalam satu skenario saja dengan menggunakan template dan tabel.
-\emph{Scenario outline} dapat memenuhi kebutuhan bahasa untuk menyatakan variansi.
-
-Namun fitur ini dapat dikembangkan dengan menambah kemampuan untuk menyatakan domain/tipe data suatu variabel, misalkan
-domain \texttt{integer}, \texttt{positive}, \texttt{string}, \emph{enum}, dan lain lainnya.
-Hal ini membuat deklarasi variansi lebih singkat dan padat.
-Kemampuan ini juga dapat digabungkan dengan poin sebelumnya.
-Untuk \emph{Scenario outline}, kita dapat menyatakan tabel \emph{example} dengan kombinasi-kombinasi varian yang harus gagal.
-Untuk domain variabel, kita dapat menyatakan nilai mana saja yang harus gagal.
-
-
-\section{Rancangan Solusi}
-
-Dari bagian sebelumnya, pada bagian ini akan dibahas desain bahasa untuk fitur yang dianalisa
-dan cara implementasi.
-
-\subsection{Menyatakan Kegagalan}
 
 Pada saat ini Gherkin hanya menyatakan \textit{step} yang positif seperti
 "barang sukses ditambahkan ke dalam keranjang", namun butuh mendeskripsikan \textit{step function}
@@ -221,20 +190,93 @@ Feature: keranjang
     Given user <login state> login
     When user memasukkan 1 barang
     Then <result state> ada 1 barang di dalam keranjang
-
     Examples:
       | login state | result state |
       | sudah       | sukses       |
       | belum       | gagal        |
 \end{lstlisting}
 
-Dengan begini, masalah duplikasi skenario terselesaikan namun programmer tetap
-harus mendefinisikan tabel pada scenario outline, dan \textit{step} yang didefinisikan
-pada bagian \textit{Then} tetap harus dibuat \textit{step definition}nya.
+Dengan menggabungkan fitur \emph{scenario outline} dengan \emph{fail scenario}
+kita dapat membuat bagian baru dari \emph{scenario outline} yang menyatakan contoh
+yang harusnya gagal, sehingga tidak membutuhkan variabel \texttt{result state},
+dengan menggunakan fitur tersebut kode pengujian kita dapat menjadi seperi
 
-\subsubsection{Variansi}
+\begin{lstlisting}[language=gherkin]
+Feature: keranjang
+  Scenario Outline: menambahkan barang ke dalam keranjang
+    Given user <login state> login
+    When user memasukkan 1 barang
+    Then ada 1 barang di dalam keranjang
+    Examples:
+    | login state   |
+    | telah         |
+    Fail Examples:
+    | login state   |
+    | belum         |
+\end{lstlisting}
 
-Pada bagian sebelumnya telah
+
+\subsection{Bisa menyatakan variansi}
+
+Gherkin pada saat ini memiliki fitur \emph{scenario outline} yang dapat menyatakan banyak skenario yang mirip
+hanya dalam satu skenario saja dengan menggunakan template dan tabel.
+\emph{Scenario outline} dapat memenuhi kebutuhan bahasa untuk menyatakan variansi.
+
+Namun fitur ini dapat dikembangkan dengan menambah kemampuan untuk menyatakan domain/tipe data suatu variabel, misalkan
+domain \texttt{integer}, \texttt{positive}, \texttt{string}, \emph{enum}, dan lain lainnya.
+Hal ini membuat deklarasi variansi lebih singkat dan padat.
+Kemampuan ini juga dapat digabungkan dengan poin sebelumnya.
+Untuk \emph{Scenario outline}, kita dapat menyatakan tabel \emph{example} dengan
+kombinasi-kombinasi varian yang harus gagal.
+Untuk domain variabel, kita dapat menyatakan nilai mana saja yang harus gagal.
+
+Sebagai contoh dalam aplikasi \emph{e-commerce}, seorang user dapat memiliki status
+telah atau belum \emph{login}. Seperti yang telah dibahas pada poin sebelumnya, kita dapat
+menggunakan fitur \emph{scenario outline} dan \emph{fail scenario} untuk menyatakan
+pengujian fitur tersebut. Namun dengan bertambahnya fitur dan skenario yang akan diuji,
+mengulang penggunaan \emph{scenario outline} yang berulang-ulang menjadi sulit. Dengan contoh
+diatas tentu saja \emph{state} seorang user simpel saja, hanya sudah atau belum login, namun
+jika attribut yang dimiliki user memiliki banyak nilai, misalnya jenis user yang dapat
+berupa admin, pembeli dan penjual, jika ada perubahan dari spesifikasi maka semua tempat
+yang terkait dengan attribut ini harus diubah.
+
+Untuk mengatasi hal ini, kita dapat menambahkan fitur dimana kita dapat membuat deklarasi
+nilai-nilai yang dapat dimiliki suatu variabel, seperti enum. Sebagai contoh, fitur admin
+dashboard suatu aplikasi \emph{e-commerce} dapat diuji dengan menggunakan kode berikut
+
+\begin{lstlisting}[language=gherkin]
+Variables:
+  user role: enum buyer, seller, admin
+Feature: Admin
+  Scenario: admin mengubah setting website
+    Given user dengan role <user role> telah login
+    When user merubah pengaturan website
+    Then pengaturan website berubah
+    Variables Accepted:
+    | user role    |
+    | admin        |
+\end{lstlisting}
+
+Bagian pada \texttt{Variables Accepted} mirip dengan bagian \emph{Examples} pada
+scenario outline, namun \emph{tester} hanya perlu menulis kombinasi nilai variabel-variabel
+yang diterima, \emph{runtime} gherkin akan secara otomatis menguji semua kombinasi variabel.
+
+Deklarasi ini bersifat global sehingga dapat digunakan di file fitur lainnya.
+Dengan fitur ini duplikasi didalam kode pengujian menjadi berkurang dan
+kode memiliki satu sumber fakta sehingga jika terjadi perubahan pada spesifikai tidak
+harus mengubah kode pada banyak tempat.
+
+% \section{Rancangan Solusi}
+
+% Dari bagian sebelumnya, pada bagian ini akan dibahas desain bahasa untuk fitur yang dianalisa
+% dan cara implementasi.
+
+% \subsection{Menyatakan Kegagalan}
+
+
+% \subsubsection{Variansi}
+
+% Pada bagian sebelumnya telah
 
 % \section{Perbedaan Pengujian Fungsionalitas dan \emph{Business Logic Error}}
 

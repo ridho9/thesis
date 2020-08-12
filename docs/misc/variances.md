@@ -47,7 +47,7 @@ kode gherkin menjadi seperti:
 
 ```
 Feature: keranjang
-  Scenario: menambahkan barang ke dalam keranjang
+  Scenario Outline: menambahkan barang ke dalam keranjang
     Given user <login state> login
     When user memasukkan 1 barang
     Then ada 1 barang di dalam keranjang
@@ -72,10 +72,9 @@ Misal untuk sebuah webapp e-commerce, user memiliki 3 role "buyer" "seller" dan 
 dan programmer akan menulis kode testing untuk admin mengubah suatu setting web
 
 ```
+Variables:
+  role: enum(buyer seller admin)
 Feature: Admin
-  Variables:
-    role: enum(buyer seller admin)
-
   Scenario: admin mengubah setting website
     Given user dengan role <role> telah login
     When user merubah pengaturan website
