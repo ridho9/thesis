@@ -1,8 +1,6 @@
 \chapter{Analisis dan Perancangan}
 
-\section{Analisis}
-
-% \subsection{???}
+\section{Analisis Permasalahan}
 
 Menurut kemudahan pengujiannya, kelemahan kemanan terbagi menjadi yang mudah diuji
 dan yang sulit diuji. Kelemakan keamanan yang mudah diuji biasanya memiliki penyebab
@@ -129,7 +127,11 @@ pengujian keamanan.
 
 \section{Kebutuhan dan Rancangan Solusi}
 
-Kita dapat membandingkan kebutuhan bahasa yang telah dianalisa dengan keadaan Gherkin pada saat ini.
+Pada bagian ini akan dibahas tiga poin pengembangan terhadap bahasa Gherkin dan kakas Cucumber
+yang dapat diambil untuk membuat Gherkin dan Cucumber menjadi lebih cocok untuk pengujian keamanan.
+Tiga poin tersebut adalah kemampuan untuk menyatakan kegagalan, kemampuan untuk menyatakan variasi,
+dan pengacakan skenario. Dua poin pertama merupakan pengembangan terhadap bahasa Gherkin, dan
+poin terakhir merupakan pengembangan terhadap kakas Cucumber sebagai \emph{runtime} bahasa Gherkin.
 
 \subsection{Bisa menyatakan kegagalan}
 
@@ -265,6 +267,86 @@ Deklarasi ini bersifat global sehingga dapat digunakan di file fitur lainnya.
 Dengan fitur ini duplikasi didalam kode pengujian menjadi berkurang dan
 kode memiliki satu sumber fakta sehingga jika terjadi perubahan pada spesifikai tidak
 harus mengubah kode pada banyak tempat.
+
+\subsection{Pengacakan Skenario}
+
+Salah satu penyebab kesulitan dari pengujian kelemahan keamanan jenis BLE adalah karena kelemahan
+ini memiliki langkah-langkah yang harus dijalankan di dalam aplikasi, namun teknologi pada saat
+ini masih belum bisa melakukan eksplorasi langkah-langkah yang bisa dilakukan dalam aplikasi
+dari satu \emph{state} ke \emph{state} lainnya, terutama dalam aplikasi berbasis web.
+
+Dalam \emph{file} pengujian BDD telah terdapat sekumpulan pengetahuan tentang langkah-langkah
+yang dapat terjadi dalam suatu aplikasi dalam bentuk \emph{step} given, when dan then.
+Pengetahuan ini dapat dimanfaatkan oleh kakas pengujian untuk membangkitkan skenario-skenario
+baru secara acak dengah harapan skenario acak ini dapat membantu menemukan kelemahan-kelemahan baru.
+Cara ini mirip dengan \emph{fuzzy testing} dimana kasus pengujian dibangkitkan secara acak.
+
+
+\section{Struktur Bahasa}
+
+Pada bagian ini akan dipaparkan grammar bahasa yang akan dibuat dalam EBNF. Gherkin yang menggunakan bahasa
+manusia memiliki struktur yang cukup bebas namun kita masih dapat memperkirakan grammarnya sebisa mungkin
+dalam EBNF.
+
+\begin{lstlisting}[language=ebnf]
+string
+  : .+
+token
+  : \w+
+newline
+  : \n ;
+stepKeyword
+  : 'given' | 'when' | 'then' ;
+stepLine
+  : stepKeyword string newline ;
+stepLines
+  : stepLine+ ;
+scenarioKeyword
+  : 'scenario' | 'fail scenario' ;
+scenario
+  : scenarioKeyword ':' string newline
+    stepLines variableAcceptedTable?;
+backgroundScenario
+  : 'background' ':' string newline stepLines ;
+
+tableLine
+  : '|' ( string '|' )+ ;
+dataTable
+  : (tableLine newline)+ ;
+dataTableBody
+  : ':' newline dataTable ;
+exampleDataTable
+  : ('example' dataTableBody)? ('fail example' dataTableBody)? ;
+scenarioOutline
+  : 'scenario outline' ':' newline stepLines
+    exampleDataTable? variableAcceptedTable?;
+
+variableDeclarationType
+  : 'enum' string (',' string)*
+  | 'bool' ;
+variableDeclarationEntry
+  : string ':' variableDeclarationEntry newline ;
+variableDeclaration
+  : 'variable' ':' newline variableDeclarationEntry+ ;
+variableAcceptedTable
+  : 'variable accepted' dataTableBody ;
+
+featureChild
+  : scenario | backgroundScenario
+  | variableDeclaration | scenarioOutline ;
+feature
+  : 'feature' ':' string newline featureChild+;
+
+topLevelEntry
+  : feature | variableDeclaration ;
+
+featureFile
+  : topLevelEntry+ ;
+\end{lstlisting}
+
+
+\section{Desain Arsitektur}
+
 
 % \section{Rancangan Solusi}
 
