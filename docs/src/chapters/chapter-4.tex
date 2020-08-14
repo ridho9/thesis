@@ -1,3 +1,29 @@
 \chapter{Strategi Implementasi}
 
-\blindtext
+\section{Parser}
+
+Parser dibuat dengan menggunakan gaya \emph{Parsing Expression Grammar}(PEG)
+
+Fitur seperti \emph{scenario outline} atau skenario dengan variable diolah pada bagian parser
+menjadi skenario-skenario dasar.
+
+Parser menghasilkan kumpulan skenario dalam bentuk data python yang mudah dibaca oleh runtime.
+
+\section{Importer}
+
+Importer berfungsi untuk membaca \emph{file} step descriptor yang ditulis dalam python.
+
+Importer menghasilkan kumpulan fungsi \emph{step descriptor} yang akan digunakan untuk
+menjalankan step-step yang telah didefinisikan dari skenario.
+
+\section{Runtime}
+
+Runtime berfungsi untuk menjalankan pengujian. Runtime menerima hasil dari parser dan importer,
+mencocokkan step-step dalam skenario dengan fungsi \emph{step descriptor} yang cocok,
+dan kemudian menjalankan skenario pengujian.
+
+Runtime menghasilkan laporan penjalanan pengujian. Laporan ini berisi skenario apa saja
+yang berhasil dan gagal. Laporan ini juga berisi penyebab kegagalan skenario dalam
+bentuk catatan exception.
+
+Fitur pembangkitan skenario acak diimplementasikan pada bagian runtime.
