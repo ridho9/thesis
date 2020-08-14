@@ -1,22 +1,154 @@
-\chapter{Strategi Implementasi}
+\chapter{Implementasi}
 
-\section{Parser}
+\section{Detail Implementasi}
 
-Parser dibuat dengan menggunakan gaya \emph{Parsing Expression Grammar}(PEG)
+Seluruh komponen dibuat dengan menggunakan bahasa python. Kakas dibuat dengan bentuk library python
+sehingga dapat diinstall dengan mudah menggunakan \emph{pip}. Kakas didesain untuk menguji
+program yang juga ditulis dengan bahasa python.
 
-Fitur seperti \emph{scenario outline} atau skenario dengan variable diolah pada bagian parser
-menjadi skenario-skenario dasar.
+\subsection{Parser}
 
-Parser menghasilkan kumpulan skenario dalam bentuk data python yang mudah dibaca oleh runtime.
+Komponen \emph{parser} berfungsi untuk membaca \emph{file} fitur dan menguraikan isinya menjadi
+struktur data yang dapat diolah. Komponen ini hanya menghasilkan skenario dalam bentuk dasar
+yang hanya berisi step-step, sehingga semua bentuk skenario yang lebih kompleks
+seperti \emph{scenario outline} akan diuraikan terlebih dahulu menjadi semua kemungkinan
+kombinasi skenario dasarnya. Sebagai contohnya adalah
 
-\section{Importer}
+\begin{lstlisting}[language=gherkin]
+Scenario Outline: menambahkan barang ke dalam keranjang
+  Given user <login state> login
+  When user memasukkan 1 barang
+  Then <result state> ada 1 barang di dalam keranjang
+  Examples:
+    | login state | result state |
+    | sudah       | sukses       |
+    | belum       | gagal        |
+\end{lstlisting}
+
+Kode diatas akan diuraikan menjadi skenario dasar dengan bentuk
+
+\begin{lstlisting}[language=gherkin]
+Scenario: menambahkan barang ke dalam keranjang (1)
+  Given user sudah login
+  When user memasukkan 1 barang
+  Then sukses ada 1 barang di dalam keranjang
+Scenario: menambahkan barang ke dalam keranjang (2)
+  Given user belum login
+  When user memasukkan 1 barang
+  Then gagal ada 1 barang di dalam keranjang
+\end{lstlisting}
+
+Perubahan ini berfungsi agar komponen \emph{runtime} hanya perlu tahu cara menjalankan
+skenario dasar saja sehingga lebih simpel, dan juga memperbanyak jumlah step yang diketahui
+oleh kakas sehingga dapat membangkitkan skenario acak yang lebih beragam.
+
+Kode penguraian menggunakan arsitektur \emph{Parsing Expression Grammar} (PEG), dimana
+pada arsitektur ini setiap \emph{non-terminal} seperti \texttt{scenario, scenarioOutline, feature}
+yang ada dalam \emph{grammar} pada \ref{sec:struktur-bahasa} dibentuk menjadi fungsi-fungsi
+yang dapat disusun, sehingga kode penguraian mirip dengan \emph{grammar}. Fungsi-fungsi
+ini memiliki tipe parameter dan kembalian yang sama sehingga
+dapat dikomposisikan menghasilkan fungsi yang lebih kompleks. Pada psudeocode dibawah
+akan diilustrasikan kode penguraian untuk grammar \texttt{scenario} simpel.
+
+\begin{lstlisting}[language=python]
+# fungsi kombinator
+def optional(func)      # func?
+def zero_or_more(func)  # func*
+def one_or_more(func)   # func+
+def or(func1, func2,..) # func1 | func2 | ..
+def literal(string)     # "string"
+def parseString(input)  # string
+def newline(input):
+  return literal("\n")(input)
+
+def parseStepKeyword:
+  return or(literal("given"), literal("when"), literal("then"))
+
+def parseStepLine(input):
+  keyword, input = parseStepKeyword(input)
+  line, input = parseString(input)
+  _, input = newline(input)
+  return Step(keyword, line), input
+
+def parseScenarioKeyword:
+  return or(
+    literal("scenario"),
+    literal("fail scenario")
+  )
+
+def parseStepLines(input):
+  return one_or_more(parseStepLine)(input)
+
+def parseScenario(input):
+  keyword, input = parseScenarioKeyword(input)
+  _, input = literal(":")(input)
+  desc, input = parseString(input)
+  _, input = newline(input)
+  steps, input = parseStepLines(input)
+
+  return Scenario(keyword, desc, steps), input
+\end{lstlisting}
+
+
+\subsection{Importer}
 
 Importer berfungsi untuk membaca \emph{file} step descriptor yang ditulis dalam python.
-
 Importer menghasilkan kumpulan fungsi \emph{step descriptor} yang akan digunakan untuk
 menjalankan step-step yang telah didefinisikan dari skenario.
 
-\section{Runtime}
+Importer akan membaca semua file python yang ada dalam folder fitur, lalu mencoba untuk
+mencari semua fungsi yang merupakan step descriptor yang memiliki \emph{decorator} python.
+Semua fungsi ini lalu dikumpulkan dan diteruskan ke komponen \emph{runtime}.
+Cara kerja importer secara simpel digambarkan oleh \emph{psudeocode} berikut:
+
+\begin{lstlisting}[language=python]
+def feature_folder
+def step_descriptors = []
+
+for file in feature_folder:
+  file_objects = import(file)
+  for function in file_objects.functions:
+    if function is step descriptor:
+      step_descriptors.add(function)
+
+return step_descriptors
+\end{lstlisting}
+
+\subsubsection{API}
+
+Komponen ini adalah bagian dari kakas \emph{library} yang digunakan oleh user untuk menulis
+\emph{step descriptor}. Bagian ini meng-\emph{export} decorator-decorator yang disediakan.
+Decorator ini berfungsi untuk menandai fungsi sebagai \emph{step descriptor} sehingga dapat
+dibedakan dari fungsi biasa oleh \emph{importer}. Cara kerja descriptor dan contoh penggunaannya
+digambarkan oleh \emph{psudeocode} berikut:
+
+\begin{lstlisting}[language=python]
+def step_decorator(keyword, function):
+  mark function as step decorator
+  return function
+def given(func):
+  return step_decorator("given", func)
+def when(func):
+  return step_decorator("when", func)
+def then(func):
+  return step_decorator("then", func)
+
+# contoh penggunaan
+@given("user awalnya punya {num} kue")
+def step1(num):
+  user.kue = num
+
+@when("user memakan {num} kue")
+def step2(num):
+  user.kue -= num
+
+@then("user sisa kue {num}")
+def step3(num):
+  assert user.kue == num
+\end{lstlisting}
+
+
+\subsection{Runtime}
 
 Runtime berfungsi untuk menjalankan pengujian. Runtime menerima hasil dari parser dan importer,
 mencocokkan step-step dalam skenario dengan fungsi \emph{step descriptor} yang cocok,
@@ -26,4 +158,15 @@ Runtime menghasilkan laporan penjalanan pengujian. Laporan ini berisi skenario a
 yang berhasil dan gagal. Laporan ini juga berisi penyebab kegagalan skenario dalam
 bentuk catatan exception.
 
-Fitur pembangkitan skenario acak diimplementasikan pada bagian runtime.
+Bagian runtime juga berfungsi untuk membangkitkan skenario acak dari \emph{step} yang telah ada
+dan menjalankannya.
+
+
+\section{Skenario Pengujian}
+
+Pengujian dilakukan dengan tujuan untuk menguji apakah kakas yang dibuat berjalan dengan baik
+dan bisa memenuhi fungsionalitas yang dibutuhkan.
+Pengujian dilakukan dengan cara membuat file fitur untuk suatu proyek tertentu secara perlahan
+hingga semua fitur telah diuji secara BDD.
+Proyek yang akan diuji adalah proyek python yang dibuat sendiri atau proyek sampel aplikasi
+dalam python yang bersifat \emph{open-source}.

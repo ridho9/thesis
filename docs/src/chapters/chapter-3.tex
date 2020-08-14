@@ -283,6 +283,7 @@ Cara ini mirip dengan \emph{fuzzy testing} dimana kasus pengujian dibangkitkan s
 
 
 \section{Struktur Bahasa}
+\label{sec:struktur-bahasa}
 
 Pada bagian ini akan dipaparkan grammar bahasa yang akan dibuat dalam EBNF. Gherkin yang menggunakan bahasa
 manusia memiliki struktur yang cukup bebas namun kita masih dapat memperkirakan grammarnya sebisa mungkin
@@ -351,12 +352,13 @@ Dalam pembuatan kakas ini, ada tiga komponen yang saling berkerja sama. Pertama 
 berfungsi untuk mengubah \emph{file} fitur menjadi struktur data yang lebih mudah diolah. Kedua adalah
 \emph{importer} yang berfungsi untuk membaca \emph{file} python dan mengumpulkan seluruh definisi step.
 Ketiga adalah \emph{runtime} yang menerima hasil dari \emph{parser} dan \emph{importer} dan kemudian
-menjalankan pengujian.
+menjalankan pengujian. Diagram arsitektur seperti pada gambar \ref{dia:desain-arsitektur}.
 
 \begin{figure}[h]
   \centering
   \includegraphics[width=0.8\textwidth]{resources/desain-arsitektur.png}
   \caption{Desain Arsitektur Kakas}
+  \label{dia:desain-arsitektur}
 \end{figure}
 
 % \section{Rancangan Solusi}
