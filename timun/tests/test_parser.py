@@ -1,5 +1,6 @@
 from timun.parser import *
 from timun.model import *
+import pytest
 
 
 def test_parse_step_1():
@@ -32,10 +33,8 @@ def test_parse_step_3():
 def test_parse_step_4():
     input = create_input("file", "rest")
 
-    try:
+    with pytest.raises(ParserError):
         parse_step(input)
-    except Exception as e:
-        assert isinstance(e, ParserError)
 
 
 def test_parse_step_5():
@@ -68,10 +67,8 @@ def test_parse_steps_2():
 def test_parse_steps_3():
     input = create_input("file", "\nrest")
 
-    try:
+    with pytest.raises(ParserError):
         parse_steps(input)
-    except Exception as e:
-        assert isinstance(e, ParserError)
 
 
 def test_parse_scenario_1():
@@ -106,10 +103,8 @@ def test_parse_scenario_2():
 
     input = create_input("file", content)
 
-    try:
+    with pytest.raises(ParserError):
         parse_scenario_like(input, ScenarioType.SCENARIO)
-    except Exception as e:
-        assert isinstance(e, ParserError)
 
 
 def test_parse_background_1():
@@ -266,3 +261,41 @@ def test_parse_scenarios_1():
     res_input = ([], 4, "file")
 
     assert parse_scenarios(input) == (expect, res_input)
+
+
+def test_parse_table_line_1():
+    content = "| name | age |"
+    input = create_input("file", content)
+
+    expect = ["name", "age"]
+    res_input = ([], 1, "file")
+
+    assert parse_table_line(input) == (expect, res_input)
+
+
+def test_parse_table_line_2():
+    content = "||"
+    input = create_input("file", content)
+
+    with pytest.raises(ParserError):
+        parse_table_line(input)
+
+
+def test_parse_table_1():
+    content = """\
+    | name  | age   |
+    | a     | 1     |
+    | b     | 2     |\
+        """
+
+    input = create_input("file", content)
+
+    expect = [
+        ["name", "age"],
+        ["a", "1"],
+        ["b", "2"],
+    ]
+
+    res_input = ([], 3, "file")
+
+    assert parse_table(input) == (expect, res_input)
