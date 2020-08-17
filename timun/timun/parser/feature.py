@@ -10,8 +10,10 @@ from .combinator import (
 from timun.model import Feature, Scenario, ScenarioType
 
 from .scenario import parse_scenario_like, parse_scenarios
+from . import parser
 
 
+@parser("feature")
 def parse_feature(input: ParserInput) -> ParserResult[Feature]:
     tags: List[str] = []
 

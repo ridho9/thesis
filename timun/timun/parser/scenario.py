@@ -1,4 +1,6 @@
 from typing import List
+
+from parse import parse
 from timun.model import Scenario, ScenarioType
 from .combinator import (
     Parser,
@@ -10,8 +12,10 @@ from .combinator import (
     one_or_more,
 )
 from .step import parse_steps
+from . import parser
 
 
+@parser("scenario-like")
 def parse_scenario_like(
     input: ParserInput, expect_type: ScenarioType
 ) -> ParserResult[Scenario]:
@@ -34,21 +38,18 @@ def parse_scenario_like(
     )
 
 
-setattr(parse_scenario_like, "__PARSER__", "scenario-like")
-
-parse_scenario: Parser[Scenario] = lambda input: parse_scenario_like(
-    input, ScenarioType.SCENARIO
+parse_scenario: Parser[Scenario] = parser("scenario")(
+    lambda input: parse_scenario_like(input, ScenarioType.SCENARIO)
 )
 
-setattr(parse_scenario, "__PARSER__", "scenario")
-
-parse_fail_scenario: Parser[Scenario] = lambda input: parse_scenario_like(
-    input, ScenarioType.FAIL_SCENARIO
+parse_fail_scenario: Parser[Scenario] = parser("fail scenario")(
+    lambda input: parse_scenario_like(input, ScenarioType.FAIL_SCENARIO)
 )
 
-setattr(parse_fail_scenario, "__PARSER__", "fail scenario")
+parse_scenario_family = parser("scenario-family")(
+    parser_or(parse_scenario, parse_fail_scenario)
+)
 
-parse_scenario_family = parser_or(parse_scenario, parse_fail_scenario)
-
-# parse_scenarios: Parser[List[Scenario]] = one_or_more(parse_scenario)
-parse_scenarios: Parser[List[Scenario]] = one_or_more(parse_scenario_family)
+parse_scenarios: Parser[List[Scenario]] = parser("scenarions")(
+    one_or_more(parse_scenario_family)
+)

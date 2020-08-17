@@ -1,11 +1,13 @@
 from typing import List
 from .combinator import ParserError, ParserInput, ParserResult, next_nonempty_line
+from . import parser
 
-TableLine = List[str]
-Table = List[TableLine]
+TableEntry = List[str]
+Table = List[TableEntry]
 
 
-def parse_table_line(input: ParserInput) -> ParserResult[TableLine]:
+@parser("table line")
+def parse_table_line(input: ParserInput) -> ParserResult[TableEntry]:
     cur_line, cur_idx, next_input = next_nonempty_line(input)
     cur_line = cur_line.strip()
 
@@ -26,9 +28,7 @@ def parse_table_line(input: ParserInput) -> ParserResult[TableLine]:
     return items, next_input
 
 
-setattr(parse_table_line, "__PARSER__", "table-line")
-
-
+@parser("table")
 def parse_table(input: ParserInput) -> ParserResult[Table]:
     result: Table = []
 
@@ -52,6 +52,3 @@ def parse_table(input: ParserInput) -> ParserResult[Table]:
             break
 
     return result, input
-
-
-setattr(parse_table, "__PARSER__", "table")
