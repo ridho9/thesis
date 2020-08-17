@@ -7,7 +7,7 @@ from .combinator import (
 )
 
 from timun.model import Step, StepType
-from . import parser
+from .decorator import parser
 
 
 @parser("step")

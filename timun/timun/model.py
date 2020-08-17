@@ -1,6 +1,10 @@
-from typing import Optional, List
+from typing import Optional, List, Tuple
 from dataclasses import dataclass
 from enum import Enum
+
+
+TableEntry = List[str]
+Table = Tuple[str, List[TableEntry]]
 
 
 class StepType(Enum):
@@ -40,6 +44,14 @@ class Scenario:
     keyword: ScenarioType
     text: str
     steps: List[Step]
+    idx: int
+
+
+@dataclass
+class ScenarioOutline:
+    text: str
+    steps: List[Step]
+    tables: List[Table]
     idx: int
 
 

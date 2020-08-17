@@ -10,7 +10,7 @@ from .combinator import (
 from timun.model import Feature, Scenario, ScenarioType
 
 from .scenario import parse_scenario_like, parse_scenarios
-from . import parser
+from .decorator import parser
 
 
 @parser("feature")

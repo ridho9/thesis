@@ -3,7 +3,7 @@ from dataclasses import dataclass
 
 from timun.model import StepType
 
-from parse import parse, Parser
+from parse import Parser
 from parse import compile as pcompile
 
 

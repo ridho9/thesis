@@ -1,7 +1,7 @@
+from timun.parser.table import parse_tables_outline
 from typing import List
 
-from parse import parse
-from timun.model import Scenario, ScenarioType
+from timun.model import Scenario, ScenarioOutline, ScenarioType
 from .combinator import (
     Parser,
     ParserInput,
@@ -12,7 +12,7 @@ from .combinator import (
     one_or_more,
 )
 from .step import parse_steps
-from . import parser
+from .decorator import parser
 
 
 @parser("scenario-like")
@@ -46,8 +46,25 @@ parse_fail_scenario: Parser[Scenario] = parser("fail scenario")(
     lambda input: parse_scenario_like(input, ScenarioType.FAIL_SCENARIO)
 )
 
+
+@parser("scenario outline")
+def parse_scenario_outline(input: ParserInput) -> ParserResult[ScenarioOutline]:
+    cur_line, cur_idx, next_input = next_nonempty_line(input)
+    head, _, rest = cur_line.partition(":")
+    head = head.strip().lower()
+    rest = rest.strip()
+
+    if head != "scenario outline":
+        raise ParserError(f"Expected 'scenario outline' found '{head}'", input)
+
+    steps, next_input = parse_steps(next_input)
+    tables, next_input = parse_tables_outline(next_input)
+
+    return ScenarioOutline(rest, steps, tables, cur_idx), next_input
+
+
 parse_scenario_family = parser("scenario-family")(
-    parser_or(parse_scenario, parse_fail_scenario)
+    parser_or(parse_scenario, parse_fail_scenario, parse_scenario_outline)
 )
 
 parse_scenarios: Parser[List[Scenario]] = parser("scenarions")(

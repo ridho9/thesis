@@ -298,4 +298,27 @@ def test_parse_table_1():
 
     res_input = ([], 3, "file")
 
-    assert parse_table(input) == (expect, res_input)
+    assert parse_table_entries(input) == (expect, res_input)
+
+
+def test_parse_scenario_outline_1():
+    content = """\
+    scenario outline: s
+        then then
+        example:
+            | a | b |
+            | 1 | 2 |\
+        """
+
+    input = create_input("file", content)
+
+    expect = ScenarioOutline(
+        "s",
+        [Step(StepType.THEN, "then", 1)],
+        [("example", [["a", "b"], ["1", "2"]])],
+        0,
+    )
+    res_input = ([], 5, "file")
+
+    assert parse_scenario_outline(input) == (expect, res_input)
+
