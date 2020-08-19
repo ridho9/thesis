@@ -45,17 +45,17 @@ def parse_table_entries(input: ParserInput) -> ParserResult[List[TableEntry]]:
     while True:
         try:
             line, next_input = parse_table_line(input)
-
-            if head_len != len(line):
-                raise ParserError(
-                    f"Different table head(f{head_len}) and entry(f{len(line)}) length",
-                    input,
-                )
-
-            result.append(line)
-            input = next_input
         except:
             break
+
+        if head_len != len(line):
+            raise ParserError(
+                f"Different table head(f{head_len}) and entry(f{len(line)}) length",
+                input,
+            )
+
+        result.append(line)
+        input = next_input
 
     return result, input
 
@@ -70,13 +70,19 @@ def parse_named_table(name: str, input: ParserInput) -> ParserResult[Table]:
         raise ParserError(f"Found '{head}' expect '{name}'", input)
 
     table, next_input = parse_table_entries(next_input)
+
     return (head, table), next_input
 
 
 parse_table_example = parser("example")(
     lambda input: parse_named_table("example", input)
 )
+parse_table_fail_example = parser("fail example")(
+    lambda input: parse_named_table("fail example", input)
+)
 
-parse_table_outline = parser("table outline")(parser_or(parse_table_example))
+parse_table_outline = parser("table outline")(
+    parser_or(parse_table_example, parse_table_fail_example)
+)
 
 parse_tables_outline = parser("tables outline")(one_or_more(parse_table_outline))

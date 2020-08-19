@@ -1,4 +1,4 @@
-from typing import Callable, List, NamedTuple, Tuple, TypeVar
+from typing import Callable, List, NamedTuple, Tuple, TypeVar, Optional
 
 
 class ParserInput(NamedTuple):
@@ -39,7 +39,7 @@ def next_nonempty_line(input: ParserInput) -> Tuple[str, int, ParserInput]:
     while True:
         line, idx, next_input = next_line(input)
         line = line.strip()
-        if line != "":
+        if line != "" and line[0] != "#":
             return line, idx, next_input
         input = next_input
 

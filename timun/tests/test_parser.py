@@ -301,6 +301,20 @@ def test_parse_table_1():
     assert parse_table_entries(input) == (expect, res_input)
 
 
+def test_parse_table_2():
+    content = """\
+    | name  | age   |
+    | a     | 1     |
+    | b     | 2     |
+    | c     |\
+        """
+
+    input = create_input("file", content)
+
+    with pytest.raises(ParserError):
+        parse_table_line(input)
+
+
 def test_parse_scenario_outline_1():
     content = """\
     scenario outline: s

@@ -3,7 +3,7 @@ from typing import List, Dict, Optional
 from dataclasses import dataclass
 
 
-from timun.model import Feature, Scenario, ScenarioType, Step
+from timun.model import Feature, Scenario, ScenarioOutline, ScenarioType, Step
 from timun.step import StepDescriptor
 from termcolor import colored
 
@@ -69,6 +69,11 @@ class TestRunner:
         print(f"==== Feature: {feature.text} @ {feature.filename}:{feature.idx+1}")
 
         for scenario in feature.scenarios:
+            if isinstance(scenario, ScenarioOutline):
+                raise Exception(
+                    f"Unexpanded scenario outline ({feature.filename}:{scenario.idx+1})"
+                )
+
             self.run_scenario(feature, scenario)
 
     def run_scenario(self, feature: Feature, scenario: Scenario):
@@ -89,6 +94,7 @@ class TestRunner:
             except Exception as e:
                 pass
         else:
+            # NORMAL SCENARIO CASE
             for step in scenario.steps:
                 try:
                     self.run_step(step, context)

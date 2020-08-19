@@ -67,6 +67,4 @@ parse_scenario_family = parser("scenario-family")(
     parser_or(parse_scenario, parse_fail_scenario, parse_scenario_outline)
 )
 
-parse_scenarios: Parser[List[Scenario]] = parser("scenarions")(
-    one_or_more(parse_scenario_family)
-)
+parse_scenarios = parser("scenarions")(one_or_more(parse_scenario_family))

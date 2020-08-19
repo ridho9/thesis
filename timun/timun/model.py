@@ -1,4 +1,4 @@
-from typing import Optional, List, Tuple
+from typing import Optional, List, Tuple, Union
 from dataclasses import dataclass
 from enum import Enum
 
@@ -60,7 +60,6 @@ class Feature:
     tags: List[str]
     text: str
     background: Optional[Scenario]
-    scenarios: List[Scenario]
+    scenarios: List[Union[Scenario, ScenarioOutline]]
     idx: int
     filename: str
-
