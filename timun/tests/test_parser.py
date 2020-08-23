@@ -312,7 +312,7 @@ def test_parse_table_2():
     input = create_input("file", content)
 
     with pytest.raises(ParserError):
-        parse_table_line(input)
+        parse_table_entries(input)
 
 
 def test_parse_scenario_outline_1():
@@ -335,4 +335,37 @@ def test_parse_scenario_outline_1():
     res_input = ([], 5, "file")
 
     assert parse_scenario_outline(input) == (expect, res_input)
+
+
+def test_parse_variable_line():
+    content = "name: enum a, b, c"
+
+    input = create_input("file", content)
+
+    expect = Variable("name", "enum", ["a", "b", "c"], 0)
+    res_input = ([], 1, "file")
+
+    assert parse_variable_line(input) == (expect, res_input)
+
+
+def test_parse_variable():
+    content = """\
+        variable:
+            name: enum a, b, c
+            name2: enum 1, 2, 3\
+                """
+
+    input = create_input("file", content)
+
+    expect = VariableDeclaration(
+        [
+            Variable("name", "enum", ["a", "b", "c"], 1),
+            Variable("name2", "enum", ["1", "2", "3"], 2),
+        ],
+        0,
+        "file",
+    )
+    res_input = ([], 3, "file")
+
+    assert parse_variable(input) == (expect, res_input)
 

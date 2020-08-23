@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List, Tuple, cast
 from .combinator import (
     ParserError,
     ParserInput,
@@ -9,7 +9,7 @@ from .combinator import (
     parser_or,
 )
 from .decorator import parser
-from timun.model import Table, TableEntry
+from timun.model import Table, TableEntry, TableType
 
 
 @parser("table line")
@@ -61,13 +61,15 @@ def parse_table_entries(input: ParserInput) -> ParserResult[List[TableEntry]]:
 
 
 @parser("named table")
-def parse_named_table(name: str, input: ParserInput) -> ParserResult[Table]:
+def parse_named_table(name: TableType, input: ParserInput) -> ParserResult[Table]:
     cur_line, cur_idx, next_input = next_nonempty_line(input)
     head, _, rest = cur_line.partition(":")
     head = head.strip().lower()
 
     if head != name:
         raise ParserError(f"Found '{head}' expect '{name}'", input)
+
+    head = cast(TableType, head)
 
     table, next_input = parse_table_entries(next_input)
 
@@ -80,6 +82,7 @@ parse_table_example = parser("example")(
 parse_table_fail_example = parser("fail example")(
     lambda input: parse_named_table("fail example", input)
 )
+
 
 parse_table_outline = parser("table outline")(
     parser_or(parse_table_example, parse_table_fail_example)

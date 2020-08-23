@@ -1,10 +1,10 @@
-from typing import Optional, List, Tuple, Union
+from typing import Literal, Optional, List, Tuple, Union
 from dataclasses import dataclass
 from enum import Enum
 
-
 TableEntry = List[str]
-Table = Tuple[str, List[TableEntry]]
+TableType = Literal["example", "fail example"]
+Table = Tuple[TableType, List[TableEntry]]
 
 
 class StepType(Enum):
@@ -51,7 +51,10 @@ class Scenario:
 class ScenarioOutline:
     text: str
     steps: List[Step]
-    tables: List[Table]
+
+    example_table: Optional[Table]
+    fail_example_table: Optional[Table]
+
     idx: int
 
 
@@ -61,5 +64,23 @@ class Feature:
     text: str
     background: Optional[Scenario]
     scenarios: List[Union[Scenario, ScenarioOutline]]
+    idx: int
+    filename: str
+
+
+VariableType = Union[Literal["enum"], Literal["bool"]]
+
+
+@dataclass
+class Variable:
+    name: str
+    type: VariableType
+    values: List[str]
+    idx: int
+
+
+@dataclass
+class VariableDeclaration:
+    variables: List[Variable]
     idx: int
     filename: str

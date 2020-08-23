@@ -1,6 +1,6 @@
 from timun.parser import scenario
-from typing import List
-from timun.model import Scenario, ScenarioOutline, Feature, ScenarioType, Step
+from typing import List, Optional, cast
+from timun.model import Scenario, ScenarioOutline, Feature, ScenarioType, Step, Table
 from copy import copy
 
 
@@ -25,33 +25,49 @@ def expand_feature(feature: Feature) -> Feature:
 def expand_scenario_outline(scenario: ScenarioOutline) -> List[Scenario]:
     res: List[Scenario] = []
 
-    for table in scenario.tables:
-        section_header = table[0]
-        table_header = table[1][0]
-        table_entries = table[1][1:]
+    example_scenario = expand_scenario_outline_example(scenario, scenario.example_table)
+    res += example_scenario
 
-        scenario_type = ScenarioType.SCENARIO
-        if section_header == "fail example":
-            scenario_type = ScenarioType.FAIL_SCENARIO
+    fail_example_scenario = expand_scenario_outline_example(
+        scenario, scenario.fail_example_table
+    )
+    res += fail_example_scenario
 
-        steps = scenario.steps
-        for entry in table_entries:
-            replaced_steps = replace_steps_template(steps, table_header, entry)
+    return res
 
-            outline_name = "("
-            outline_name += ", ".join(
-                [f"{v[0]}={v[1]}" for v in zip(table_header, entry)]
-            )
-            outline_name += ")"
 
-            new_scenario = Scenario(
-                scenario_type,
-                scenario.text + outline_name,
-                replaced_steps,
-                scenario.idx,
-            )
+def expand_scenario_outline_example(
+    scenario: ScenarioOutline, table: Optional[Table]
+) -> List[Scenario]:
+    res: List[Scenario] = []
 
-            res.append(new_scenario)
+    if table == None:
+        return res
+
+    table = cast(Table, table)
+
+    table_type, table_body = table
+
+    table_header = table_body[0]
+    table_entries = table_body[1:]
+
+    scenario_type = ScenarioType.SCENARIO
+    if table_type == "fail example":
+        scenario_type = ScenarioType.FAIL_SCENARIO
+
+    steps = scenario.steps
+    for entry in table_entries:
+        replaced_steps = replace_steps_template(steps, table_header, entry)
+
+        outline_name = "("
+        outline_name += ", ".join([f"{v[0]}={v[1]}" for v in zip(table_header, entry)])
+        outline_name += ")"
+
+        new_scenario = Scenario(
+            scenario_type, scenario.text + outline_name, replaced_steps, scenario.idx,
+        )
+
+        res.append(new_scenario)
 
     return res
 
@@ -71,8 +87,11 @@ def replace_steps_template(
 
 def replace_step_template(step: Step, repl_dict: dict) -> Step:
     step = copy(step)
+    text = step.text
 
-    text = step.text.replace("<", "{").replace(">", "}")
+    for k in repl_dict.keys():
+        text = text.replace(f"<{k}>", "{" + k + "}")
+
     text = text.format(**repl_dict)
     step.text = text
 

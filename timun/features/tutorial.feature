@@ -1,4 +1,21 @@
-Feature: fail scenario
+Variable:
+    operator: enum add, subtract, multiply, divide
+
+Feature: example feature
+    Scenario:
+        Given my number is 1
+        When I <operator> 1
+        Then my number should be 2
+
+        Variable Accepted:
+        | operator  |
+        | add       |
+
+    Fail Scenario:
+        Given my number is 1
+        When I add 1
+        Then my number should be 3
+
     Scenario Outline: scenario outline
         Given my number is <init>
         When I add <add>
@@ -19,13 +36,3 @@ Feature: fail scenario
 
     Fail Scenario: this should pass
         Then this will fail
-
-    Scenario:
-        Given my number is 1
-        When I add 1
-        Then my number should be 2
-
-    Fail Scenario:
-        Given my number is 1
-        When I add 1
-        Then my number should be 3

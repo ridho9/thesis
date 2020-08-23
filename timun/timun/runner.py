@@ -8,11 +8,6 @@ from timun.step import StepDescriptor
 from termcolor import colored
 
 
-class ScenarioRunException(Exception):
-    def __init__(self, message: str):
-        super().__init__(message)
-
-
 @dataclass
 class ScenarioTestReport:
     feature: Feature
@@ -21,13 +16,20 @@ class ScenarioTestReport:
     exception: Optional[Exception] = None
     step_desc: Optional[StepDescriptor] = None
     message: Optional[str] = None
+    show_traceback = True
 
-    def __str__(self) -> str:
+    def desc_line(self) -> str:
         res = f"{colored(self.scenario.keyword.name, 'blue')}\t: {self.scenario.text}"
         res += f"@{self.feature.filename}:{self.scenario.idx + 1} - "
         if self.exception:
             res += f"{colored('FAILED', 'red')}:"
+        else:
+            res += colored("SUCCESS", "green")
+        return res
 
+    def __str__(self) -> str:
+        res = self.desc_line()
+        if self.exception:
             if self.fail_step:
                 f"\n\tStep: {self.fail_step.text}:{self.fail_step.idx}"
 
@@ -37,12 +39,13 @@ class ScenarioTestReport:
 
             if self.message == None:
                 self.message = "\n".join(self.exception.args)
-        else:
-            res += colored("SUCCESS", "green")
 
         if self.message:
-            for l in self.message.splitlines():
-                res += f"\n\t| {l}"
+            lines = self.message.splitlines()
+            if self.show_traceback and not isinstance(self.exception, AssertionError):
+                for l in lines[:-1]:
+                    res += f"\n\t| {l}"
+            res += f"\n\t| {lines[-1]}"
 
         return res
 
@@ -101,11 +104,15 @@ class TestRunner:
                 except Exception as e:
                     report.fail_step = step
                     report.exception = e
-                    report.step_desc, _ = self.find_matching_step(step)
+                    try:
+                        report.step_desc, _ = self.find_matching_step(step)
+                    except:
+                        report.step_desc = None
+                        report.show_traceback = False
                     report.message = traceback.format_exc().strip()
                     break
 
-        print(report)
+        print(report.desc_line())
         self.test_report.append(report)
 
     def run_step(self, step: Step, context):

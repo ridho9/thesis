@@ -1,6 +1,7 @@
 from os.path import join
 
 from pprint import pprint
+from timun.model import Feature, VariableDeclaration
 from timun.file_loader import parse_features_dir
 from timun.step_loader import load_steps_from_dir, steps_to_dict
 from timun.runner import TestRunner
@@ -11,14 +12,17 @@ def main():
     # Load Features
 
     folder = "features"
-    features = parse_features_dir(folder)
+    items = parse_features_dir(folder)
     # pprint(features, indent=2)
 
-    # TODO: Expand features
+    features = filter(lambda f: isinstance(f, Feature), items)
 
-    expanded_features = list(map(expander.expand_feature, features))
-
+    #  Expand features
+    expanded_features = map(expander.expand_feature, features)
     # print(expanded_features)
+
+    # TODO: Expand variables
+    variables = filter(lambda f: isinstance(f, VariableDeclaration), items)
 
     # Load Step Descriptor
     step_folder = join(folder, "steps")

@@ -13,8 +13,17 @@ Parser = Callable[[ParserInput], ParserResult[T]]
 
 
 class ParserError(Exception):
-    def __init__(self, message: str, input: ParserInput):
-        self.message = f"{message} [{input.filename}:{input.idx+1}]"
+    def __init__(
+        self, message: str, input: ParserInput, parent: Optional["ParserError"] = None
+    ):
+        self.parent = parent
+
+        # if self.parent:
+        #     self.message: str = self.parent.message + "\n"
+        # else:
+        self.message = ""
+
+        self.message += f"{message} [{input.filename}:{input.idx+1}]"
         super().__init__(self.message)
 
 
@@ -33,6 +42,15 @@ def next_line(input: ParserInput) -> Tuple[str, int, ParserInput]:
         input.idx,
         ParserInput(rest_lines, input.idx + 1, input.filename),
     )
+
+
+def ignore_line(input: ParserInput) -> ParserInput:
+    while True:
+        line, idx, next_input = next_line(input)
+        line = line.strip()
+        if line != "" and line[0] != "#":
+            return input
+        input = next_input
 
 
 def next_nonempty_line(input: ParserInput) -> Tuple[str, int, ParserInput]:
@@ -61,10 +79,14 @@ def zero_or_more(parser: Parser[T]) -> Parser[List[T]]:
 
 def one_or_more(parser: Parser[T]) -> Parser[List[T]]:
     def f(input: ParserInput) -> ParserResult[List[T]]:
-        res, next_input = zero_or_more(parser)(input)
-        if res != []:
-            return res, next_input
-        raise ParserError(f"expected one or more '{parser.__PARSER__}'", input)  # type: ignore
+        exception = None
+        try:
+            res, next_input = zero_or_more(parser)(input)
+            if res != []:
+                return res, next_input
+        except ParserError as p:
+            exception = p
+        raise ParserError(f"expected one or more '{parser.__PARSER__}'", input, exception)  # type: ignore
 
     return f
 
@@ -73,14 +95,16 @@ def parser_or(*parsers: Parser) -> Parser:
     desc_line = " or ".join([p.__PARSER__ for p in parsers])  # type: ignore
 
     def f(input: ParserInput) -> ParserResult:
+        exception = None
         for parser in parsers:
             try:
                 result = parser(input)
                 return result
             except ParserError as p:
+                exception = p
                 continue
 
-        raise ParserError(f"expected one of {desc_line}", input)
+        raise ParserError(f"expected one of {desc_line}", input, exception)
 
     setattr(f, "__PARSER__", desc_line)
 

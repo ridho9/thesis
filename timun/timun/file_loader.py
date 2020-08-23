@@ -1,4 +1,5 @@
 import itertools
+from timun.parser.combinator import ParserError, ignore_line, next_nonempty_line
 from typing import List
 import os
 from os.path import isfile, join, abspath
@@ -21,13 +22,25 @@ def parse_feature_file(path: str) -> List[Feature]:
     with open(path) as f:
         input = parser.create_input(path, f.read())
 
-        features, input = parser.parse_features(input)
+        features, input = parser.parse_top_level(input)
+
+        for line in input.lines:
+            line = line.strip()
+            if line != "" and line[0] != "#":
+                input = ignore_line(input)
+                raise ParserError(
+                    f"Failed to parse file '{path}', unexpected input '{line}'", input
+                )
 
         return features
 
 
 def parse_features_dir(dir: str) -> List[Feature]:
-    files = all_feature_files_in_dir(dir)
-    features = itertools.chain(*map(parse_feature_file, files))
+    try:
+        files = all_feature_files_in_dir(dir)
+        features = itertools.chain(*map(parse_feature_file, files))
 
-    return list(features)
+        return list(features)
+    except ParserError as e:
+        print(e.message)
+        exit(1)
