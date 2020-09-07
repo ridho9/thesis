@@ -83,6 +83,14 @@ parse_table_fail_example = parser("fail example")(
     lambda input: parse_named_table("fail example", input)
 )
 
+parse_table_variable_accepted = parser("variable accepted")(
+    lambda input: parse_named_table("variable accepted", input)
+)
+
+parse_table_variable_rejected = parser("variable rejected")(
+    lambda input: parse_named_table("variable rejected", input)
+)
+
 
 parse_table_outline = parser("table outline")(
     parser_or(parse_table_example, parse_table_fail_example)

@@ -1,11 +1,13 @@
 from timun.parser.table import (
     parse_table_example,
     parse_table_fail_example,
+    parse_table_variable_accepted,
+    parse_table_variable_rejected,
     parse_tables_outline,
 )
-from typing import List
+from typing import List, Optional, Tuple
 
-from timun.model import Scenario, ScenarioOutline, ScenarioType
+from timun.model import Scenario, ScenarioOutline, ScenarioType, Table
 from .combinator import (
     Parser,
     ParserInput,
@@ -17,6 +19,22 @@ from .combinator import (
 )
 from .step import parse_steps
 from .decorator import parser
+
+
+def parse_variable_tables(
+    input: ParserInput,
+) -> ParserResult[Tuple[Optional[Table], Optional[Table]]]:
+    try:
+        variable_accepted_table, input = parse_table_variable_accepted(input)
+    except ParserError as p:
+        variable_accepted_table = None
+
+    try:
+        variable_rejected_table, input = parse_table_variable_rejected(input)
+    except ParserError as p:
+        variable_rejected_table = None
+
+    return (variable_accepted_table, variable_rejected_table), input
 
 
 @parser("scenario-like")
@@ -31,15 +49,22 @@ def parse_scenario_like(
 
     type = ScenarioType.from_string(head)
 
-    if type and type == expect_type:
-        steps, next_input = parse_steps(next_input)
+    if type != expect_type:
+        raise ParserError(
+            f"expected '{expect_type.name.lower()}' found '{cur_line}''", input
+        )
 
-        scenario = Scenario(type, rest, steps, cur_idx)
-        return scenario, next_input
+    steps, next_input = parse_steps(next_input)
 
-    raise ParserError(
-        f"expected '{expect_type.name.lower()}' found '{cur_line}''", input
+    (
+        (variable_accepted_table, variable_rejected_table),
+        next_input,
+    ) = parse_variable_tables(next_input)
+
+    scenario = Scenario(
+        type, rest, steps, cur_idx, variable_accepted_table, variable_rejected_table
     )
+    return scenario, next_input
 
 
 parse_scenario: Parser[Scenario] = parser("scenario")(
@@ -75,9 +100,21 @@ def parse_scenario_outline(input: ParserInput) -> ParserResult[ScenarioOutline]:
 
     if example_table == None and fail_example_table == None:
         raise ParserError(f"Scenario outline expects example or fail example", input)
+    # (
+    #     (variable_accepted_table, variable_rejected_table),
+    #     next_input,
+    # ) = parse_variable_tables(next_input)
 
     return (
-        ScenarioOutline(rest, steps, example_table, fail_example_table, cur_idx),
+        ScenarioOutline(
+            rest,
+            steps,
+            example_table,
+            fail_example_table,
+            cur_idx,
+            # variable_accepted_table,
+            # variable_rejected_table,
+        ),
         next_input,
     )
 

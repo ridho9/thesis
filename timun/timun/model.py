@@ -1,9 +1,9 @@
-from typing import Literal, Optional, List, Tuple, Union
-from dataclasses import dataclass
+from typing import Dict, Iterator, Literal, Optional, List, Tuple, Union
+from dataclasses import dataclass, field
 from enum import Enum
 
 TableEntry = List[str]
-TableType = Literal["example", "fail example"]
+TableType = Literal["example", "fail example", "variable accepted", "variable rejected"]
 Table = Tuple[TableType, List[TableEntry]]
 
 
@@ -24,6 +24,9 @@ class Step:
     text: str
     idx: int
 
+    def pretty(self) -> str:
+        return f"{self.type.name}\t{self.text}"
+
 
 class ScenarioType(Enum):
     SCENARIO = 0
@@ -38,13 +41,24 @@ class ScenarioType(Enum):
 
         return getattr(ScenarioType, input, None)
 
+    def invert(self) -> "ScenarioType":
+        if self == ScenarioType.SCENARIO:
+            return ScenarioType.FAIL_SCENARIO
+        elif self == ScenarioType.FAIL_SCENARIO:
+            return ScenarioType.SCENARIO
+        return ScenarioType.BACKGROUND
+
 
 @dataclass
 class Scenario:
-    keyword: ScenarioType
+    type: ScenarioType
     text: str
     steps: List[Step]
+
     idx: int
+
+    variable_accepted: Optional[Table]
+    variable_rejected: Optional[Table]
 
 
 @dataclass
@@ -56,6 +70,9 @@ class ScenarioOutline:
     fail_example_table: Optional[Table]
 
     idx: int
+
+    variable_accepted: Optional[Table] = None
+    variable_rejected: Optional[Table] = None
 
 
 @dataclass
@@ -84,3 +101,11 @@ class VariableDeclaration:
     variables: List[Variable]
     idx: int
     filename: str
+
+    var_dict: Dict[str, Variable] = field(init=False)
+
+    def __post_init__(self):
+        self.var_dict = {}
+
+        for var in self.variables:
+            self.var_dict[var.name] = var

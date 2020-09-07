@@ -2,6 +2,8 @@
 
 \section{Analisis Permasalahan}
 
+\subsection{Pengujian Perangkat Lunak dan \textit{BLE}}
+
 Menurut kemudahan pengujiannya, kelemahan kemanan terbagi menjadi yang mudah diuji
 dan yang sulit diuji. Kelemakan keamanan yang mudah diuji biasanya memiliki penyebab
 yang jelas, telah banyak dipelajari, dan memiliki langkah yang mudah untuk mengujinya.
@@ -32,6 +34,9 @@ pengumpulan \emph{security requirement} dan \emph{threat modelling} sehingga did
 didapatkan, kasus-kasus ini dapat diubah menjadi skenario-skenario yang berisi
 langkah-langkah dalam terjadinya suatu kasus ancaman keamanan.
 
+\subsection{\textit{BDD}}
+
+Dalam pengujian perangkat lunak ada
 Dalam BDD, fitur-fitur yang ada dalam sebuah program dideskripsikan dengan skenario
 berisi langkah yang menjelaskan alur terjadinya sebuah skenario. Pada kakas BDD
 yang ada pada saat ini, biasanya kasus test ini ditulis dengan bahasa dan \emph{syntax}
@@ -57,7 +62,6 @@ yang berbentuk bahasa manusia, sehingga dapat dimengerti oleh banyak pihak. Namu
 adalah \emph{syntax} Gherkin yang simpel menyebabkan sulitnya untuk mengekspresikan konstruk
 yang lebih kompleks karena hanya didesain untuk pengujian fungsionalitas, bukan untuk
 pengujian keamanan.
-
 
 % \section{============}
 
@@ -169,7 +173,6 @@ Feature: keranjang
 
 Untuk desain fitur Failure dapat kita lakukan beberapa hal.
 
-\subsubsection{Scenario Outline}
 Screnario di atas memiliki initial state dimana user telah login.
 Programmer dapat menambahkan satu skenario lagi untuk keadaan dimana user gagal login, seperti:
 \begin{lstlisting}[language=gherkin]

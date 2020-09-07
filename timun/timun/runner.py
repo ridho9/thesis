@@ -4,13 +4,13 @@ from dataclasses import dataclass
 
 
 from timun.model import Feature, Scenario, ScenarioOutline, ScenarioType, Step
-from timun.step import StepDescriptor
+from timun.step import StepDescriptor, StepDict
 from termcolor import colored
 
 
 @dataclass
 class ScenarioTestReport:
-    feature: Feature
+    feature: Optional[Feature]
     scenario: Scenario
     fail_step: Optional[Step] = None
     exception: Optional[Exception] = None
@@ -19,8 +19,11 @@ class ScenarioTestReport:
     show_traceback = True
 
     def desc_line(self) -> str:
-        res = f"{colored(self.scenario.keyword.name, 'blue')}\t: {self.scenario.text}"
-        res += f"@{self.feature.filename}:{self.scenario.idx + 1} - "
+        res = f"{colored(self.scenario.type.name, 'blue')}\t: {self.scenario.text}"
+        if self.feature:
+            res += f"@{self.feature.filename}:{self.scenario.idx + 1} - "
+        else:
+            res += f"@GENERATED SCENARIOS - "
         if self.exception:
             res += f"{colored('FAILED', 'red')}:"
         else:
@@ -77,61 +80,68 @@ class TestRunner:
                     f"Unexpanded scenario outline ({feature.filename}:{scenario.idx+1})"
                 )
 
-            self.run_scenario(feature, scenario)
+            report = run_scenario(self.step_dict, feature, scenario)
 
-    def run_scenario(self, feature: Feature, scenario: Scenario):
-        context = {"failed": False}
+            print(report.desc_line())
+            self.test_report.append(report)
 
-        report = ScenarioTestReport(feature, scenario)
 
-        scenario_type = scenario.keyword
+def run_scenario(
+    step_dict: StepDict, feature: Optional[Feature], scenario: Scenario
+) -> ScenarioTestReport:
+    context = {"failed": False}
 
-        if scenario_type == ScenarioType.FAIL_SCENARIO:
-            try:
-                for step in scenario.steps:
-                    self.run_step(step, context)
+    report = ScenarioTestReport(feature, scenario)
 
-                report.exception = Exception(
-                    "All test in this scenario passes, expected failure"
-                )
-            except Exception as e:
-                pass
-        else:
-            # NORMAL SCENARIO CASE
+    scenario_type = scenario.type
+
+    if scenario_type == ScenarioType.FAIL_SCENARIO:
+        try:
             for step in scenario.steps:
+                run_step(step_dict, step, context)
+
+            report.exception = Exception(
+                "All test in this scenario passes, expected failure"
+            )
+        except Exception as e:
+            pass
+    else:
+        # NORMAL SCENARIO CASE
+        for step in scenario.steps:
+            try:
+                run_step(step_dict, step, context)
+            except Exception as e:
+                report.fail_step = step
+                report.exception = e
                 try:
-                    self.run_step(step, context)
-                except Exception as e:
-                    report.fail_step = step
-                    report.exception = e
-                    try:
-                        report.step_desc, _ = self.find_matching_step(step)
-                    except:
-                        report.step_desc = None
-                        report.show_traceback = False
-                    report.message = traceback.format_exc().strip()
-                    break
+                    report.step_desc, _ = find_matching_step(step_dict, step)
+                except:
+                    report.step_desc = None
+                    report.show_traceback = False
+                report.message = traceback.format_exc().strip()
+                break
 
-        print(report.desc_line())
-        self.test_report.append(report)
+    return report
 
-    def run_step(self, step: Step, context):
-        step_definition, match = self.find_matching_step(step)
-        step_definition.function(context, **match.named)
 
-    def find_matching_step(self, step: Step):
-        matching_step: List[StepDescriptor] = []
+def run_step(step_dict: StepDict, step: Step, context):
+    step_definition, match = find_matching_step(step_dict, step)
+    step_definition.function(context, **match.named)
 
-        # find matching step descriptor
-        for desc in self.step_dict.values():
-            match = desc.pattern.parse(step.text)
-            if match:
-                matching_step.append(desc)
 
-        if matching_step == []:
-            raise Exception(f"Can't find matching step definition for '{step.text}'")
+def find_matching_step(step_dict: StepDict, step: Step):
+    matching_step: List[StepDescriptor] = []
 
-        # TODO: Raise exception when multiple matching steps found
+    # find matching step descriptor
+    for desc in step_dict.values():
+        match = desc.pattern.parse(step.text)
+        if match:
+            matching_step.append(desc)
 
-        return matching_step[0], matching_step[0].pattern.parse(step.text)
+    if matching_step == []:
+        raise Exception(f"Can't find matching step definition for '{step.text}'")
+
+    # TODO: Raise exception when multiple matching steps found
+
+    return matching_step[0], matching_step[0].pattern.parse(step.text)
 
