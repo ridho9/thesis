@@ -1,8 +1,10 @@
-from typing import List, Dict
-import importlib.util
+from typing import DefaultDict, List, Dict
+import importlib, importlib.util
 import os
 from os.path import basename, join, isfile, abspath
 import itertools
+import sys
+from collections import defaultdict
 
 from timun.step import StepDescriptor, StepDict
 
@@ -21,15 +23,23 @@ def all_py_files_in_dir(dir: str):
     ]
 
 
-def load_step_from_file(filename: str):
+def load_file(filename: str):
     # filename = abspath(filename)
     file_path = filename
     module_name = basename(file_path)[:-3]
+
+    if not isfile(file_path):
+        raise Exception(f"invalid import path f{file_path}")
 
     spec = importlib.util.spec_from_file_location(module_name, file_path)
     module = importlib.util.module_from_spec(spec)
 
     spec.loader.exec_module(module)  # type: ignore
+    return module
+
+
+def load_step_from_file(filename: str):
+    module = load_file(filename)
 
     defined_steps = []
 
@@ -49,6 +59,14 @@ def load_steps_from_dir(dir: str):
     steps = itertools.chain(*map(load_step_from_file, files))
 
     return list(steps)
+
+
+def load_environment(dir: str):
+    p = join(dir, "environment.py")
+    try:
+        return load_file(p)
+    except:
+        return None
 
 
 def steps_to_dict(steps: List[StepDescriptor]):

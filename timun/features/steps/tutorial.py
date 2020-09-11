@@ -1,6 +1,11 @@
 from timun import *
 
 
+@given("echo")
+def step1(ctx):
+    print("Echo")
+
+
 @then("this will {result}")
 def step_impl_4(context, result):
     if result == "fail":

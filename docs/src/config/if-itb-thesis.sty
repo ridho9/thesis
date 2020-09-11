@@ -69,9 +69,24 @@
 \definecolor{keywordsColor}{rgb}{0.000000, 0.000000, 0.635294}
 \definecolor{stringColor}{rgb}{0.558215, 0.000000, 0.135316}
 
+\definecolor{PigBlue}{RGB}{42, 0, 255}
+\definecolor{PigRed}{RGB}{255, 0, 0}
+
 \lstdefinelanguage{Gherkin}{
   morekeywords={When, Then, Given, And, Feature, Scenario, Examples,
                 Outline, Fail, Variables, enum, Accepted},
+  sensitive=false,
+  comment=[l]{\#},
+  morestring=[b]',
+  morestring=[b]"
+}
+
+\lstdefinelanguage{testresult}{
+  % morekeywords={SCENARIO, FAIL_SCENARIO, FAILED, SUCCESS},
+  keywords=[1]{SCENARIO, SUCCESS},
+  keywordstyle=[1]\color{PigBlue},
+  keywords=[2]{FAIL_SCENARIO, FAILED},
+  keywordstyle=[2]\color{PigRed},
   sensitive=false,
   comment=[l]{\#},
   morestring=[b]',

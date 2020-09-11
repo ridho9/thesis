@@ -16,17 +16,14 @@ Feature: example feature
 
     # Fail Scenario: this should pass
     #     Then this will fail
+    Background: background
+        Given echo
 
 
     Scenario: Calculator success add operation
         Given my number is 1
         When I add 1
         Then my number should be 2
-
-    Scenario: Calculator success add operation
-        Given my number is 1
-        When I add 1
-        Then fail my number should be 3
     
     # Fail Scenario: Calculator fail add operation
     #     Given my number is 1

@@ -8,7 +8,7 @@ kriptografi. Para pengembang aplikasi tersebut lalu beranggapan dengan memberika
 disebutkan sudah cukup, padahal masih banyak kelemahan keamanan aplikasi terjadi pada
 tingkat logika bisnis.
 
-\emph{Business Logic Error} (CWE-840) adalah salah satu kelemahan 
+\emph{Business Logic Error} (CWE-840) adalah salah satu kelemahan
 keamanan program yang disebabkan oleh kesalahan pada
 tingkat implementasi logika bisnis.
 Pengujian kelemahan ini tidak dapat diautomasi oleh kakas otomatis seperti \emph{scanner}
@@ -41,9 +41,9 @@ Dari latar belakang tersebut, penulis kemudian merumuskan masalah yaitu:
     \item Apa yang menyebabkan pengujian keamanan berbeda dengan pengujian fungsionalitas?
     \item Kenapa pengujian sulit dilakukan dengan baik walaupun telah menggunakan kerangka pengujian?
     \item Apa saja hal yang dibutuhkan pada kerangka pengujian agar dapat mendukung pengujian keamanan?
-    % \item Bagaimana cara mengintegrasikan pengujian keamanan pada tahap pengembangan aplikasi?
-    % \item Bagaimana cara agar kakas pengujian yang ada pada saat ini dapat mengetahui input-input lain yang ada?
-    % \item Bagaimana cara membuat keamanan mudah diuji pada tahap pengembangan?%dukungan kakas seperti apa yang ....
+          % \item Bagaimana cara mengintegrasikan pengujian keamanan pada tahap pengembangan aplikasi?
+          % \item Bagaimana cara agar kakas pengujian yang ada pada saat ini dapat mengetahui input-input lain yang ada?
+          % \item Bagaimana cara membuat keamanan mudah diuji pada tahap pengembangan?%dukungan kakas seperti apa yang ....
 \end{enumerate}
 
 \section{Tujuan}
@@ -69,12 +69,42 @@ Metodologi yang digunakan pada pengerjaan tugas akhir ini antara lain:
 \begin{enumerate}
     \item Studi Literatur
 
+          Pada tahap ini dilakukan penggalian pengetahuan melalui literatur-literatur yang terkait
+          dengan topik tugas akhir seperti \textit{paper, journal} dan buku.
+
     \item Eksplorasi kebutuhan
 
-    Pada tahap ini dilakukan analisa penyebab terjadinya \emph{business logic error}.
-    Lalu dilakukan penentuan fitur yang dibutuhkan untuk bahasa pengujian.
+          Pada tahap ini dilakukan analisa penyebab terjadinya \emph{business logic error}.
+          Lalu dilakukan penentuan fitur yang dibutuhkan untuk bahasa pengujian.
 
-    \item Desain 
-    \item Implementasi 
+    \item Desain
+
+          Pada tahap ini dilakukan desain bahasa dan arsitektur kakas yang akan dibuat.
+
+    \item Implementasi
+
+          Pada tahap ini dilakukan implementasi kakas yang telah didesain pada bagian sebelumnya.
+
     \item Evaluasi
+
+          Pada taham ini dilakukan evaluasi terhadap kakas yang telah dibuat dan fitur yang dirancang
+          dengan cara melakukan pengujian terhadap program nyata.
+\end{enumerate}
+
+
+\section{Sistematika Penulisan}
+
+Tugas akhir ini ditulis dalam 5 bab. Penjelasan masing-masing bab adalah sebagai berikut.
+
+\begin{enumerate}
+    \item Bab pendahuluan berisi latar belakang, rumusan masalah, tujuan, batasan masalah, metodologi, dan sistematika penulisan.
+
+    \item Bab tinjauan pustaka berisi teori-teori pendukung yang digunakan pada tugas akhir ini seperti pengujian perangkat lunak,
+          pengujian keamanan, \textit{Business Logic Error}, \textit{Behaviour Driven Development}, dan \textit{Domain-Specific Language}
+
+    \item Bab analisis dan perancangan berisi analisis permasalahan, kebutuhan DSL, rancangan DSL, dan desain arsitektur.
+
+    \item Bab implementasi membahas implementasi dan pengujian kakas yang terdiri dari detail implementasi, tujuan pengujian, hasil dan analisis pengujian.
+
+    \item Bab penutup berisi kesimpulan dan saran terhadap tugas akhir.
 \end{enumerate}

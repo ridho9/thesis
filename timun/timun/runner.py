@@ -1,3 +1,4 @@
+from os import environ
 import traceback
 from typing import List, Dict, Optional
 from dataclasses import dataclass
@@ -34,7 +35,7 @@ class ScenarioTestReport:
         res = self.desc_line()
         if self.exception:
             if self.fail_step:
-                f"\n\tStep: {self.fail_step.text}:{self.fail_step.idx}"
+                res += f"\n\tStep: {self.fail_step.text}:{self.fail_step.idx}"
 
             if self.step_desc:
                 res += f" (desc {self.step_desc.function.__name__}"
@@ -46,18 +47,22 @@ class ScenarioTestReport:
         if self.message:
             lines = self.message.splitlines()
             if self.show_traceback and not isinstance(self.exception, AssertionError):
-                for l in lines[:-1]:
+                for l in lines[:-3]:
                     res += f"\n\t| {l}"
-            res += f"\n\t| {lines[-1]}"
+            for l in lines[-3:]:
+                res += f"\n\t| {l}"
 
         return res
 
 
 class TestRunner:
-    def __init__(self, features: List[Feature], step_dict: Dict[str, StepDescriptor]):
+    def __init__(
+        self, features: List[Feature], step_dict: Dict[str, StepDescriptor], environment
+    ):
         self.features = features
         self.step_dict = step_dict
         self._indent = 0
+        self.environment = environment
 
         self.test_report: List[ScenarioTestReport] = []
 
@@ -80,21 +85,31 @@ class TestRunner:
                     f"Unexpanded scenario outline ({feature.filename}:{scenario.idx+1})"
                 )
 
-            report = run_scenario(self.step_dict, feature, scenario)
+            report = run_scenario(self.step_dict, feature, scenario, self.environment)
 
             print(report.desc_line())
             self.test_report.append(report)
 
 
 def run_scenario(
-    step_dict: StepDict, feature: Optional[Feature], scenario: Scenario
+    step_dict: StepDict, feature: Optional[Feature], scenario: Scenario, environment
 ) -> ScenarioTestReport:
-    context = {"failed": False}
+    context = {"failed": False, "scenario": scenario}
 
     report = ScenarioTestReport(feature, scenario)
 
-    scenario_type = scenario.type
+    before_scenario_hook = getattr(environment, "before_scenario", None)
+    if before_scenario_hook:
+        before_scenario_hook(context)
 
+    if feature and feature.background:
+        for step in feature.background.steps:
+            try:
+                run_step(step_dict, step, context)
+            except Exception as e:
+                return create_report(e, feature, scenario, step, step_dict)
+
+    scenario_type = scenario.type
     if scenario_type == ScenarioType.FAIL_SCENARIO:
         try:
             for step in scenario.steps:
@@ -111,16 +126,21 @@ def run_scenario(
             try:
                 run_step(step_dict, step, context)
             except Exception as e:
-                report.fail_step = step
-                report.exception = e
-                try:
-                    report.step_desc, _ = find_matching_step(step_dict, step)
-                except:
-                    report.step_desc = None
-                    report.show_traceback = False
-                report.message = traceback.format_exc().strip()
-                break
+                return create_report(e, feature, scenario, step, step_dict)
 
+    return report
+
+
+def create_report(exception, feature, scenario, step, step_dict):
+    report = ScenarioTestReport(feature, scenario)
+    report.fail_step = step
+    report.exception = exception
+    try:
+        report.step_desc, _ = find_matching_step(step_dict, step)
+    except:
+        report.step_desc = None
+        report.show_traceback = False
+    report.message = traceback.format_exc().strip()
     return report
 
 

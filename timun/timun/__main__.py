@@ -1,16 +1,23 @@
+import sys
+import os
 from os.path import join
 
 from pprint import pprint
 from timun.model import Feature, Scenario, VariableDeclaration
 from timun.file_loader import parse_features_dir
 from timun.scrambler import RandomScrambleStrategy, Scrambler
-from timun.step_loader import load_steps_from_dir, steps_to_dict
+from timun.step_loader import load_environment, load_steps_from_dir, steps_to_dict
 from timun.runner import TestRunner
 import timun.expander as expander
 
 
 def main():
+    print("Starting timun")
     # Load Features
+
+    cwd = os.getcwd()
+    if cwd not in sys.path:
+        sys.path.append(cwd)
 
     folder = "features"
     items = parse_features_dir(folder)
@@ -20,17 +27,17 @@ def main():
 
     #  Expand features
     expanded_features = list(map(expander.expand_feature, features))
-    # print(list(expanded_features))
 
-    # TODO: merge variables declaration
     variables = list(filter(lambda f: isinstance(f, VariableDeclaration), items))
 
-    merged_variable = variables[0]
+    # TODO: merge variables declaration
+    if variables and len(variables) != 0:
+        variables = variables[0]
 
     # Expand variables
     expanded_variables = list(
         map(
-            lambda feature: expander.expand_variables_feature(merged_variable, feature),
+            lambda feature: expander.expand_variables_feature(variables, feature),
             expanded_features,
         )
     )
@@ -42,10 +49,14 @@ def main():
     # pprint(step_dict)
 
     # Run Test
-    runner = TestRunner(expanded_variables, step_dict)
+    environment = load_environment(folder)
+
+    runner = TestRunner(expanded_variables, step_dict, environment)
     runner.run()
 
-    print("======")
+    print("=========================")
 
-    scrambler = Scrambler(expanded_variables, step_dict, seed="timun", amount=50)
+    scrambler = Scrambler(
+        expanded_variables, step_dict, environment, seed=".", amount=50
+    )
     scrambler.run()

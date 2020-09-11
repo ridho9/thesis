@@ -1,7 +1,46 @@
 \chapter{Penutup}
 
 \section{Kesimpulan}
-\blindtext
+
+% Dalam pengembangan perangkat lunak, masih sulit dilakukan pengujian terhadap kelemahan keamanan berjenis \emph{Business Logic Error}.
+% Hal ini terjadi karena kelemahan jenis ini membutuhkan pengoperasian perangkat lunak secara valid dengan langkah-langkah tertentu, dimana
+% tiap langkah tersebut adalah langkah yang valid yang menyebabkan pengujian secara otomatis menjadi mustahil.
+
+% BDD memberikan kumpulan pengetahuan langkah-langah \emph{business rule} yang mungkin terjadi terhadap perangkat lunak. Pengetahuan ini
+% dapat dimanfaatkan untuk melakukan pengujian secara otomatis dengan membangkitkan skenario-skenario acak.
+% BDD juga dapat ditambahkan fitur-fitur baru secara bahasa yang dapat mempermudah penguji untuk melakukan \emph{refactor} terhadap
+% skenario pengujian, dan menambahkan skenario baru.
+
+Dari pengerjaan tugas akhir ini dapat ditarik beberapa kesimpulan.
+
+\begin{itemize}
+  \item Pengujian keamanan berbeda dengan pengujian fungsionalitas dimana pengujian fungsionalitas hanya menguji apakah fungsionalitas
+        telah diimplementasikan dan berjalan dengan baik. Sementara pengujian keamanan menguji bahwa tidak ada celah-celah keamanan
+        yang terbentuk. Pengujian keamanan sering tidak optimal karena \textit{programmer} biasanya hanya melakukan pengujian
+        fungsionalitas saja.
+
+  \item Pengujian sulit dilakukan walapun telah menggunakan kakas sekalipun karena kakas pengujian masih memiliki banyak kekurangan
+        yang menyebabkan programmer menjadi terdorong untuk tidak melakukan pengujian dengan baik. Untuk pengujian
+        keamanan khususnya, kakas yang ada pada saat ini jauh berbeda dan tidak dapat berkerjasama dengan kakas
+        yang digunakan pada pengujian fungsionalitas. Perbedaan ini menyebabkan adanya pengetahuan domain program
+        yang dapat tidak tersampaikan saat dilakukan pengujian dari dua sisi.
+
+  \item Hal-hal yang dibutuhkan pada kerangka pengujian keamanan, khususnya \textit{Business Logic Error}, adalah fitur
+        yang dapat mempermudah pengujian keamanan. Fitur-fitur ini adalah representasi kegagalan, kemampuan menyatakan variansi,
+        dan pengacakan skenario. Dua fitur pertama membantu dalam melakukan \textit{refactor} terhadap kode pengujian sehingga
+        tidak terjadi duplikasi, dan fitur terakhir membantu penguji dalam menemukan kelemahan keamanan baru.
+\end{itemize}
 
 \section{Saran}
-\blindtext
+
+Dari dua poin fitur pertama, pada pengujian ditemukan bahwa fitur \texttt{Fail Scenario} tidak dapat berkerjasama dengan fitur
+\textit{Variabel Rejected}. Pada intinya saat kedua fitur ini digunakan akan menyebabkan negasi ganda terhadap skenario
+dasar yang dihasilkan. Negasi ganda ini menyebabkan skenario yang dihasilkan tidak intuitif dan sulit untuk dilogikakan
+oleh programmer. Solusi yang dapat dilakukan adalah dengan membatasi fitur variabel hanya dapat digunakan pada skenario
+biasa, atau dengan melakukan rancangan kembali agar dapat menghasilkan desain yang lebih baik.
+
+Pada implementasi, fitur pengacakan skenario menghasilkan skenario yang benar-benar acak tanpa ada aturan tertentu.
+Hal ini menyebabkan skenario yang dihasilkan bernilai \textit{false negative}. Jumlah step pada program pengujian
+yang sedikit menyebabkan tidak ditemukannya kelemahan terhadap program pengujian. Solusi yang dapat dilakukan
+adalah dengan menggunakan algoritma pembangkitan skenario yang lebih kompleks sehingga dihasilkan skenario yang lebih efektif,
+dan pengujian kakas juga dilakukan dengan program yang lebih besar dan komplek.

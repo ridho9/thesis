@@ -31,6 +31,7 @@ class Scrambler:
         self,
         features: List[Feature],
         step_dict: StepDict,
+        environment,
         seed=None,
         strategy=RandomScrambleStrategy(),
         amount=10,
@@ -42,6 +43,7 @@ class Scrambler:
 
         self.strategy = strategy
         self.amount = amount
+        self.environment = environment
 
     def gen_scenario(self) -> Scenario:
         return self.strategy.gen(self.steps)
@@ -58,7 +60,7 @@ class Scrambler:
             scenarios.append(self.gen_scenario())
 
         for scenario in scenarios:
-            report = run_scenario(self.step_dict, None, scenario)
+            report = run_scenario(self.step_dict, None, scenario, self.environment)
             if report.exception:
                 print(report.desc_line())
                 for step in scenario.steps:

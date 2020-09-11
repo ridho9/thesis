@@ -34,9 +34,8 @@ pengumpulan \emph{security requirement} dan \emph{threat modelling} sehingga did
 didapatkan, kasus-kasus ini dapat diubah menjadi skenario-skenario yang berisi
 langkah-langkah dalam terjadinya suatu kasus ancaman keamanan.
 
-\subsection{\textit{BDD}}
+\subsection{\textit{Pengujian Keamanan dengan BDD}}
 
-Dalam pengujian perangkat lunak ada
 Dalam BDD, fitur-fitur yang ada dalam sebuah program dideskripsikan dengan skenario
 berisi langkah yang menjelaskan alur terjadinya sebuah skenario. Pada kakas BDD
 yang ada pada saat ini, biasanya kasus test ini ditulis dengan bahasa dan \emph{syntax}
@@ -62,6 +61,13 @@ yang berbentuk bahasa manusia, sehingga dapat dimengerti oleh banyak pihak. Namu
 adalah \emph{syntax} Gherkin yang simpel menyebabkan sulitnya untuk mengekspresikan konstruk
 yang lebih kompleks karena hanya didesain untuk pengujian fungsionalitas, bukan untuk
 pengujian keamanan.
+
+Kerangka kerja pengujian lain yang mirip dengan BDD ada \textit{Test Driven Development} (TDD),
+dimana pengujian tetap mengikuti alur yang sama, namun perbedaannya dalam TDD program diuji dalam
+tingkat fungsi dalam kode. Kenapa kerangka kerja BDD digunakan dalam penyelesaian masalah ini adalah
+karena BLE sendiri terjadi dalam tingkat \textit{business logic} yang diuji oleh BDD, sementara TDD
+tidak pada tingkat tersebut.
+
 
 % \section{============}
 
@@ -129,15 +135,15 @@ pengujian keamanan.
 
 
 
-\section{Kebutuhan dan Rancangan Solusi}
+\section{Kebutuhan DSL Solusi}
 
 Pada bagian ini akan dibahas tiga poin pengembangan terhadap bahasa Gherkin dan kakas Cucumber
 yang dapat diambil untuk membuat Gherkin dan Cucumber menjadi lebih cocok untuk pengujian keamanan.
-Tiga poin tersebut adalah kemampuan untuk menyatakan kegagalan, kemampuan untuk menyatakan variasi,
+Tiga poin tersebut adalah kemampuan untuk merepresentasikan kegagalan, kemampuan untuk menyatakan variasi,
 dan pengacakan skenario. Dua poin pertama merupakan pengembangan terhadap bahasa Gherkin, dan
 poin terakhir merupakan pengembangan terhadap kakas Cucumber sebagai \emph{runtime} bahasa Gherkin.
 
-\subsection{Bisa menyatakan kegagalan}
+\subsection{Representasi Kegagalan}
 
 Pada pengujian fungsionalitas, kita hanya menuliskan kasus-kasus positif
 dimana skenario berjalan dengan benar. Namun untuk pengujian BLE,
@@ -220,8 +226,26 @@ Feature: keranjang
     | belum         |
 \end{lstlisting}
 
+Sebagai kesimpulan, pada bagian ini diperlukan penambahan jenis skenario \emph{Fail Scenario}
+dengan bentuk yang mirip skenario biasa seperti
 
-\subsection{Bisa menyatakan variansi}
+\begin{lstlisting}[language=gherkin]
+Fail Scenario: scenario desc
+  (steps...)
+\end{lstlisting}
+
+dan menambahkan tabel data baru ke \emph{scenario outline} seperti
+
+\begin{lstlisting}[language=gherkin]
+Scenario Outline: menambahkan barang ke dalam keranjang
+  (steps...)
+  Fail Examples:
+    (table...)
+\end{lstlisting}
+
+
+
+\subsection{Kemampuan Menyatakan Variansi}
 
 Gherkin pada saat ini memiliki fitur \emph{scenario outline} yang dapat menyatakan banyak skenario yang mirip
 hanya dalam satu skenario saja dengan menggunakan template dan tabel.
@@ -271,7 +295,31 @@ Dengan fitur ini duplikasi didalam kode pengujian menjadi berkurang dan
 kode memiliki satu sumber fakta sehingga jika terjadi perubahan pada spesifikai tidak
 harus mengubah kode pada banyak tempat.
 
+Untuk bagian ini, pada gherkin akan ditambahkan bagian \emph{Variables} yang digunakan
+untuk deklarasi variabel. Bagian ini akan terletak pada tingkat yang sama dengan bagian \emph{Feature}
+dan berbentuk seperti
+
+\begin{lstlisting}[language=gherkin]
+Variables:
+  (nama variabel 1): enum (values 1...)
+  (nama variabel 2): enum (values 2...)
+  ...
+\end{lstlisting}
+
+Untuk menggunakan deklarasi ini melalui table \emph{Variable Accepted} dan/atau \emph{Variable Rejected}
+yang dapat digunakan di bagian \emph{scenarion} atau \emph{fail scenario} seperti
+
+\begin{lstlisting}[language=gherkin]
+Scenario: scenario description
+  (steps...)
+  Variable Accepted:
+    (table...)
+  Variable Rejected:
+    (table...)
+\end{lstlisting}
+
 \subsection{Pengacakan Skenario}
+\label{sec:323}
 
 Salah satu penyebab kesulitan dari pengujian kelemahan keamanan jenis BLE adalah karena kelemahan
 ini memiliki langkah-langkah yang harus dijalankan di dalam aplikasi, namun teknologi pada saat
@@ -284,8 +332,32 @@ Pengetahuan ini dapat dimanfaatkan oleh kakas pengujian untuk membangkitkan sken
 baru secara acak dengah harapan skenario acak ini dapat membantu menemukan kelemahan-kelemahan baru.
 Cara ini mirip dengan \emph{fuzzy testing} dimana kasus pengujian dibangkitkan secara acak.
 
+Untuk bagian ini, pada \textit{runner} gherkin akan ditambahkan fitur pembangkitan skenario acak
+yang diambil dari step-step yang ada dalam skenario-skenario pengujian. Setelah skenario baru ini
+dibangkitkan kemudian akan dilakukan pengujian seperti biasa. Hasil dari pengujian skenario acak
+ini akan kemudian dilaporkan kepada user.
 
-\section{Struktur Bahasa}
+Dalam bentuk psudeocode python, pengujian ini dapat digambarkan sebagai berikut.
+
+
+\begin{lstlisting}[language=python]
+def all_features
+def all_steps = get_all_step_from(all features)
+
+def generate_random_scenario():
+  step_amount = randint
+
+  result_scenario = Scenario()
+
+  for _ in range step_amount:
+    step = a random step in all_steps
+    result_scenario add step
+
+  return result_scenario
+\end{lstlisting}
+
+\section{Rancangan Solusi}
+\subsection{Struktur Bahasa}
 \label{sec:struktur-bahasa}
 
 Pada bagian ini akan dipaparkan grammar bahasa yang akan dibuat dalam EBNF. Gherkin yang menggunakan bahasa
@@ -348,8 +420,21 @@ featureFile
   : topLevelEntry+ ;
 \end{lstlisting}
 
+Dari grammar EBNF diatas, penambahan grammar untuk poin representasi kegagalan terdapat pada baris 14 dan 28,
+dan untuk poin kemampuan menyatakan kegagalan terdapat pada baris 31-41, 45, dan 50.
 
-\section{Desain Arsitektur}
+\subsection{Pengacakan Skenario}
+
+Salah satu fitur tambahan pada gherkin yang direncanakan adalah fitur pengacakan skenario.
+Untuk pembangkitan skenario acak ini tentu tidak bisa hanya asal acak, karena tidak akan menghasilkan
+skenario pengujian yang efektif, seperti skenario acak yang dihasilkan tidak memiliki statupun step \texttt{Then}
+sehingga tidak dilakukan \textit{assertion} terhadap hasil eksekusi skenario dan menghasilkan \textit{false positive}.
+Selain syarat diatas tidak menutup kemungkinan adanya syarat-syarat lain yang perlu diikutin namun saat ini masih belum
+diketahui.
+Kakas juga tidak dapat memastikan bahwa skenario yang dibangkitkan terlepas dari \textit{false positive} atau
+\textit{false negative} karena kakas tentu tidak bisa memahami apa yang dilakukannya.
+
+\section{Arsitektur Sistem}
 
 Dalam pembuatan kakas ini, ada tiga komponen yang saling berkerja sama. Pertama adalah \emph{parser} yang
 berfungsi untuk mengubah \emph{file} fitur menjadi struktur data yang lebih mudah diolah. Kedua adalah

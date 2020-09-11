@@ -24,8 +24,3 @@ def when_i_add(ctx, operation: str, number: int):
 @then("my number should be {number:d}")
 def then_my_number_should_be(ctx, number):
     assert ctx["number"] == number
-
-
-@then("fail my number should be {number:d}")
-def fail_then_my_number_should_be(ctx, number):
-    assert ctx["number"] != number
