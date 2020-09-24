@@ -1,10 +1,10 @@
 import itertools
 from timun.parser.combinator import ParserError, ignore_line, next_nonempty_line
-from typing import List
+from typing import List, Union
 import os
 from os.path import isfile, join, abspath
 
-from timun.model import Feature
+from timun.model import Feature, VariableDeclaration
 import timun.parser as parser
 
 from timun.step_loader import load_step_from_file
@@ -18,7 +18,7 @@ def all_feature_files_in_dir(dir: str) -> List[str]:
     ]
 
 
-def parse_feature_file(path: str) -> List[Feature]:
+def parse_feature_file(path: str) -> List[Union[Feature, VariableDeclaration]]:
     with open(path) as f:
         input = parser.create_input(path, f.read())
 
@@ -35,7 +35,7 @@ def parse_feature_file(path: str) -> List[Feature]:
         return features
 
 
-def parse_features_dir(dir: str) -> List[Feature]:
+def parse_features_dir(dir: str) -> List[Union[Feature, VariableDeclaration]]:
     try:
         files = all_feature_files_in_dir(dir)
         features = itertools.chain(*map(parse_feature_file, files))

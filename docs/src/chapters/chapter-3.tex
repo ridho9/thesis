@@ -2,10 +2,14 @@
 
 \section{Analisis Permasalahan}
 
+Pada bagian ini akan dilakukan analisis terhadap hal-hal yang merupakan permasalahan
+yang dibahas tugas akhir ini, berupa keadaan pengujian perangkat lunak, BLE,
+pengujian keamanan perangkat lunak, dan BDD.
+
 \subsection{Pengujian Perangkat Lunak dan \textit{BLE}}
 
-Menurut kemudahan pengujiannya, kelemahan kemanan terbagi menjadi yang mudah diuji
-dan yang sulit diuji. Kelemakan keamanan yang mudah diuji biasanya memiliki penyebab
+Menurut kemudahan pengujiannya, kelemahan keamanan terbagi menjadi yang mudah diuji
+dan yang sulit diuji. Kelemahan keamanan yang mudah diuji biasanya memiliki penyebab
 yang jelas, telah banyak dipelajari, dan memiliki langkah yang mudah untuk mengujinya.
 Salah beberapa contoh dari kelemahan ini adalah \emph{Cross Site Scripting} (XSS) dan
 \emph{SQL injection}. Kedua kelemahan ini telah banyak dipelajari dan dipahami mekanismenya
@@ -41,14 +45,14 @@ berisi langkah yang menjelaskan alur terjadinya sebuah skenario. Pada kakas BDD
 yang ada pada saat ini, biasanya kasus test ini ditulis dengan bahasa dan \emph{syntax}
 yang mudah dimengerti semua pihak mulai dari \emph{programmer} yang akan melakukan implementasi
 hingga \emph{stakeholder} yang memiliki aplikasi. Penggunaan bahasa tentu saja memiliki \emph{tradeoff}
-yang berbentuk dalam sulitnya untuk mendeksripsikan keadaan yang lebih kompleks.
+yang berbentuk dalam sulitnya untuk mendeskripsikan keadaan yang lebih kompleks.
 
 Hasil dari pemodelan ancaman keamanan yang berbentuk skenario yang terdiri dari langkah-langkah
 cocok dengan metodologi BDD yang juga mendeskripsikan skenario dari fitur program dalam bentuk
 langkah-langkah. \emph{File} fitur BDD berisi pengetahuan tentang kejadian apa saja yang mungkin
 terjadi terhadap suatu fitur program. Kumpulan pengetahuan ini dapat digunakan untuk
 membantu menemukan kelemahan keamanan yang termasuk kedalam BLE, karena kelemahan BLE
-umumnya terjadi setelah langkah-langkat tertentu dijalankan secara berurutan.
+umumnya terjadi setelah langkah-langkah tertentu dijalankan secara berurutan.
 
 Pada saat ini, ada beberapa kakas yang dapat digunakan untuk melakukan metodologi BDD.
 Beberapa diantaranya adalah Cucumber dan Rspec.
@@ -159,7 +163,7 @@ menyebabkan banyaknya duplikasi kode \emph{step definition} dan membuat \emph{pr
 melakukannya.
 Duplikasi ini dikarenakan setiap kode \emph{step definition} dari Gherkin dianggap
 sukses/\emph{passing} jika tidak ada exception yang terjadi.
-Kita ingin mengurangi duplikasi dan mengingkatkan \emph{code reuse}.
+Kita ingin mengurangi duplikasi dan meningkatkan \emph{code reuse}.
 Kita ingin agar kode \emph{step definition} dari step \texttt{Then the basket should have items in it}
 dapat digunakan untuk skenario sukses ataupun gagal.
 
@@ -179,7 +183,7 @@ Feature: keranjang
 
 Untuk desain fitur Failure dapat kita lakukan beberapa hal.
 
-Screnario di atas memiliki initial state dimana user telah login.
+Scenario di atas memiliki initial state dimana user telah login.
 Programmer dapat menambahkan satu skenario lagi untuk keadaan dimana user gagal login, seperti:
 \begin{lstlisting}[language=gherkin]
 Feature: keranjang
@@ -210,7 +214,7 @@ Feature: keranjang
 Dengan menggabungkan fitur \emph{scenario outline} dengan \emph{fail scenario}
 kita dapat membuat bagian baru dari \emph{scenario outline} yang menyatakan contoh
 yang harusnya gagal, sehingga tidak membutuhkan variabel \texttt{result state},
-dengan menggunakan fitur tersebut kode pengujian kita dapat menjadi seperi
+dengan menggunakan fitur tersebut kode pengujian kita dapat menjadi seperti
 
 \begin{lstlisting}[language=gherkin]
 Feature: keranjang
@@ -264,10 +268,10 @@ telah atau belum \emph{login}. Seperti yang telah dibahas pada poin sebelumnya, 
 menggunakan fitur \emph{scenario outline} dan \emph{fail scenario} untuk menyatakan
 pengujian fitur tersebut. Namun dengan bertambahnya fitur dan skenario yang akan diuji,
 mengulang penggunaan \emph{scenario outline} yang berulang-ulang menjadi sulit. Dengan contoh
-diatas tentu saja \emph{state} seorang user simpel saja, hanya sudah atau belum login, namun
-jika attribut yang dimiliki user memiliki banyak nilai, misalnya jenis user yang dapat
+di atas tentu saja \emph{state} seorang user simpel saja, hanya sudah atau belum login, namun
+jika atribut yang dimiliki user memiliki banyak nilai, misalnya jenis user yang dapat
 berupa admin, pembeli dan penjual, jika ada perubahan dari spesifikasi maka semua tempat
-yang terkait dengan attribut ini harus diubah.
+yang terkait dengan atribut ini harus diubah.
 
 Untuk mengatasi hal ini, kita dapat menambahkan fitur dimana kita dapat membuat deklarasi
 nilai-nilai yang dapat dimiliki suatu variabel, seperti enum. Sebagai contoh, fitur admin
@@ -291,7 +295,7 @@ scenario outline, namun \emph{tester} hanya perlu menulis kombinasi nilai variab
 yang diterima, \emph{runtime} gherkin akan secara otomatis menguji semua kombinasi variabel.
 
 Deklarasi ini bersifat global sehingga dapat digunakan di file fitur lainnya.
-Dengan fitur ini duplikasi didalam kode pengujian menjadi berkurang dan
+Dengan fitur ini duplikasi di dalam kode pengujian menjadi berkurang dan
 kode memiliki satu sumber fakta sehingga jika terjadi perubahan pada spesifikai tidak
 harus mengubah kode pada banyak tempat.
 
@@ -307,7 +311,7 @@ Variables:
 \end{lstlisting}
 
 Untuk menggunakan deklarasi ini melalui table \emph{Variable Accepted} dan/atau \emph{Variable Rejected}
-yang dapat digunakan di bagian \emph{scenarion} atau \emph{fail scenario} seperti
+yang dapat digunakan di bagian \emph{scenario} atau \emph{fail scenario} seperti
 
 \begin{lstlisting}[language=gherkin]
 Scenario: scenario description
@@ -329,7 +333,7 @@ dari satu \emph{state} ke \emph{state} lainnya, terutama dalam aplikasi berbasis
 Dalam \emph{file} pengujian BDD telah terdapat sekumpulan pengetahuan tentang langkah-langkah
 yang dapat terjadi dalam suatu aplikasi dalam bentuk \emph{step} given, when dan then.
 Pengetahuan ini dapat dimanfaatkan oleh kakas pengujian untuk membangkitkan skenario-skenario
-baru secara acak dengah harapan skenario acak ini dapat membantu menemukan kelemahan-kelemahan baru.
+baru secara acak dengan harapan skenario acak ini dapat membantu menemukan kelemahan-kelemahan baru.
 Cara ini mirip dengan \emph{fuzzy testing} dimana kasus pengujian dibangkitkan secara acak.
 
 Untuk bagian ini, pada \textit{runner} gherkin akan ditambahkan fitur pembangkitan skenario acak
@@ -360,15 +364,23 @@ def generate_random_scenario():
 \subsection{Struktur Bahasa}
 \label{sec:struktur-bahasa}
 
-Pada bagian ini akan dipaparkan grammar bahasa yang akan dibuat dalam EBNF. Gherkin yang menggunakan bahasa
-manusia memiliki struktur yang cukup bebas namun kita masih dapat memperkirakan grammarnya sebisa mungkin
-dalam EBNF.
+Pada bagian ini akan dipaparkan grammar bahasa yang akan dibuat dalam \emph{Extenden Backus-Naur Form}(EBNF).
+EBNF adalah bahasa simpel yang digunakan untuk mendeskripsikan \emph{grammar} dan \emph{syntax}.
+Dalam EBNF, bahasa dideskripsikan menggunakan terminal dan non-terminal.
+Terminal adalah simbol yang berupa teks sebenarnya yang akan tampak pada kode program,
+pada contoh dibawah terminal akan ditandai dengan menggunakan tanda kutip.
+Non-terminal adalah kumpulan dari terminal dan non-terminal lainnya yang menentukan struktur dari
+program. Non-terminal selain dibuat dari terminal dan non-terminal lainnya juga dapat menggunakan
+simbol yang biasa digunakan pada regex seperti \texttt{.+*|}.
+
+Gherkin yang menggunakan bahasa manusia memiliki struktur yang cukup bebas
+namun kita masih dapat memperkirakan grammarnya dalam EBNF.
 
 \begin{lstlisting}[language=ebnf]
 string
-  : .+
+  : .+ ;
 token
-  : \w+
+  : \w+ ;
 newline
   : \n ;
 stepKeyword
@@ -420,23 +432,23 @@ featureFile
   : topLevelEntry+ ;
 \end{lstlisting}
 
-Dari grammar EBNF diatas, penambahan grammar untuk poin representasi kegagalan terdapat pada baris 14 dan 28,
+Dari grammar EBNF di atas, penambahan grammar untuk poin representasi kegagalan terdapat pada baris 14 dan 28,
 dan untuk poin kemampuan menyatakan kegagalan terdapat pada baris 31-41, 45, dan 50.
 
 \subsection{Pengacakan Skenario}
 
 Salah satu fitur tambahan pada gherkin yang direncanakan adalah fitur pengacakan skenario.
 Untuk pembangkitan skenario acak ini tentu tidak bisa hanya asal acak, karena tidak akan menghasilkan
-skenario pengujian yang efektif, seperti skenario acak yang dihasilkan tidak memiliki statupun step \texttt{Then}
+skenario pengujian yang efektif, seperti skenario acak yang dihasilkan tidak memiliki satupun step \texttt{Then}
 sehingga tidak dilakukan \textit{assertion} terhadap hasil eksekusi skenario dan menghasilkan \textit{false positive}.
-Selain syarat diatas tidak menutup kemungkinan adanya syarat-syarat lain yang perlu diikutin namun saat ini masih belum
+Selain syarat di atas tidak menutup kemungkinan adanya syarat-syarat lain yang perlu diikuti namun saat ini masih belum
 diketahui.
 Kakas juga tidak dapat memastikan bahwa skenario yang dibangkitkan terlepas dari \textit{false positive} atau
 \textit{false negative} karena kakas tentu tidak bisa memahami apa yang dilakukannya.
 
 \section{Arsitektur Sistem}
 
-Dalam pembuatan kakas ini, ada tiga komponen yang saling berkerja sama. Pertama adalah \emph{parser} yang
+Dalam pembuatan kakas ini, ada tiga komponen yang saling bekerjasama. Pertama adalah \emph{parser} yang
 berfungsi untuk mengubah \emph{file} fitur menjadi struktur data yang lebih mudah diolah. Kedua adalah
 \emph{importer} yang berfungsi untuk membaca \emph{file} python dan mengumpulkan seluruh definisi step.
 Ketiga adalah \emph{runtime} yang menerima hasil dari \emph{parser} dan \emph{importer} dan kemudian
@@ -444,10 +456,18 @@ menjalankan pengujian. Diagram arsitektur seperti pada gambar \ref{dia:desain-ar
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.8\textwidth]{resources/desain-arsitektur.png}
+  % \includegraphics[width=0.8\textwidth]{resources/desain-arsitektur.png}
+  \includegraphics[width=1\textwidth]{resources/component.png}
   \caption{Desain Arsitektur Kakas}
   \label{dia:desain-arsitektur}
 \end{figure}
+
+Modul \texttt{User} mengilustrasikan bagian yang harus dibuat oleh user yang akan menggunakan kakas ini,
+sementara modul \texttt{Timun} adalah kakas yang digunakan untuk pengujian program.
+
+Pada tugas akhir ini bagian yang akan diimplementasikan terdapat di dalam modul \texttt{Timun}.
+Bagian ini terdiri dari 4 komponen. Semua komponen akan diimplementasikan dari awal,
+dengan Gherkin dan Cucumber sebagai referensi dan inspirasi untuk implementasi.
 
 % \section{Rancangan Solusi}
 
@@ -529,7 +549,7 @@ menjalankan pengujian. Diagram arsitektur seperti pada gambar \ref{dia:desain-ar
 
 % Pada saat ini, Gherkin memiliki fitur \emph{scenario outline}
 % untuk mendefinisikan sebuah \emph{template} skenario,
-% didalamnya dapat digunakan \emph{placeholder} variabel yang dapat didefinisikan
+% di dalamnya dapat digunakan \emph{placeholder} variabel yang dapat didefinisikan
 % dalam sebuah tabel.
 % Penggunakan \emph{scenario outline} memungkinkan \emph{programmer} untuk
 % mendefinisikan banyak skenario yang mirip dengan variasi nilai dengan mudah.

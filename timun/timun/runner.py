@@ -154,12 +154,15 @@ def find_matching_step(step_dict: StepDict, step: Step):
 
     # find matching step descriptor
     for desc in step_dict.values():
-        match = desc.pattern.parse(step.text)
-        if match:
+        match_pattern = desc.pattern.parse(step.text)
+        match_type = desc.type == step.type
+        if match_pattern and match_type:
             matching_step.append(desc)
 
     if matching_step == []:
-        raise Exception(f"Can't find matching step definition for '{step.text}'")
+        raise Exception(
+            f"Can't find matching step definition for '{step.type.name} {step.text}'"
+        )
 
     # TODO: Raise exception when multiple matching steps found
 

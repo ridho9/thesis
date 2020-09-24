@@ -20,7 +20,7 @@ class RandomScrambleStrategy:
         self.max = max
 
     def gen(self, steps: List[Step]) -> Scenario:
-        gen_len = random.randint(self.min, self.max)
+        gen_len = random.randint(self.min, min(self.max, len(steps)))
         res = random.sample(steps, gen_len)
 
         return Scenario(ScenarioType.FAIL_SCENARIO, "random gen", res, 0, None, None)
@@ -37,6 +37,9 @@ class Scrambler:
         amount=10,
     ):
         self.steps = extract_step_from_features(features)
+
+        # TODO: deduplicate steps
+
         self.step_dict = step_dict
         self.seed = seed
         random.seed(self.seed)
@@ -50,7 +53,7 @@ class Scrambler:
 
     def run(self):
         print(f"Running scrambler")
-        print(f"Steps amount\t\t: {len(self.steps)}")
+        print(f"Steps available\t\t: {len(self.steps)}")
         print(f"Seed\t\t\t: {self.seed}")
         print(f"Strategy\t\t: {self.strategy}")
         print(f"Amount to generate\t: {self.amount}")
@@ -58,6 +61,8 @@ class Scrambler:
         scenarios: List[Scenario] = []
         for _ in range(self.amount):
             scenarios.append(self.gen_scenario())
+
+        print("==== Failed Scenarios ====")
 
         for scenario in scenarios:
             report = run_scenario(self.step_dict, None, scenario, self.environment)

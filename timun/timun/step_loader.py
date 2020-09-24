@@ -73,9 +73,10 @@ def steps_to_dict(steps: List[StepDescriptor]):
     result: StepDict = {}
 
     for step in steps:
-        if step.text in result:
+        key = f"{step.type.name} {step.text}"
+        if key in result:
             raise DuplicateStepException(step, result[step.text])
 
-        result[step.text] = step
+        result[key] = step
 
     return result

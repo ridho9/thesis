@@ -2,8 +2,8 @@
 
 \section{Latar Belakang}
 
-Aplikasi web umum pada saat ini, seperti \emph{e-commerce}, umumnya berfokus pada mekanisme keamanan
-seperti \emph{secure transfer protocol}, \emph{paramerter sanitization}, dan menggunakan bermacam skema
+Keamanan aplikasi web pada saat ini umumnya berfokus pada mekanisme keamanan
+seperti \emph{secure transfer protocol}, \emph{parameter sanitization}, dan menggunakan bermacam skema
 kriptografi. Para pengembang aplikasi tersebut lalu beranggapan dengan memberikan fitur keamanan seperti yang
 disebutkan sudah cukup, padahal masih banyak kelemahan keamanan aplikasi terjadi pada
 tingkat logika bisnis.
@@ -13,9 +13,10 @@ keamanan program yang disebabkan oleh kesalahan pada
 tingkat implementasi logika bisnis.
 Pengujian kelemahan ini tidak dapat diautomasi oleh kakas otomatis seperti \emph{scanner}
 karena bergantung kepada domain dan bisnis aplikasi.
-Kelemahan ini juga biasanya terlupakan atau tidak dilakukan karena pada siklus pengembangan aplikasi biasa,
-yang diuji hanyalah kebutuhan fungsionalitas aplikasi apakah telah
-terimplementasi dengan baik, sementara kelemahan-kelemahan yang mungkin ada tidak teruji.
+Sifat dari kelemahan ini menyebabkan kelemahan jenis ini sulit untuk ditemukan.
+% Kelemahan ini juga biasanya terlupakan atau tidak dilakukan karena pada siklus pengembangan aplikasi biasa,
+% yang diuji hanyalah kebutuhan fungsionalitas aplikasi apakah telah
+% terimplementasi dengan baik, sementara kelemahan-kelpmahan yang mungkin ada tidak teruji.
 
 Pada saat ini, pengujian keamanan biasanya dilakukan setelah pengembangan aplikasi selesai, dan pengujian
 dilakukan dengan cara \emph{blackbox} yaitu aplikasi yang telah selesai diberikan bermacam-macam masukan.
@@ -23,43 +24,45 @@ Tetapi pengujian dengan cara \emph{blackbox} masih memiliki kelemahan dimana wal
 kelemahan keamanan yang sudah umum diketahui seperti \emph{injection}, cara ini masih jarang menemukan
 kelemahan keamanan yang terjadi karena \emph{business logic error} yang biasanya membutuhkan
 langkah-langkah yang sangat spesifik dan berbeda tiap aplikasinya.
-%Ridho: Please define what is the business logic error... and how it is related to security which one is your main concern
 
-Pengujian keamanan akan menjadi lebih efektif jika diintegrasikan ke dalam siklus pengembangan aplikasi,
-seperti pengujian fungsionalitas.
-Pada fungsionalitas, pengujian diintegrasikan ke dalam pengembangan dengan menggunakan kakas TDD dan BDD.
-Kakas yang ada ini jika diikuti dengan baik bisa memberi jaminan bahwa fungsionalitas telah berjalan dengan baik.
-Namun kakas ini belum bisa digunakan bersamaan untuk pengujian keamanan karena sifat dari pengujian keamanan itu sendiri.
-Pengujian keamanan mengharuskan kita mencoba semua kemungkinan input yang pada normalnya tidak boleh
-diterima oleh aplikasi.
+% Pengujian keamanan akan menjadi lebih efektif jika diintegrasikan ke dalam siklus pengembangan aplikasi,
+% seperti pengujian fungsionalitas.
+% Pada fungsionalitas, pengujian diintegrasikan ke dalam pengembangan dengan menggunakan kakas
+% \emph{Test-Driven Development}(TDD) dan \emph{Behaviour-Driven Development}(BDD).
+% Kakas yang ada ini jika diikuti dengan baik bisa memberi jaminan bahwa fungsionalitas telah berjalan dengan baik.
+% Namun kakas ini belum bisa digunakan bersamaan untuk pengujian keamanan karena sifat dari pengujian keamanan itu sendiri.
+% Pengujian keamanan mengharuskan kita mencoba semua kemungkinan input yang pada normalnya tidak boleh
+% diterima oleh aplikasi
 
 \section{Rumusan Masalah}
 
-Dari latar belakang tersebut, penulis kemudian merumuskan masalah yaitu:
+% Dari latar belakang tersebut, penulis kemudian merumuskan masalah yaitu:
+Rumusan masalah dari tugas akhir ini adalah sebagai berikut:
 
 \begin{enumerate}
-    \item Apa yang menyebabkan pengujian keamanan berbeda dengan pengujian fungsionalitas?
-    \item Kenapa pengujian sulit dilakukan dengan baik walaupun telah menggunakan kerangka pengujian?
-    \item Apa saja hal yang dibutuhkan pada kerangka pengujian agar dapat mendukung pengujian keamanan?
-          % \item Bagaimana cara mengintegrasikan pengujian keamanan pada tahap pengembangan aplikasi?
-          % \item Bagaimana cara agar kakas pengujian yang ada pada saat ini dapat mengetahui input-input lain yang ada?
-          % \item Bagaimana cara membuat keamanan mudah diuji pada tahap pengembangan?%dukungan kakas seperti apa yang ....
+      \item Apa yang menyebabkan pengujian keamanan berbeda dengan pengujian fungsionalitas?
+      \item Kenapa pengujian sulit dilakukan dengan baik walaupun telah menggunakan kerangka pengujian?
+      \item Apa saja hal yang dibutuhkan pada kerangka pengujian agar dapat mendukung pengujian keamanan?
+            % \item Bagaimana cara mengintegrasikan pengujian keamanan pada tahap pengembangan aplikasi?
+            % \item Bagaimana cara agar kakas pengujian yang ada pada saat ini dapat mengetahui input-input lain yang ada?
+            % \item Bagaimana cara membuat keamanan mudah diuji pada tahap pengembangan?%dukungan kakas seperti apa yang ....
 \end{enumerate}
 
 \section{Tujuan}
 
-Subbab sebelum ini telah menjelaskan latar belakang dan rumusan masalah tugas akhir ini.
-Karena itu, tujuan dari tugas akhir ini adalah membangun kakas pengujian aplikasi
+Tujuan dari tugas akhir ini adalah membangun kakas pengujian aplikasi
 dengan kerangka BDD atau TDD, dimana kakas dapat juga dapat melakukan pengujian
-keamanan dari \emph{business logic error} dengan mudah.
+keamanan terhadap \emph{business logic error}.
 
 \section{Batasan Masalah}
 
-Untuk mencapai tujuan yang telah dijelaskan pada subbab sebelumnya, kakas pengujian difokuskan pada hal berikut:
+Batasan pada tugas akhir ini adalah sebagai berikut:
 
 \begin{enumerate}
-    \item Untuk menguji ancaman keamanan yang disebabkan oleh \emph{business logic error}
-    \item Kerangka pengujian yang digunakan sebagai acuan adalah kerangka pengujian BDD Gherkin
+      % \item Untuk menguji ancaman keamanan yang disebabkan oleh \emph{business logic error}
+      \item Kerangka pengujian yang digunakan sebagai acuan adalah kerangka pengujian BDD Gherkin
+
+      \item Kakas dibuat dengan dan untuk program berbahasa Python
 \end{enumerate}
 
 \section{Metodologi}
@@ -67,28 +70,28 @@ Untuk mencapai tujuan yang telah dijelaskan pada subbab sebelumnya, kakas penguj
 Metodologi yang digunakan pada pengerjaan tugas akhir ini antara lain:
 
 \begin{enumerate}
-    \item Studi Literatur
+      \item Studi Literatur
 
-          Pada tahap ini dilakukan penggalian pengetahuan melalui literatur-literatur yang terkait
-          dengan topik tugas akhir seperti \textit{paper, journal} dan buku.
+            Pada tahap ini dilakukan penggalian pengetahuan melalui literatur-literatur yang terkait
+            dengan topik tugas akhir seperti \textit{paper, journal} dan buku.
 
-    \item Eksplorasi kebutuhan
+      \item Eksplorasi kebutuhan
 
-          Pada tahap ini dilakukan analisa penyebab terjadinya \emph{business logic error}.
-          Lalu dilakukan penentuan fitur yang dibutuhkan untuk bahasa pengujian.
+            Pada tahap ini dilakukan analisa penyebab terjadinya \emph{business logic error}.
+            Lalu dilakukan penentuan fitur yang dibutuhkan untuk bahasa pengujian.
 
-    \item Desain
+      \item Desain
 
-          Pada tahap ini dilakukan desain bahasa dan arsitektur kakas yang akan dibuat.
+            Pada tahap ini dilakukan desain bahasa dan arsitektur kakas yang akan dibuat.
 
-    \item Implementasi
+      \item Implementasi
 
-          Pada tahap ini dilakukan implementasi kakas yang telah didesain pada bagian sebelumnya.
+            Pada tahap ini dilakukan implementasi kakas yang telah didesain pada bagian sebelumnya.
 
-    \item Evaluasi
+      \item Evaluasi
 
-          Pada taham ini dilakukan evaluasi terhadap kakas yang telah dibuat dan fitur yang dirancang
-          dengan cara melakukan pengujian terhadap program nyata.
+            Pada tahap ini dilakukan evaluasi terhadap kakas yang telah dibuat dan fitur yang dirancang
+            dengan cara melakukan pengujian terhadap program nyata.
 \end{enumerate}
 
 
@@ -97,14 +100,14 @@ Metodologi yang digunakan pada pengerjaan tugas akhir ini antara lain:
 Tugas akhir ini ditulis dalam 5 bab. Penjelasan masing-masing bab adalah sebagai berikut.
 
 \begin{enumerate}
-    \item Bab pendahuluan berisi latar belakang, rumusan masalah, tujuan, batasan masalah, metodologi, dan sistematika penulisan.
+      \item Bab pendahuluan berisi latar belakang, rumusan masalah, tujuan, batasan masalah, metodologi, dan sistematika penulisan.
 
-    \item Bab tinjauan pustaka berisi teori-teori pendukung yang digunakan pada tugas akhir ini seperti pengujian perangkat lunak,
-          pengujian keamanan, \textit{Business Logic Error}, \textit{Behaviour Driven Development}, dan \textit{Domain-Specific Language}
+      \item Bab tinjauan pustaka berisi teori-teori pendukung yang digunakan pada tugas akhir ini seperti pengujian perangkat lunak,
+            pengujian keamanan, \textit{Business Logic Error}, \textit{Behaviour Driven Development}, dan \textit{Domain-Specific Language}
 
-    \item Bab analisis dan perancangan berisi analisis permasalahan, kebutuhan DSL, rancangan DSL, dan desain arsitektur.
+      \item Bab analisis dan perancangan berisi analisis permasalahan, kebutuhan DSL, rancangan DSL, dan desain arsitektur.
 
-    \item Bab implementasi membahas implementasi dan pengujian kakas yang terdiri dari detail implementasi, tujuan pengujian, hasil dan analisis pengujian.
+      \item Bab implementasi membahas implementasi dan pengujian kakas yang terdiri dari detail implementasi, tujuan pengujian, hasil dan analisis pengujian.
 
-    \item Bab penutup berisi kesimpulan dan saran terhadap tugas akhir.
+      \item Bab penutup berisi kesimpulan dan saran terhadap tugas akhir.
 \end{enumerate}

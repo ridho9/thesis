@@ -3,6 +3,7 @@ import os
 from os.path import join
 
 from pprint import pprint
+from typing import List
 from timun.model import Feature, Scenario, VariableDeclaration
 from timun.file_loader import parse_features_dir
 from timun.scrambler import RandomScrambleStrategy, Scrambler
@@ -10,8 +11,13 @@ from timun.step_loader import load_environment, load_steps_from_dir, steps_to_di
 from timun.runner import TestRunner
 import timun.expander as expander
 
+import click
 
-def main():
+
+@click.command()
+@click.option("--scramble/--noscramble", "-S/-NS", default=True)
+@click.option("--seed", default="asdas")
+def main(scramble: bool, seed: str):
     print("Starting timun")
     # Load Features
 
@@ -23,24 +29,28 @@ def main():
     items = parse_features_dir(folder)
     # pprint(features, indent=2)
 
-    features = list(filter(lambda f: isinstance(f, Feature), items))
+    features: List[Feature] = list(filter(lambda f: isinstance(f, Feature), items))  # type: ignore
 
     #  Expand features
     expanded_features = list(map(expander.expand_feature, features))
 
-    variables = list(filter(lambda f: isinstance(f, VariableDeclaration), items))
+    variables: List[VariableDeclaration] = list(
+        filter(lambda f: isinstance(f, VariableDeclaration), items)  # type: ignore
+    )
 
     # TODO: merge variables declaration
     if variables and len(variables) != 0:
-        variables = variables[0]
+        variable = variables[0]
 
-    # Expand variables
-    expanded_variables = list(
-        map(
-            lambda feature: expander.expand_variables_feature(variables, feature),
-            expanded_features,
+        # Expand variables
+        expanded_variables = list(
+            map(
+                lambda feature: expander.expand_variables_feature(variable, feature),
+                expanded_features,
+            )
         )
-    )
+    else:
+        expanded_variables = expanded_features
 
     # Load Step Descriptor
     step_folder = join(folder, "steps")
@@ -54,9 +64,10 @@ def main():
     runner = TestRunner(expanded_variables, step_dict, environment)
     runner.run()
 
-    print("=========================")
+    print("==========================")
 
-    scrambler = Scrambler(
-        expanded_variables, step_dict, environment, seed=".", amount=50
-    )
-    scrambler.run()
+    if scramble:
+        scrambler = Scrambler(
+            expanded_variables, step_dict, environment, seed=seed, amount=50
+        )
+        scrambler.run()

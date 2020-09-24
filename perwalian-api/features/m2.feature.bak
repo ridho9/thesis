@@ -1,0 +1,48 @@
+Variable:
+    paid status: enum true, false
+    approve status: enum true, false
+
+Feature: cek pembarayan
+    # Scenario: must have paid before approve
+    #     Given provided mahasiswa 001
+    #     When mahasiswa 001 have paid true
+    #     When mahasiswa 001 approve false
+    #     Then mahasiswa 001 exists
+    #     Then mahasiswa 001 have paid true
+    #     Then mahasiswa 001 approve false
+
+    # Scenario: must have paid before approve
+    #     Given provided mahasiswa 001
+    #     When mahasiswa 001 have paid false
+    #     When mahasiswa 001 approve false
+    #     Then mahasiswa 001 exists
+    #     Then mahasiswa 001 have paid false
+    #     Then mahasiswa 001 approve false
+
+    # Fail Scenario: must have paid before approve
+    #     Given provided mahasiswa 001
+    #     When mahasiswa 001 have paid false
+    #     When mahasiswa 001 approve true
+    #     Then mahasiswa 001 exists
+    #     Then mahasiswa 001 have paid false
+    #     Then mahasiswa 001 approve true
+
+    # Scenario: must have paid before approve
+    #     Given provided mahasiswa 001
+    #     When mahasiswa 001 have paid true
+    #     When mahasiswa 001 approve true
+    #     Then mahasiswa 001 exists
+    #     Then mahasiswa 001 have paid true
+    #     Then mahasiswa 001 approve true
+
+    Scenario: must have paid before approve
+        Given provided mahasiswa 001
+        When mahasiswa 001 have paid <paid status>
+        When mahasiswa 001 approve <approve status>
+        Then mahasiswa 001 exists
+        Then mahasiswa 001 have paid <paid status>
+        Then mahasiswa 001 approve <approve status>
+
+        Variable Rejected:
+            | paid status  | approve status  |
+            | false        | true            |

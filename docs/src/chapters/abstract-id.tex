@@ -2,6 +2,42 @@
 \chapter*{ABSTRAK}
 \addcontentsline{toc}{chapter}{Abstrak}
 
+\begin{center}
+  % \Large \bfseries ABSTRAK
+
+  \Large \bfseries \MakeUppercase{\thetitle}
+\end{center}
+
+\begin{center}
+  Oleh
+
+  Ridho Pratama
+
+  NIM : 13516032
+
+\end{center}
+
 %taruh abstrak bahasa indonesia di sini
-% \blindtext
+\emph{Business Logic Error} (BLE) adalah jenis kelemahan keamanan dengan kode CWE-840.
+BLE adalah kelemahan keamanan yang terjadi pada tingkat \emph{business logic}.
+Keamanan ini sulit untuk diuji karena tidak dapat diotomasi seperti kelemahan keamanan lain.
+Untuk menguji BLE secara otomatis membutuhkan pengetahuan tentang aksi dan state apa saja
+yang mungkin terjadi dalam program. Pengetahuan ini terdapat pada deskripsi pengujian untuk
+program yang menggunakan kerangka pengujian \emph{Behaviour-Driven Development} (BDD).
+BDD adalah kerangka yang digunakan untuk pengujian program. Dengan BDD, pengujian dideskripsikan
+dengan langkah-langkah bisnis. Langkah-langkah ini yang menjadi kumpulan pengetahuan yang dapat
+dimanfaatkan untuk pengujian terhadap BLE, namun kakas BDD yang ada pada saat ini masih memiliki
+banyak kekurangan untuk pengujian keamanan.
+
+Pada tugas akhir ini berfokus untuk mengembangkan kakas yang dapat memanfaatkan pengetahuan yang
+dimiliki BDD dengan menambahkan fitur-fitur yang mempermudah penggunaan BDD untuk pengujian keamanan,
+khususnya BLE. Fitur yang ditambahkan adalah kemampuan representasi kegagalan, representasi variansi,
+dan pengacakan skenario.
+
+Hasil validasi menunjukkan bahwa fitur representasi kegagalan dan variansi dapat digunakan dengan baik
+untuk mempermudah pengujian keamanan dan \emph{refactor} kasus uji, namun masih memiliki kekurangan
+jika digunakan secara bersamaan dengan kombinasi tertentu.
+
+Kata kunci: pengujian, keamanan, \emph{business logic}, BDD
+
 \clearpage

@@ -14,7 +14,7 @@ app = FastAPI()
 
 
 @app.post("/mahasiswa")
-def post_mahasiswa(mahasisa: Mahasiswa):
+def create_mahasiswa(mahasisa: Mahasiswa):
     store.create(mahasisa)
     return Response(status_code=status.HTTP_201_CREATED)
 
@@ -27,6 +27,19 @@ def get_mahasiswa(id: str):
         return JSONResponse({}, status.HTTP_404_NOT_FOUND)
 
     return item
+
+
+@app.post("/mahasiswa/{id}")
+def update_mahasiswa(id: str, mahasiswa: Mahasiswa):
+    item = store.get(Mahasiswa, id)
+
+    if item == None:
+        return JSONResponse({}, status.HTTP_404_NOT_FOUND)
+
+    store.delete(Mahasiswa, id)
+    store.create(mahasiswa)
+
+    return Response(status_code=status.HTTP_202_ACCEPTED)
 
 
 @app.post("/store/_clear")

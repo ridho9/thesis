@@ -82,3 +82,34 @@ Feature: example feature
     #     Fail Example:
     #     | init  | add   | expect  |
     #     | 1     | 1     | 3       |
+
+
+    Scenario: must have paid before approve
+        Given provided mahasiswa 001
+        When mahasiswa 001 have paid true
+        When mahasiswa 001 approve false
+        Then mahasiswa 001 exists
+
+    Scenario: must have paid before approve
+        Given provided mahasiswa 001
+        When mahasiswa 001 have paid false
+        When mahasiswa 001 approve false
+        Then mahasiswa 001 exists
+
+    Fail Scenario: must have paid before approve
+        Given provided mahasiswa 001
+        When mahasiswa 001 have paid false
+        When mahasiswa 001 approve true
+        Then mahasiswa 001 exists
+
+    Scenario: must have paid before approve
+        Given provided mahasiswa 001
+        When mahasiswa 001 have paid true
+        When mahasiswa 001 approve true
+        Then mahasiswa 001 exists
+
+    Fail Scenario: must have paid before approve
+        Given provided mahasiswa 001
+        When mahasiswa 001 have paid false
+        When mahasiswa 001 approve true
+        Then mahasiswa 001 exists

@@ -5,7 +5,7 @@
 Seluruh komponen dibuat dengan menggunakan bahasa python. Kakas dibuat dengan bentuk library python
 sehingga dapat diinstall dengan mudah menggunakan \emph{pip}. Kakas didesain untuk menguji
 program yang juga ditulis dengan bahasa python. Kode implementasi dan pengujian terdapat
-di repositori \url{https://gitlab.informatika.org/rid9/thesis}.
+di repositori \\\url{https://gitlab.informatika.org/rid9/thesis}.
 
 \subsection{Parser}
 
@@ -162,20 +162,37 @@ bentuk catatan exception.
 Bagian runtime juga berfungsi untuk membangkitkan skenario acak dari \emph{step} yang telah ada
 dan menjalankannya.
 
-\section{Pengujian}
-
-\subsection{Tujuan Pengujian}
-
-Pengujian dilakukan dengan tujuan untuk mengevaluasi apakah kakas yang dibu- at dapat digunakan dengan baik dan membantu programmer untuk menemukan kelemahan keamanan pada perangkat lunak. Dalam pengujian juga ditentukan apakah kakas yang dibuat mudah digunakan atau masih ada kekurangan.
 
 
-\subsection{Skenario Pengujian}
 
-Pengujian dilakukan dengan cara membuat file fitur untuk suatu proyek tertentu secara perlahan hingga semua fitur telah diuji secara BDD. Proyek yang akan diuji adalah proyek sistem perwalian mahasiswa dimana terdapat data mahasiswa, ipk, serta sks yang akan diambil. Sistem memiliki business logic dimana sks hanya bisa diambil menurut ipk, jika ipk kurang sama dari 2 maka mahasiswa tidak dapat mengambil lebih dari 20 sks. Sistem juga akan mengecek bahwa mahasiswa tidak bisa disetujui jika belum melakukan pembayaran.
+\section{Validasi}
 
-\subsection{Hasil Pengujian}
+Pada tugas akhir ini akan digunakan kosa kata validasi untuk membedakan pengujian yang dilakukan oleh kakas ini terhadap program user (pengujian)
+dengan pengujian yang dilakukan terhadap kakas ini (validasi).
 
-Berikut adalah kode gherkin yang digunakan untuk pengujian program.
+\subsection{Tujuan Validasi}
+
+Validasi dilakukan dengan tujuan untuk mengevaluasi apakah kakas yang dibuat dapat digunakan dengan
+baik dan membantu programmer untuk menemukan kelemahan keamanan pada perangkat lunak.
+Dalam validasi juga ditentukan apakah kakas yang dibuat mudah digunakan atau masih ada kekurangan.
+
+\subsection{Skenario Validasi}
+
+Validasi dilakukan dengan cara membuat file fitur untuk suatu proyek tertentu secara perlahan hingga semua fitur
+telah diuji secara BDD. Proyek yang akan diuji adalah proyek sistem perwalian mahasiswa dimana terdapat data mahasiswa, ipk,
+serta sks yang akan diambil. Sistem memiliki business logic dimana sks hanya bisa diambil menurut ipk, jika ipk kurang sama dari
+2 maka mahasiswa tidak dapat mengambil lebih dari 20 sks. Sistem juga akan mengecek bahwa mahasiswa tidak bisa disetujui
+jika belum melakukan pembayaran.
+
+Validasi dimulai dengan membuat proyek kosong python. Kemudian dilanjutkan dengan menulis \emph{file feature}
+dengan satu skenario. Kemudian \emph{step definition} dibuat untuk semua step yang dibuat. Setelah \emph{file}
+pengujian dibuat dilanjutkan dengan membuat program yang mengimplementasikan skenario tersebut. Jika semua
+test untuk skenario telah berjalan dengan baik, dibuat \emph{file feature} untuk skenario selanjutnya.
+Dalam pengerjaan juga dilakukan \emph{refactor} dengan fitur yang telah didesain.
+
+\subsection{Hasil Validasi}
+
+Berikut adalah kode gherkin yang digunakan untuk validasi program.
 
 \begin{lstlisting}[language=gherkin]
 Variable:
@@ -277,7 +294,7 @@ Feature: mahasiswa feature
             | 2     | 21    |
 \end{lstlisting}
 
-Dan berikut adalah hasil dari eksekusi pengujian.
+Dan berikut adalah hasil dari eksekusi validasi.
 
 % \begin{figure}[h]
 %   \centering
@@ -341,9 +358,9 @@ FAIL_SCENARIO	: random gen@GENERATED SCENARIOS - FAILED:
 \end{lstlisting}
 
 
-\subsection{Analisa Hasil Pengujian}
+\subsection{Analisa Hasil Validasi}
 
-Pada paparan hasil pengujian diatas, fitur representasi kegagalan ditampilkan pada kode baris 11-14,
+Pada paparan hasil validasi diatas, fitur representasi kegagalan ditampilkan pada kode baris 11-14,
 32-43, 59-62, 77-80, 94-97 dan hasil eksekusinya terdapat pada hasil baris 4, 16-17, 21-22, 27-28.
 Fitur kemampuan menyatakan variansi ditampikan pada kode baris 1-3 dan 37-46, sementara hasil eksekusi
 terdapat pada hasil baris 9-12.
@@ -353,13 +370,21 @@ terdapat 3 skenario yang tidak lulus (skenario yang dibangkitkan seharusnya gaga
 Ada beberapa penyebab skenario ini tidak lulus.
 Pertama kakas pembangkitan menghasilkan skenario yang telah dinyatakan benar pada kode gherkin sehingga menghasilkan \textit{false negative}.
 Kedua kakas pembangkitan menghasilkan skenario dengan alur logika yang tidak berurut (given-when-then), pada beberapa \textit{seed}
-lain kakas juga tidak menhasilkan skenario yang memiliki step \texttt{then} sehingga tidak ada pengecekan yang dilakukan.
+lain kakas juga tidak menghasilkan skenario yang memiliki step \texttt{then} sehingga tidak ada pengecekan yang dilakukan.
 Dari beberapa seed yang digunakan, kakas masih belum menghasilkan skenario acak yang menemukan kesalahan logika pada program,
 hal ini dapat terjadi karena ukuran program pengujian yang tidak terlalu besar menyebabkan implementasi yang tidak memiliki kelemahan,
 kurang banyaknya skenario yang dibangkitkan, atau karena pembangkitan skenario yang belum terlalu efektif.
 
 Pada proses pembuatan kode gherkin, ditemukan kekurangan terhadap rancangan dimana fitur-fitur yang dirancang
-tidak dapat berkerja sama dengan baik dalam keadaan tertentu.
+tidak dapat berkerjasama dengan baik dalam keadaan tertentu. Fitur ini adalah \emph{fail example} dengan \emph{variable rejecte}
+dimana jika digunakan bersamaan akan menghasilkan \emph{double negative} yang menyebabkan skenario pengujian lebih
+sulit untuk dipahami dan tidak berjalan sesuai ekspektasi.
+
+Untuk kemudahan, melalui studi lain \cite{dsl_lesson} ditemukan bahwa penggunaan DLS BDD seperti Gherkin walaupun
+pada awalnya terlihat menjanjikan namun dalam waktu lama dibutuhkan standarisasi bahasa yang digunakan, karena tiap
+orang yang menulis kasus pengujian dapat mendeskripsikan kasus dengan cara yang berbeda-beda. \emph{User} yang
+akan menggunakan kakas pengujian juga memerlukan pelatihan dalam penggunaan kerangka pikir dan kakas untuk menghasilkan
+kasus pengujian yang baik.
 
 % Dari hasil diatas dapat dilihat bahwa fitur pengujian biasa seperti fitur dari gherkin,
 % representasi kegagalan, dan deklarasi variabel telah bejalan dengan baik.

@@ -1,0 +1,21 @@
+Feature: mahasiswa
+    Scenario: must have paid before approve
+        Given provided mahasiswa 001
+        When mahasiswa 001 have paid true
+        When mahasiswa 001 approve true
+        Then mahasiswa 001 exists
+        Then mahasiswa 001 approve true
+
+    # Scenario: cant approve when not paid
+    #     Given provided mahasiswa 001
+    #     When mahasiswa 001 have paid false
+    #     When mahasiswa 001 approve true
+    #     Then mahasiswa 001 exists
+    #     Then mahasiswa 001 approve false
+
+    Fail Scenario: cant approve when not paid
+        Given provided mahasiswa 001
+        When mahasiswa 001 have paid false
+        When mahasiswa 001 approve true
+        Then mahasiswa 001 exists
+        Then mahasiswa 001 approve true

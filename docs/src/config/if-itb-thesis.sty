@@ -16,6 +16,8 @@
 % Setting margin
 \usepackage[top=3cm,bottom=3cm,left=4cm,right=3cm]{geometry}
 
+% \setlength{\beforechapskip}{1pt}
+
 \usepackage{mathptmx}
 
 % Judul bahasa Indonesia
@@ -52,6 +54,8 @@
   {\chaptertitlename\ \thechapter}{0pt}
     {\Large\bfseries\uppercase}
 
+\titlespacing{\chapter}{0pt}{0pt}{40pt}
+
 % Setting nomor pada subbsubsubbab
 \setcounter{secnumdepth}{3}
 
@@ -62,6 +66,9 @@
 % Counter untuk figure dan table.
 \counterwithin{figure}{section}
 \counterwithin{table}{section}
+
+\usepackage[titles]{tocloft}
+\cftsetindents{figure}{0em}{3.5em}
 
 \usepackage{xcolor}
 
